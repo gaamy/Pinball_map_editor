@@ -11,33 +11,57 @@ import SpriteKit
 class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
+        self.backgroundColor = SKColor(red: 104, green:0, blue:0, alpha: 1.0)
+        let myLabel = SKLabelNode(fontNamed:"Arial")
+        myLabel.text = "Éditeur de zone";
+        myLabel.fontSize = 40;
+        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMaxY(self.frame)-40);
         
         self.addChild(myLabel)
+        
+        var button = SKSpriteNode(imageNamed: "bouton-flipper-l")
+        button.position = CGPointMake(CGRectGetMinX(self.frame)+button.size.width, CGRectGetMidY(self.frame))
+        button.name = "bouton-flipper-l"
+        
+        self.addChild(button)
+        
+        button = SKSpriteNode(imageNamed: "bouton-flipper-r")
+        button.position = CGPointMake(CGRectGetMinX(self.frame)+button.size.width, CGRectGetMidY(self.frame)+button.size.height)
+        button.name = "bouton-flipper-r"
+        
+        self.addChild(button)
+        
     }
-    
+    var sprite = SKSpriteNode(imageNamed:"Spaceship")
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
+            let touchedNode = self.nodeAtPoint(location)
+
+            if let name = touchedNode.name
+            {
+                if name == "bouton-flipper-l"
+                {
+                    sprite = SKSpriteNode(imageNamed:"flipper-l")
+                }else if name == "bouton-flipper-r"
+                {
+                    sprite = SKSpriteNode(imageNamed:"flipper-r")
+                }
+            }else{
             sprite.xScale = 0.5
             sprite.yScale = 0.5
             sprite.position = location
             
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+            self.addChild(sprite.copy() as! SKNode)
+            }
             
-            sprite.runAction(SKAction.repeatActionForever(action))
             
-            self.addChild(sprite)
         }
     }
+    
+    
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
