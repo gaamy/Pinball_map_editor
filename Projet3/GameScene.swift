@@ -17,6 +17,7 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         sprite.name = "Spaceship"
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -44,6 +45,9 @@ class GameScene: SKScene {
                     sprite.position = location
                     
                     self.addChild(sprite.copy() as! SKNode)
+                }else if name == "boutonDelete"
+                {
+                    nodeSelected.removeFromParent()
                 }
             }else
             {
@@ -73,5 +77,12 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        if selection
+        {
+            self.childNodeWithName("boutonDelete")?.alpha = 1
+        }else
+        {
+            self.childNodeWithName("boutonDelete")?.alpha = 0
+        }
     }
 }

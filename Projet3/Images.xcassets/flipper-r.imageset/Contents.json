@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "flipper-r.jpg"
+      "filename" : "flipper-r.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
