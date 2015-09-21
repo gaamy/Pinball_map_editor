@@ -11,7 +11,7 @@ import AVFoundation
 
 class GameScene: SKScene {
     //Variables globale à la classe
-    var nodeSelected = SKSpriteNode()
+    var nodesSelected = [SKSpriteNode]()
     var selection = false
     var sprite = SKSpriteNode()
     let soundURL = NSBundle.mainBundle().URLForResource("camera_single_shot_of_35_mm_automatic_camera", withExtension: "mp3")
@@ -34,48 +34,59 @@ class GameScene: SKScene {
 
             if let name = touchedNode.name
             {
-                nodeSelected.alpha = 1
-                selection = false
-                
-                if name == "bouton-flipper-l"
+                if selection
                 {
-                    sprite = SKSpriteNode(imageNamed:"flipper-l")
-                }else if name == "bouton-flipper-r"
+                    selection = false
+                    if name == "boutonDelete"
+                    {
+                        for node in nodesSelected
+                        {
+                            node.removeFromParent()
+                        }
+                        
+                        // Play
+                        AudioServicesPlaySystemSound(mySound);
+                    }
+                    for node in nodesSelected
+                    {
+                        node.alpha = 1
+                    }
+                    nodesSelected.removeAll()
+                }else
                 {
-                    sprite = SKSpriteNode(imageNamed:"flipper-r")
-                }else if name == "table" && sprite.name != "Spaceship"
-                {
-                    sprite.xScale = 0.5
-                    sprite.yScale = 0.5
-                    sprite.position = location
-                    
-                    self.addChild(sprite.copy() as! SKNode)
-                }else if name == "boutonDelete"
-                {
-                    nodeSelected.removeFromParent()
-                    
-                    // Play
-                    AudioServicesPlaySystemSound(mySound);
+                    if name == "bouton-flipper-l"
+                    {
+                        sprite = SKSpriteNode(imageNamed:"flipper-l")
+                    }else if name == "bouton-flipper-r"
+                    {
+                        sprite = SKSpriteNode(imageNamed:"flipper-r")
+                    }else if name == "table" && sprite.name != "Spaceship"
+                    {
+                        sprite.xScale = 0.5
+                        sprite.yScale = 0.5
+                        sprite.position = location
+                        
+                        self.addChild(sprite.copy() as! SKNode)
+                    }
                 }
             }else
             {
                 if let objSelectionne = touchedNode as? SKSpriteNode
                 {
-                    if nodeSelected != objSelectionne
+                    
+                    if nodesSelected.contains(objSelectionne)
                     {
-                        selection = true
+                        nodesSelected = nodesSelected.filter {$0 != objSelectionne}
+                        objSelectionne.alpha = 1
+                        if nodesSelected.isEmpty
+                        {
+                            selection = false
+                        }
                     }else
                     {
-                        selection = !selection
-                    }
-                    nodeSelected.alpha = 1
-                    nodeSelected = objSelectionne
-                    
-                    if selection
-                    {
-                        nodeSelected.alpha = 0.5
-                    }else{
-                        nodeSelected.alpha = 1
+                        objSelectionne.alpha = 0.5
+                        nodesSelected.append(objSelectionne)
+                        selection = true
                     }
                     
                 }
