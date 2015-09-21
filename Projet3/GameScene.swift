@@ -7,16 +7,21 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class GameScene: SKScene {
     //Variables globale à la classe
     var nodeSelected = SKSpriteNode()
     var selection = false
     var sprite = SKSpriteNode()
+    let soundURL = NSBundle.mainBundle().URLForResource("camera_single_shot_of_35_mm_automatic_camera", withExtension: "mp3")
+    var mySound: SystemSoundID = 0
+    
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         sprite.name = "Spaceship"
+        AudioServicesCreateSystemSoundID(soundURL!, &mySound)
         
     }
     
@@ -48,6 +53,9 @@ class GameScene: SKScene {
                 }else if name == "boutonDelete"
                 {
                     nodeSelected.removeFromParent()
+                    
+                    // Play
+                    AudioServicesPlaySystemSound(mySound);
                 }
             }else
             {

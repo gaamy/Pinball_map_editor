@@ -15,6 +15,7 @@
 		2D0D41231BA8E50F00B25A7B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D0D41221BA8E50F00B25A7B /* Images.xcassets */; };
 		2D0D41261BA8E50F00B25A7B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D0D41241BA8E50F00B25A7B /* LaunchScreen.xib */; };
 		2D0D41321BA8E50F00B25A7B /* Projet3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D41311BA8E50F00B25A7B /* Projet3Tests.swift */; };
+		2DFD73C61BB0514C00744B61 /* camera_single_shot_of_35_mm_automatic_camera.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C51BB0514C00744B61 /* camera_single_shot_of_35_mm_automatic_camera.mp3 */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		2D0D412B1BA8E50F00B25A7B /* Projet3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Projet3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0D41301BA8E50F00B25A7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D0D41311BA8E50F00B25A7B /* Projet3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projet3Tests.swift; sourceTree = "<group>"; };
+		2DFD73C51BB0514C00744B61 /* camera_single_shot_of_35_mm_automatic_camera.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = camera_single_shot_of_35_mm_automatic_camera.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		2D0D41151BA8E50F00B25A7B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DFD73C51BB0514C00744B61 /* camera_single_shot_of_35_mm_automatic_camera.mp3 */,
 				2D0D41161BA8E50F00B25A7B /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -203,6 +206,7 @@
 				2D0D41261BA8E50F00B25A7B /* LaunchScreen.xib in Resources */,
 				2D0D41231BA8E50F00B25A7B /* Images.xcassets in Resources */,
 				2D0D411A1BA8E50F00B25A7B /* GameScene.sks in Resources */,
+				2DFD73C61BB0514C00744B61 /* camera_single_shot_of_35_mm_automatic_camera.mp3 in Resources */,
 				2D0D41211BA8E50F00B25A7B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
