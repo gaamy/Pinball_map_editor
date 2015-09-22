@@ -14,14 +14,23 @@ class GameScene: SKScene {
     var nodesSelected = [SKSpriteNode]()
     var selection = false
     var sprite = SKSpriteNode()
-    let soundURL = NSBundle.mainBundle().URLForResource("camera_single_shot_of_35_mm_automatic_camera", withExtension: "mp3")
-    var mySound: SystemSoundID = 0
+    let sonCorbeilleURL = NSBundle.mainBundle().URLForResource("corbeille", withExtension: "mp3")
+    var sonCorbeille: SystemSoundID = 0
+    let sonObjSurTableURL = NSBundle.mainBundle().URLForResource("placerObjetSurTable", withExtension: "mp3")
+    var sonObjSurTable: SystemSoundID = 1
+    let sonSelectionOutilURL = NSBundle.mainBundle().URLForResource("SelectionOutil", withExtension: "mp3")
+    var sonSelectionOutil: SystemSoundID = 2
+    let sonSelectionURL = NSBundle.mainBundle().URLForResource("Selection", withExtension: "mp3")
+    var sonSelection: SystemSoundID = 3
     
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         sprite.name = "Spaceship"
-        AudioServicesCreateSystemSoundID(soundURL!, &mySound)
+        AudioServicesCreateSystemSoundID(sonCorbeilleURL!, &sonCorbeille)
+        AudioServicesCreateSystemSoundID(sonObjSurTableURL!, &sonObjSurTable)
+        AudioServicesCreateSystemSoundID(sonSelectionOutilURL!, &sonSelectionOutil)
+        AudioServicesCreateSystemSoundID(sonSelectionURL!, &sonSelection)
         
     }
     
@@ -44,8 +53,8 @@ class GameScene: SKScene {
                             node.removeFromParent()
                         }
                         
-                        // Play
-                        AudioServicesPlaySystemSound(mySound);
+                        // jouer un son
+                        AudioServicesPlaySystemSound(sonCorbeille);
                     }
                     for node in nodesSelected
                     {
@@ -57,9 +66,13 @@ class GameScene: SKScene {
                     if name == "bouton-flipper-l"
                     {
                         sprite = SKSpriteNode(imageNamed:"flipper-l")
+                        // jouer un son
+                        AudioServicesPlaySystemSound(sonSelectionOutil);
                     }else if name == "bouton-flipper-r"
                     {
                         sprite = SKSpriteNode(imageNamed:"flipper-r")
+                        // jouer un son
+                        AudioServicesPlaySystemSound(sonSelectionOutil);
                     }else if name == "table" && sprite.name != "Spaceship"
                     {
                         sprite.xScale = 0.5
@@ -67,6 +80,9 @@ class GameScene: SKScene {
                         sprite.position = location
                         
                         self.addChild(sprite.copy() as! SKNode)
+                        
+                        // jouer un son
+                        AudioServicesPlaySystemSound(sonObjSurTable);
                     }
                 }
             }else
@@ -88,6 +104,8 @@ class GameScene: SKScene {
                         nodesSelected.append(objSelectionne)
                         selection = true
                     }
+                    // jouer un son
+                    AudioServicesPlaySystemSound(sonSelection);
                     
                 }
             }
