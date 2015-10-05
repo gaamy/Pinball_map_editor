@@ -12,6 +12,7 @@ import AVFoundation
 class GameScene: SKScene {
     //Variables globale à la classe
     var nodesSelected = [SKSpriteNode]()
+    var savedSelected = [SKSpriteNode]()
     var selection = false
     var sprite = SKSpriteNode()
     //Les variables de son
@@ -39,12 +40,17 @@ class GameScene: SKScene {
             {
                 if selection
                 {
+                    if name == "save_select"
+                    {
+                        savedSelected = nodesSelected
+                    }
                     selection = false
                     updateVisibiliteCorbeille()
                     if name == "boutonDelete"
                     {
                         for node in nodesSelected
                         {
+                            savedSelected = savedSelected.filter {$0 != node}
                             node.removeFromParent()
                         }
                         
@@ -61,13 +67,11 @@ class GameScene: SKScene {
                     if name == "bouton-flipper-l"
                     {
                         sprite = SKSpriteNode(imageNamed:"flipper-l")
-                        sprite.name = "flipper-l"
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }else if name == "bouton-flipper-r"
                     {
                         sprite = SKSpriteNode(imageNamed:"flipper-r")
-                        sprite.name = "flipper-r"
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }else if name == "table" && sprite.name != "Spaceship"
@@ -80,6 +84,18 @@ class GameScene: SKScene {
                         
                         // jouer un son
                         AudioServicesPlaySystemSound(sonObjSurTable);
+                    }else if name == "load_select"
+                    {
+                        nodesSelected = savedSelected
+                        if nodesSelected.count > 0
+                        {
+                            for node in nodesSelected
+                            {
+                                node.alpha = 0.5
+                            }
+                            selection = true
+                            updateVisibiliteCorbeille()
+                        }
                     }
                 }
             }else
