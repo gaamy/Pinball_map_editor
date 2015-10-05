@@ -61,11 +61,13 @@ class GameScene: SKScene {
                     if name == "bouton-flipper-l"
                     {
                         sprite = SKSpriteNode(imageNamed:"flipper-l")
+                        sprite.name = "flipper-l"
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }else if name == "bouton-flipper-r"
                     {
                         sprite = SKSpriteNode(imageNamed:"flipper-r")
+                        sprite.name = "flipper-r"
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }else if name == "table" && sprite.name != "Spaceship"
