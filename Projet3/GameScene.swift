@@ -38,92 +38,121 @@ class GameScene: SKScene {
 
             if let name = touchedNode.name
             {
-                if selection
+                if name != "flipper-l" && name != "flipper-r"
                 {
-                    if name == "save_select"
+                    if selection
                     {
-                        savedSelected = nodesSelected
-                    }
-                    selection = false
-                    updateVisibiliteCorbeille()
-                    if name == "boutonDelete"
-                    {
-                        for node in nodesSelected
+                        if name == "save_select"
                         {
-                            savedSelected = savedSelected.filter {$0 != node}
-                            node.removeFromParent()
+                            savedSelected = nodesSelected
                         }
                         
-                        // jouer un son
-                        AudioServicesPlaySystemSound(sonCorbeille);
-                    }
-                    for node in nodesSelected
-                    {
-                        node.alpha = 1
-                    }
-                    nodesSelected.removeAll()
-                }else
-                {
-                    if name == "bouton-flipper-l"
-                    {
-                        sprite = SKSpriteNode(imageNamed:"flipper-l")
-                        // jouer un son
-                        AudioServicesPlaySystemSound(sonSelectionOutil);
-                    }else if name == "bouton-flipper-r"
-                    {
-                        sprite = SKSpriteNode(imageNamed:"flipper-r")
-                        // jouer un son
-                        AudioServicesPlaySystemSound(sonSelectionOutil);
-                    }else if name == "table" && sprite.name != "Spaceship"
-                    {
-                        sprite.xScale = 0.5
-                        sprite.yScale = 0.5
-                        sprite.position = location
-                        
-                        self.addChild(sprite.copy() as! SKNode)
-                        
-                        // jouer un son
-                        AudioServicesPlaySystemSound(sonObjSurTable);
-                    }else if name == "load_select"
-                    {
-                        nodesSelected = savedSelected
-                        if nodesSelected.count > 0
+                        if name == "same_select" && nodesSelected.count == 1
                         {
-                            for node in nodesSelected
+                            for enfant in self.children
                             {
-                                node.alpha = 0.5
+                                if enfant.name == nodesSelected[0].name
+                                {
+                                    if let monEnfant = enfant as? SKSpriteNode
+                                    {
+                                        nodesSelected.append(monEnfant)
+                                        monEnfant.alpha = 0.5
+                                    }
+                                }
                             }
-                            selection = true
-                            updateVisibiliteCorbeille()
-                        }
-                    }
-                }
-            }else
-            {
-                if let objSelectionne = touchedNode as? SKSpriteNode
-                {
-                    
-                    if nodesSelected.contains(objSelectionne)
-                    {
-                        nodesSelected = nodesSelected.filter {$0 != objSelectionne}
-                        objSelectionne.alpha = 1
-                        if nodesSelected.isEmpty
+                        }else
                         {
                             selection = false
                             updateVisibiliteCorbeille()
+                            if name == "boutonDelete"
+                            {
+                                for node in nodesSelected
+                                {
+                                    savedSelected = savedSelected.filter {$0 != node}
+                                    node.removeFromParent()
+                                }
+                                
+                                // jouer un son
+                                AudioServicesPlaySystemSound(sonCorbeille);
+                            }
+                            for node in nodesSelected
+                            {
+                                node.alpha = 1
+                            }
+                            nodesSelected.removeAll()
                         }
                     }else
                     {
-                        objSelectionne.alpha = 0.5
-                        nodesSelected.append(objSelectionne)
-                        selection = true
-                        updateVisibiliteCorbeille()
+                        if name == "bouton-flipper-l"
+                        {
+                            sprite = SKSpriteNode(imageNamed:"flipper-l")
+                            sprite.name = "flipper-l"
+                            // jouer un son
+                            AudioServicesPlaySystemSound(sonSelectionOutil);
+                        }else if name == "bouton-flipper-r"
+                        {
+                            sprite = SKSpriteNode(imageNamed:"flipper-r")
+                            sprite.name = "flipper-r"
+                            // jouer un son
+                            AudioServicesPlaySystemSound(sonSelectionOutil);
+                        }else if name == "table" && sprite.name != "Spaceship"
+                        {
+                            sprite.xScale = 0.5
+                            sprite.yScale = 0.5
+                            sprite.position = location
+                            
+                            self.addChild(sprite.copy() as! SKNode)
+                            
+                            // jouer un son
+                            AudioServicesPlaySystemSound(sonObjSurTable);
+                        }else if name == "load_select"
+                        {
+                            nodesSelected = savedSelected
+                            if nodesSelected.count > 0
+                            {
+                                for node in nodesSelected
+                                {
+                                    node.alpha = 0.5
+                                }
+                                selection = true
+                                updateVisibiliteCorbeille()
+                            }
+                        }
                     }
-                    // jouer un son
-                    AudioServicesPlaySystemSound(sonSelection);
-                    
+                }else
+                {
+                    cliqueAutreQueBouton(touchedNode)
                 }
+            }else
+            {
+                cliqueAutreQueBouton(touchedNode)
             }
+        }
+    }
+    
+    func cliqueAutreQueBouton(touchedNode: SKNode){
+        if let objSelectionne = touchedNode as? SKSpriteNode
+        {
+            
+            if nodesSelected.contains(objSelectionne)
+            {
+                nodesSelected = nodesSelected.filter {$0 != objSelectionne}
+                objSelectionne.alpha = 1
+                if nodesSelected.isEmpty
+                {
+                    selection = false
+                    updateVisibiliteCorbeille()
+                }
+            }else
+            {
+                objSelectionne.alpha = 0.5
+                nodesSelected.append(objSelectionne)
+                selection = true
+                updateVisibiliteCorbeille()
+            }
+            // jouer un son
+            AudioServicesPlaySystemSound(sonSelection);
+            
         }
     }
     
