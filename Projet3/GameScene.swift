@@ -20,6 +20,38 @@ class GameScene: SKScene {
     var sonObjSurTable: SystemSoundID = 0
     var sonSelectionOutil: SystemSoundID = 0
     var sonSelection: SystemSoundID = 0
+    let listeDesBoutons = [
+        "boutonaccelerateur",
+        "boutonbutoirCirc",
+        "boutonbutoirTriDroit",
+        "boutonbutoirTriGauche",
+        "boutoncible",
+        "boutondestructeur",
+        "boutongenerateur",
+        "boutonmur",
+        "boutonpaletteDroite1",
+        "boutonpaletteDroite2",
+        "boutonpaletteGauche1",
+        "boutonpaletteGauche2",
+        "boutonportail",
+        "boutonressort",
+        "boutontrou"]
+    let listeDesObjets = [
+        "accelerateur",
+        "butoirCirc",
+        "butoirTriDroit",
+        "butoirTriGauche",
+        "cible",
+        "destructeur",
+        "generateur",
+        "mur",
+        "paletteDroite1",
+        "paletteDroite2",
+        "paletteGauche1",
+        "paletteGauche2",
+        "portail",
+        "ressort",
+        "trou"]
     
     
     override func didMoveToView(view: SKView) {
@@ -38,7 +70,7 @@ class GameScene: SKScene {
 
             if let name = touchedNode.name
             {
-                if name != "flipper-l" && name != "flipper-r"
+                if !listeDesObjets.contains(name)
                 {
                     if selection
                     {
@@ -83,16 +115,10 @@ class GameScene: SKScene {
                         }
                     }else
                     {
-                        if name == "bouton-flipper-l"
-                        {
-                            sprite = SKSpriteNode(imageNamed:"flipper-l")
-                            sprite.name = "flipper-l"
-                            // jouer un son
-                            AudioServicesPlaySystemSound(sonSelectionOutil);
-                        }else if name == "bouton-flipper-r"
-                        {
-                            sprite = SKSpriteNode(imageNamed:"flipper-r")
-                            sprite.name = "flipper-r"
+                        if listeDesBoutons.contains(name){
+                            let nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
+                            sprite = SKSpriteNode(imageNamed: nomObjet)
+                            sprite.name = nomObjet
                             // jouer un son
                             AudioServicesPlaySystemSound(sonSelectionOutil);
                         }else if name == "table" && sprite.name != "Spaceship"
