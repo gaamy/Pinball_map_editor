@@ -15,11 +15,16 @@ class GameScene: SKScene {
     var savedSelected = [SKSpriteNode]()
     var selection = false
     var sprite = SKSpriteNode()
+    var construireMur = false
+    let chemin = CGPathCreateMutable()
+    var murTemp = SKNode()
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
     var sonObjSurTable: SystemSoundID = 0
     var sonSelectionOutil: SystemSoundID = 0
     var sonSelection: SystemSoundID = 0
+    
+    //Les listes de noms
     let listeDesBoutons = [
         "boutonaccelerateur",
         "boutonbutoirCirc",
@@ -28,7 +33,6 @@ class GameScene: SKScene {
         "boutoncible",
         "boutondestructeur",
         "boutongenerateur",
-        "boutonmur",
         "boutonpaletteDroite1",
         "boutonpaletteDroite2",
         "boutonpaletteGauche1",
@@ -44,14 +48,14 @@ class GameScene: SKScene {
         "cible",
         "destructeur",
         "generateur",
-        "mur",
         "paletteDroite1",
         "paletteDroite2",
         "paletteGauche1",
         "paletteGauche2",
         "portail",
         "ressort",
-        "trou"]
+        "trou",
+        "mur"]
     
     
     override func didMoveToView(view: SKView) {
@@ -64,12 +68,24 @@ class GameScene: SKScene {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
+        //test
+        let debutMur = touches.first
+        let position1 = debutMur!.locationInNode(self)
+        CGPathMoveToPoint(chemin, nil, position1.x, position1.y)
+        //finTest
+        
         for touch in (touches ) {
             let location = touch.locationInNode(self)
             let touchedNode = self.nodeAtPoint(location)
 
             if let name = touchedNode.name
             {
+                if name == "boutonmur" {
+                    construireMur = true
+                    // jouer un son
+                    AudioServicesPlaySystemSound(sonSelectionOutil);
+                }
+                
                 if !listeDesObjets.contains(name)
                 {
                     if selection
@@ -116,12 +132,13 @@ class GameScene: SKScene {
                     }else
                     {
                         if listeDesBoutons.contains(name){
+                            construireMur = false
                             let nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
                             sprite = SKSpriteNode(imageNamed: nomObjet)
                             sprite.name = nomObjet
                             // jouer un son
                             AudioServicesPlaySystemSound(sonSelectionOutil);
-                        }else if name == "table" && sprite.name != "Spaceship"
+                        }else if name == "table" && sprite.name != "Spaceship" && !construireMur
                         {
                             sprite.xScale = 0.5
                             sprite.yScale = 0.5
@@ -156,10 +173,33 @@ class GameScene: SKScene {
         }
     }
     
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        if construireMur {
+            let touch = touches.first
+            
+            let position2 = touch!.locationInNode(self)
+            
+            CGPathAddLineToPoint(chemin, nil, position2.x, position2.y)
+            CGPathCloseSubpath(chemin)
+            
+            let line = SKShapeNode()
+            line.path = chemin
+            line.strokeColor = UIColor.blackColor()
+            line.lineWidth = 5
+            line.name = "mur"
+            
+            self.addChild(line)
+            
+            !construireMur
+        }
+        
+        
+    }
+    
     func cliqueAutreQueBouton(touchedNode: SKNode){
         if let objSelectionne = touchedNode as? SKSpriteNode
         {
-            
             if nodesSelected.contains(objSelectionne)
             {
                 nodesSelected = nodesSelected.filter {$0 != objSelectionne}
