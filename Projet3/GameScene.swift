@@ -198,6 +198,8 @@ class GameScene: SKScene {
     }
     
     func cliqueAutreQueBouton(touchedNode: SKNode){
+        //TODO: Faire une deuxième array pour les SKShape nodes et faire le meme test
+        //      pour ajouter un mur à une sélection dans un array de shapes.
         if let objSelectionne = touchedNode as? SKSpriteNode
         {
             if nodesSelected.contains(objSelectionne)
@@ -218,7 +220,6 @@ class GameScene: SKScene {
             }
             // jouer un son
             AudioServicesPlaySystemSound(sonSelection);
-            
         }
     }
     
