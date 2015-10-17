@@ -20,6 +20,7 @@ class GameScene: SKScene {
     var murTemp = SKNode()
     var deplacement = false
     var nodeQuiSeDeplace = SKSpriteNode()
+    var endroitPrecedent = CGPoint()
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
     var sonObjSurTable: SystemSoundID = 0
@@ -81,11 +82,16 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             let touchedNode = nodeAtPoint(location)
             
-            if listeDesObjets.contains(touchedNode.name!)
+            endroitPrecedent = location
+            
+            if let monNom = touchedNode.name
             {
-                if let monNode = touchedNode as? SKSpriteNode
+                if listeDesObjets.contains(monNom)
                 {
-                    nodeQuiSeDeplace = monNode
+                    if let monNode = touchedNode as? SKSpriteNode
+                    {
+                        nodeQuiSeDeplace = monNode
+                    }
                 }
             }
             
@@ -96,15 +102,24 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-            //Ne permet que le déplacement d'un node a la fois pour le moment
-            //Autre bug: Si on bouge trop vite, le touch sort de l'objet et ça marche pas
-            if let nomDuNode = nodeQuiSeDeplace.name
+            //TODO: Utilisez la bounding box a la place.
+            if selection && nodesSelected.contains(nodeQuiSeDeplace) && !construireMur
             {
-                if listeDesObjets.contains(nomDuNode) && !construireMur
-                {
-                    nodeQuiSeDeplace.position = location
+                    for node in nodesSelected
+                    {
+                        if let table = self.childNodeWithName("table")
+                        {
+                            let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
+                            if table.containsPoint(nouvEndroit)
+                            {
+                                node.position = nouvEndroit
+                            }
+                        }
+                        
+                        
+                    }
                     deplacement = true
-                }
+                    endroitPrecedent = location
             }
         }
     }
@@ -204,11 +219,12 @@ class GameScene: SKScene {
                                 sprite.yScale = 0.5
                                 sprite.position = location
                                 
-                                sprite.physicsBody = SKPhysicsBody.init(texture: sprite.texture!, alphaThreshold: 0.5, size: sprite.size)
+                                sprite.physicsBody = SKPhysicsBody.init(texture: sprite.texture!,
+                                    size: sprite.size)
                                 
                                 sprite.physicsBody?.affectedByGravity = false
                                 sprite.physicsBody?.allowsRotation = false
-                                
+                                sprite.physicsBody?.categoryBitMask = 0x1
                                 
                                 self.addChild(sprite.copy() as! SKSpriteNode)
                                 
@@ -254,10 +270,17 @@ class GameScene: SKScene {
     }
     
     func cliqueAutreQueBouton(touchedNode: SKNode, location: CGPoint){
+        //Pleins de tests
+        let nodo = self.physicsWorld.bodyAtPoint(location)
+        print(nodo?.node?.name)
+        
+        let testTouch = SKNode()
+        testTouch.name = "test"
+        
         
         if let objSelectionne = touchedNode as? SKSpriteNode
         {
-            if touchedNode.containsPoint(location){
+            if nodo?.categoryBitMask == 0x1{
                 
             let unPetitTest: CGRect = objSelectionne.calculateAccumulatedFrame()
             if (CGRectContainsPoint(unPetitTest, location)){
