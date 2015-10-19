@@ -27,6 +27,10 @@ class GameScene: SKScene {
     var sonSelectionOutil: SystemSoundID = 0
     var sonSelection: SystemSoundID = 0
     
+    //Variables pour la rotation des objets
+    var offset:CGFloat = 0
+    var theRotation:CGFloat = 0
+    
     //Les listes de noms
     let listeDesBoutons = [
         "boutonaccelerateur",
@@ -67,6 +71,67 @@ class GameScene: SKScene {
         sprite.name = "Spaceship"
         initLesSons()
         updateVisibiliteCorbeille()
+        
+        self.view!.multipleTouchEnabled = true
+        self.view!.userInteractionEnabled = true
+        
+        //Mon gesture pour changer la taille
+        let gestureRec1 = UIPinchGestureRecognizer(target: self, action: "tailleDeLObjet:")
+        self.view!.addGestureRecognizer(gestureRec1)
+        
+        //Mon gesture pour la rotation
+        let gestureRec2 = UIRotationGestureRecognizer(target: self, action: "rotationDeLObjet:")
+        self.view!.addGestureRecognizer(gestureRec2)
+    }
+    
+    func tailleDeLObjet(sender: UIPinchGestureRecognizer){
+        //sender.view!.transform = CGAffineTransformScale(sender.view.transform, sender.scale, sender.scale)
+        //sender.scale = 1.0
+        if (sender.state == .Began){
+            //On fait ici ce qu'on veut qui se passe quand le pincement débute
+            print("Debut du pincement")
+        }
+        if sender.state == .Changed {
+            //Pendant la le pincement
+            print("On pince")
+            
+            if nodesSelected.count > 0 {
+                for node in nodesSelected{
+                    node.size.width = node.size.width * sender.scale
+                    node.size.width = node.size.height * sender.scale
+                }
+            }else{
+                //Ici on scale la vue au complet
+                self.view!.transform = CGAffineTransformScale(self.view!.transform, sender.scale, sender.scale)
+                sender.scale = 1
+            }
+        }
+        if sender.state == .Ended {
+            //Après le pincement
+        }
+    }
+    
+    func rotationDeLObjet(sender: UIRotationGestureRecognizer){
+        if (sender.state == .Began){
+            //On fait ici ce qu'on veut qui se passe quand la rotation débute
+            print("Debut de la rotation")
+        }
+        if sender.state == .Changed {
+            //Pendant la rotation
+            print("On rotate")
+            theRotation = CGFloat(sender.rotation) + self.offset
+            theRotation = theRotation * -1
+            
+            if nodesSelected.count > 0 {
+                for node in nodesSelected{
+                    node.zRotation = theRotation
+                }
+            }
+        }
+        if sender.state == .Ended {
+            //Après la rotation
+            self.offset = theRotation * -1
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
