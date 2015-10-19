@@ -168,7 +168,7 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             
             //TODO: Utilisez la bounding box a la place.
-            if selection && nodesSelected.contains(nodeQuiSeDeplace) && !construireMur
+            if selection && nodesSelected.contains(nodeQuiSeDeplace)
             {
                     for node in nodesSelected
                     {
@@ -191,7 +191,7 @@ class GameScene: SKScene {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        if construireMur {
+        if construireMur && !deplacement {
             let touch = touches.first
             
             let position2 = touch!.locationInNode(self)
@@ -204,6 +204,12 @@ class GameScene: SKScene {
             line.strokeColor = UIColor.blackColor()
             line.lineWidth = 5
             line.name = "mur"
+            
+            line.physicsBody = SKPhysicsBody(edgeChainFromPath: chemin)
+            
+            line.physicsBody?.affectedByGravity = false
+            line.physicsBody?.allowsRotation = false
+            line.physicsBody?.categoryBitMask = 0x1
             
             self.addChild(line)
             
@@ -223,6 +229,10 @@ class GameScene: SKScene {
                 
                 if let name = touchedNode.name
                 {
+                    
+                    if name == "boutonmenu" {
+                        //TODO: Ajouter la transition vers le menu (no idea how)
+                    }
                     
                     if name == "boutonmur" {
                         construireMur = true
