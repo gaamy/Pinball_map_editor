@@ -93,7 +93,6 @@ class GameScene: SKScene {
         }
         if sender.state == .Changed {
             //Pendant la le pincement
-            print("On pince")
             
             if nodesSelected.count > 0 {
                 for node in nodesSelected{
@@ -108,6 +107,7 @@ class GameScene: SKScene {
         }
         if sender.state == .Ended {
             //Après le pincement
+            print("Fini de pincer")
         }
     }
     
@@ -118,7 +118,6 @@ class GameScene: SKScene {
         }
         if sender.state == .Changed {
             //Pendant la rotation
-            print("On rotate")
             theRotation = CGFloat(sender.rotation) + self.offset
             theRotation = theRotation * -1
             
@@ -130,6 +129,7 @@ class GameScene: SKScene {
         }
         if sender.state == .Ended {
             //Après la rotation
+            print("Fini la rotation")
             self.offset = theRotation * -1
         }
     }
