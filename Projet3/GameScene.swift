@@ -85,8 +85,6 @@ class GameScene: SKScene {
     }
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
-        //sender.view!.transform = CGAffineTransformScale(sender.view.transform, sender.scale, sender.scale)
-        //sender.scale = 1.0
         if (sender.state == .Began){
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
             print("Debut du pincement")
@@ -97,8 +95,9 @@ class GameScene: SKScene {
             if nodesSelected.count > 0 {
                 for node in nodesSelected{
                     node.size.width = node.size.width * sender.scale
-                    node.size.width = node.size.height * sender.scale
+                    node.size.height = node.size.height * sender.scale
                 }
+                sender.scale = 1
             }else{
                 //Ici on scale la vue au complet
                 self.view!.transform = CGAffineTransformScale(self.view!.transform, sender.scale, sender.scale)
@@ -168,6 +167,7 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             
             //TODO: Utilisez la bounding box a la place.
+            //TODO: Régler le bug qui fait que quand je fais un gesture, ça déplace les objets!!!
             if selection && nodesSelected.contains(nodeQuiSeDeplace)
             {
                     for node in nodesSelected
@@ -222,7 +222,6 @@ class GameScene: SKScene {
             nodeQuiSeDeplace = SKSpriteNode()
         }else
         {
-            
             for touch in (touches ) {
                 let location = touch.locationInNode(self)
                 let touchedNode = self.nodeAtPoint(location)
@@ -345,20 +344,12 @@ class GameScene: SKScene {
     }
     
     func cliqueAutreQueBouton(touchedNode: SKNode, location: CGPoint){
-        //Pleins de tests
-        let nodo = self.physicsWorld.bodyAtPoint(location)
-        print(nodo?.node?.name)
-        
-        let testTouch = SKNode()
-        testTouch.name = "test"
-        
+        //let noeud = self.physicsWorld.bodyAtPoint(location)
+        //print(nodo?.node?.name)
         
         if let objSelectionne = touchedNode as? SKSpriteNode
         {
-            if nodo?.categoryBitMask == 0x1{
                 
-            let unPetitTest: CGRect = objSelectionne.calculateAccumulatedFrame()
-            if (CGRectContainsPoint(unPetitTest, location)){
             if nodesSelected.contains(objSelectionne)
             {
                 nodesSelected = nodesSelected.filter {$0 != objSelectionne}
@@ -377,8 +368,6 @@ class GameScene: SKScene {
             }
             // jouer un son
             AudioServicesPlaySystemSound(sonSelection);
-                }
-            }
         }
     }
     
