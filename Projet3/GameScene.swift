@@ -82,6 +82,52 @@ class GameScene: SKScene {
         //Mon gesture pour la rotation
         let gestureRec2 = UIRotationGestureRecognizer(target: self, action: "rotationDeLObjet:")
         self.view!.addGestureRecognizer(gestureRec2)
+        
+        //Mon gesture pour le déplacement
+        let gestureRec3 = UIPanGestureRecognizer(target: self, action: "deplacementGesture:")
+        self.view!.addGestureRecognizer(gestureRec3)
+    }
+    
+    func deplacementGesture(sender: UIPanGestureRecognizer){
+        if (sender.state == .Began){
+            //On fait ici ce qu'on veut qui se passe quand le pan débute
+            print("Debut du pan")
+        }
+        if sender.state == .Changed {
+            //Pendant la le pan
+            let location = sender.locationInView(self.view)
+            if selection && nodesSelected.contains(nodeQuiSeDeplace)
+            {
+                for node in nodesSelected
+                {
+                    if let table = self.childNodeWithName("table")
+                    {
+                        let position = self.convertPointFromView(location)
+                        //let screenSize: CGRect = UIScreen.mainScreen().bounds
+                        
+                        let nouvEndroit = CGPoint(x:(node.position.x + position.x - endroitPrecedent.x),y: (node.position.y +  position.y - endroitPrecedent.y))
+                        if table.containsPoint(nouvEndroit)
+                        {
+                            node.position = nouvEndroit
+                        }
+                    }
+                }
+                deplacement = true
+                endroitPrecedent = location
+            }else{
+                let translation = sender.translationInView(self.view)
+                if let view = sender.view {
+                    view.center = CGPoint(x:view.center.x + translation.x,
+                        y:view.center.y + translation.y)
+                }
+                sender.setTranslation(CGPointZero, inView: self.view)
+            }
+            
+        }
+        if sender.state == .Ended {
+            //Après le pan
+            print("Fini de pan")
+        }
     }
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
@@ -120,10 +166,39 @@ class GameScene: SKScene {
             theRotation = CGFloat(sender.rotation) + self.offset
             theRotation = theRotation * -1
             
-            if nodesSelected.count > 0 {
+            //Pour la rotation multiple (à partir du centre de la position des objets)
+            if nodesSelected.count == 1 {
+                nodesSelected[0].zRotation = theRotation
+            }else if nodesSelected.count > 1{
+                var centre = CGPoint()
+                var minX = nodesSelected[0].position.x
+                var maxX = minX
+                var minY = nodesSelected[0].position.y
+                var maxY = minY
                 for node in nodesSelected{
-                    node.zRotation = theRotation
+                    if node.position.x > maxX {
+                        maxX = node.position.x
+                    }
+                    if node.position.x < minX {
+                        minX = node.position.x
+                    }
+                    if node.position.y > maxY {
+                        maxY = node.position.y
+                    }
+                    if node.position.y < minY {
+                        minY = node.position.y
+                    }
+                    //Puis on calcule le centre
+                    centre = CGPoint(x: (maxX-minX)/2, y: (maxX-minX)/2)
                 }
+                
+                //On ajoute un point d'ancrage autour duquel on doit faire la rotation
+                for node in nodesSelected {
+                    //??
+                }
+                
+                //On applique la rotation au nodes
+                //node.zRotation = theRotation
             }
         }
         if sender.state == .Ended {
@@ -161,7 +236,7 @@ class GameScene: SKScene {
             
         }
     }
-    
+    /*
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             let location = touch.locationInNode(self)
@@ -180,14 +255,12 @@ class GameScene: SKScene {
                                 node.position = nouvEndroit
                             }
                         }
-                        
-                        
                     }
                     deplacement = true
                     endroitPrecedent = location
             }
         }
-    }
+    }*/
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
@@ -372,11 +445,9 @@ class GameScene: SKScene {
     }
     
     func updateVisibiliteCorbeille(){
-        if selection
-        {
+        if selection{
             self.childNodeWithName("boutonDelete")?.alpha = 1
-        }else
-        {
+        }else{
             self.childNodeWithName("boutonDelete")?.alpha = 0
         }
     }
