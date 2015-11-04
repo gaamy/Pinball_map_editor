@@ -93,13 +93,15 @@ class GameScene: SKScene {
             //Pendant la le pincement
             
             if nodesSelected.count > 0 {
+                //TODO, on doit aussi scale la boite englobante**
                 for node in nodesSelected{
                     node.size.width = node.size.width * sender.scale
                     node.size.height = node.size.height * sender.scale
                 }
                 sender.scale = 1
             }else{
-                //Ici on scale la vue au complet
+                //Ici on scale la vue au complet (zoom)
+                //TODO: Ajouter un max et un min au scale de la scène
                 self.view!.transform = CGAffineTransformScale(self.view!.transform, sender.scale, sender.scale)
                 sender.scale = 1
             }
@@ -116,6 +118,8 @@ class GameScene: SKScene {
             print("Debut de la rotation")
         }
         if sender.state == .Changed {
+            //TODO: On doit pouvoir faire une rotation multiple à partir du centre de tous les objets
+            
             //Pendant la rotation
             theRotation = CGFloat(sender.rotation) + self.offset
             theRotation = theRotation * -1
@@ -150,6 +154,8 @@ class GameScene: SKScene {
             
             if let monNom = touchedNode.name
             {
+                //TODO: Faudrait créer les noeuds avec la table comme parent
+                // et ici on testerait donc si le parent est bien la table (et non regarder dans la liste).
                 if listeDesObjets.contains(monNom)
                 {
                     if let monNode = touchedNode as? SKSpriteNode
@@ -175,13 +181,12 @@ class GameScene: SKScene {
                         if let table = self.childNodeWithName("table")
                         {
                             let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
+                            //TODO: On doit utiliser soit la boite englobante ou soit les bordures des sprites
                             if table.containsPoint(nouvEndroit)
                             {
                                 node.position = nouvEndroit
                             }
                         }
-                        
-                        
                     }
                     deplacement = true
                     endroitPrecedent = location
@@ -199,6 +204,7 @@ class GameScene: SKScene {
             CGPathAddLineToPoint(chemin, nil, position2.x, position2.y)
             CGPathCloseSubpath(chemin)
             
+            //Changer la ligne pour un sprite de la bonne taille/scale
             let line = SKShapeNode()
             line.path = chemin
             line.strokeColor = UIColor.blackColor()
@@ -209,11 +215,10 @@ class GameScene: SKScene {
             
             line.physicsBody?.affectedByGravity = false
             line.physicsBody?.allowsRotation = false
+            //Test pour les collisions
             line.physicsBody?.categoryBitMask = 0x1
             
             self.addChild(line)
-            
-            !construireMur
         }
         
         if deplacement
@@ -231,6 +236,7 @@ class GameScene: SKScene {
                     
                     if name == "boutonmenu" {
                         //TODO: Ajouter la transition vers le menu (no idea how)
+                        //GABRIEL va te'l faire en trois secondes
                     }
                     
                     if name == "boutonmur" {
@@ -238,10 +244,8 @@ class GameScene: SKScene {
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }
-                    
-                    if !listeDesObjets.contains(name)
+                    if !listeDesObjets.contains(name) //Me dit que c'est un bouton
                     {
-                        
                         if selection
                         {
                             if name == "save_select"
@@ -251,8 +255,10 @@ class GameScene: SKScene {
                             
                             if name == "same_select" && nodesSelected.count == 1
                             {
+                                //On vérifie sur les enfants de la scène
                                 for enfant in self.children
                                 {
+                                    //On retrouve le nom du node sélectionné
                                     if enfant.name == nodesSelected[0].name
                                     {
                                         if let monEnfant = enfant as? SKSpriteNode
@@ -268,6 +274,7 @@ class GameScene: SKScene {
                                 updateVisibiliteCorbeille()
                                 if name == "boutonDelete"
                                 {
+                                    //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
                                     for node in nodesSelected
                                     {
                                         savedSelected = savedSelected.filter {$0 != node}
@@ -277,12 +284,14 @@ class GameScene: SKScene {
                                     // jouer un son
                                     AudioServicesPlaySystemSound(sonCorbeille);
                                 }
+                                //On delete les nodes sélectionnés
                                 for node in nodesSelected
                                 {
                                     node.alpha = 1
                                 }
                                 nodesSelected.removeAll()
                                 
+                                //TODO: Vérifier si nécéssaire
                                 cliqueSurBoutonObj(name)
                             }
                         }else
@@ -298,6 +307,7 @@ class GameScene: SKScene {
                                 
                                 sprite.physicsBody?.affectedByGravity = false
                                 sprite.physicsBody?.allowsRotation = false
+                                //Était pour test, p-e pas nécéssaire anymore
                                 sprite.physicsBody?.categoryBitMask = 0x1
                                 
                                 self.addChild(sprite.copy() as! SKSpriteNode)
@@ -343,6 +353,7 @@ class GameScene: SKScene {
         return false
     }
     
+    //En sélectionne ou désélectionne l'objet qu'on reçoit en parametre
     func cliqueAutreQueBouton(touchedNode: SKNode, location: CGPoint){
         //let noeud = self.physicsWorld.bodyAtPoint(location)
         //print(nodo?.node?.name)
