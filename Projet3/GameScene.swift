@@ -11,10 +11,11 @@ import AVFoundation
 
 class GameScene: SKScene {
     //Variables globale à la classe
+    var table = SKNode()
     var nodesSelected = [SKSpriteNode]()
     var savedSelected = [SKSpriteNode]()
     var selection = false
-    var sprite = SKSpriteNode()
+    var sprite = Objet()
     var construireMur = false
     let chemin = CGPathCreateMutable()
     var murTemp = SKNode()
@@ -48,23 +49,6 @@ class GameScene: SKScene {
         "boutonressort",
         "boutontrou",
         "boutondeplacement"]
-    let listeDesObjets = [
-        "accelerateur",
-        "butoirCirc",
-        "butoirTriDroit",
-        "butoirTriGauche",
-        "cible",
-        "destructeur",
-        "generateur",
-        "paletteDroite1",
-        "paletteDroite2",
-        "paletteGauche1",
-        "paletteGauche2",
-        "portail",
-        "ressort",
-        "trou",
-        "mur"]
-    
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -82,6 +66,9 @@ class GameScene: SKScene {
         //Mon gesture pour la rotation
         let gestureRec2 = UIRotationGestureRecognizer(target: self, action: "rotationDeLObjet:")
         self.view!.addGestureRecognizer(gestureRec2)
+        
+        //On initialise la variable table pour utilisation facile dans la classe
+        table = self.childNodeWithName("table")!
     }
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
@@ -140,30 +127,25 @@ class GameScene: SKScene {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        //test
+        //débutMur
         let debutMur = touches.first
         let position1 = debutMur!.locationInNode(self)
         CGPathMoveToPoint(chemin, nil, position1.x, position1.y)
-        //finTest
+        //finMur
         
         for touch in touches {
             let location = touch.locationInNode(self)
             let touchedNode = nodeAtPoint(location)
             
             endroitPrecedent = location
-            
-            if let monNom = touchedNode.name
-            {
-                //TODO: Faudrait créer les noeuds avec la table comme parent
-                // et ici on testerait donc si le parent est bien la table (et non regarder dans la liste).
-                if listeDesObjets.contains(monNom)
+                if table.containsPoint(touchedNode.position)
                 {
+                    //On cast le SKNode en SKPriteNode
                     if let monNode = touchedNode as? SKSpriteNode
                     {
                         nodeQuiSeDeplace = monNode
                     }
                 }
-            }
             
         }
     }
@@ -178,15 +160,12 @@ class GameScene: SKScene {
             {
                     for node in nodesSelected
                     {
-                        if let table = self.childNodeWithName("table")
-                        {
                             let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
                             //TODO: On doit utiliser soit la boite englobante ou soit les bordures des sprites
-                            if table.containsPoint(nouvEndroit)
+                            if surTable(nouvEndroit, node: node)
                             {
                                 node.position = nouvEndroit
                             }
-                        }
                     }
                     deplacement = true
                     endroitPrecedent = location
@@ -244,7 +223,7 @@ class GameScene: SKScene {
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }
-                    if !listeDesObjets.contains(name) //Me dit que c'est un bouton
+                    if !surTable(location, node: (touchedNode as? SKSpriteNode)!)
                     {
                         if selection
                         {
@@ -340,11 +319,31 @@ class GameScene: SKScene {
         }
     }
     
+    func surTable(location: CGPoint, node: SKSpriteNode) -> Bool
+    {
+        let largeur = node.size.width / 2
+        let hauteur = node.size.height / 2
+        let gauche = CGPoint(x:location.x - largeur,y:location.y)
+        let droite = CGPoint(x:location.x + largeur,y:location.y)
+        let haut = CGPoint(x:location.x,y:location.y + hauteur)
+        let bas = CGPoint(x:location.x,y:location.y - hauteur)
+        if table.containsPoint(gauche) &&
+            table.containsPoint(droite) &&
+            table.containsPoint(haut) &&
+            table.containsPoint(bas)
+        {
+            return true
+        }else
+        {
+            return false
+        }
+    }
+
     func cliqueSurBoutonObj(name: String) -> Bool{
         if listeDesBoutons.contains(name){
             construireMur = false
             let nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
-            sprite = SKSpriteNode(imageNamed: nomObjet)
+            sprite = Objet(imageNamed: nomObjet)
             sprite.name = nomObjet
             // jouer un son
             AudioServicesPlaySystemSound(sonSelectionOutil);
