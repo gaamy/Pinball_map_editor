@@ -102,7 +102,43 @@ class GameScene: SKScene {
     func rotationDeLObjet(sender: UIRotationGestureRecognizer){
         if (sender.state == .Began){
             //On fait ici ce qu'on veut qui se passe quand la rotation débute
-            print("Debut de la rotation")
+            if nodesSelected.count > 1 {
+                var maxX = nodesSelected[0].position.x
+                var minX = nodesSelected[0].position.x
+                var maxY = nodesSelected[0].position.y
+                var minY = nodesSelected[0].position.y
+                
+                for node in nodesSelected{
+                    if node.position.x > maxX{
+                        maxX = node.position.x
+                    }
+                    if node.position.x < minX{
+                        minX = node.position.x
+                    }
+                    if node.position.y > maxY{
+                        maxY = node.position.y
+                    }
+                    if node.position.y > maxY{
+                        minY = node.position.y
+                    }
+                }
+                
+                let centre = CGPoint(x: (maxX+minX)/2, y: (maxY+minY)/2)
+                
+                print("x: \((maxX+minX)/2) y: \((maxY+minY)/2)")
+                
+                let nodeCentre = SKNode()
+                nodeCentre.position = centre
+                nodeCentre.name = "nodeCentre"
+                self.addChild(nodeCentre)
+                
+                for node in nodesSelected
+                {
+                    //node.removeFromParent()
+                    //self.childNodeWithName("nodeCentre")?.addChild(node)
+                    node.anchorPoint = centre
+                }
+            }
         }
         if sender.state == .Changed {
             //TODO: On doit pouvoir faire une rotation multiple à partir du centre de tous les objets
@@ -111,16 +147,29 @@ class GameScene: SKScene {
             theRotation = CGFloat(sender.rotation) + self.offset
             theRotation = theRotation * -1
             
-            if nodesSelected.count > 0 {
-                for node in nodesSelected{
+            //Si une seule node, on la rotate normalement
+            if nodesSelected.count == 1 {
+                nodesSelected[0].zRotation = theRotation
+            }else if nodesSelected.count > 1 {
+                //self.childNodeWithName("nodeCentre")?.zRotation = theRotation
+                for node in nodesSelected
+                {
                     node.zRotation = theRotation
                 }
             }
         }
         if sender.state == .Ended {
             //Après la rotation
-            print("Fini la rotation")
             self.offset = theRotation * -1
+            
+            for node in nodesSelected
+            {
+                //node.removeFromParent()
+                //self.addChild(node)
+            }
+            
+            //self.childNodeWithName("nodeCentre")?.removeFromParent()
+            
         }
     }
     
