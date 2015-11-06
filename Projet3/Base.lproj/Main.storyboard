@@ -144,6 +144,7 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="0oH-Zv-dTL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xTa-eY-acM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -162,16 +163,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.40853721217105265" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <connections>
+                        <segue destination="RXA-gt-KDt" kind="show" identifier="backToMenu" id="39k-Bn-Lkb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="792" y="602"/>
+            <point key="canvasLocation" x="743" y="708"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="fFA-vh-r74">
             <objects>
-                <exit id="SjY-hc-vmd" userLabel="Exit" sceneMemberID="exit"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WW3-Sw-4Mi" sceneMemberID="firstResponder"/>
                 <viewController id="Zzg-og-H5X" customClass="ViewController" customModule="Projet3" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pDD-k6-xNd"/>
@@ -244,13 +246,14 @@
                         <segue destination="SjY-hc-vmd" kind="unwind" identifier="idFirstSegueUnwind" unwindAction="returnFromSegueActions:" id="G9r-BU-DQx"/>
                     </connections>
                 </viewController>
+                <exit id="SjY-hc-vmd" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WW3-Sw-4Mi" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1717" y="-178"/>
         </scene>
         <!--Login Screen View Controller-->
         <scene sceneID="ql9-ru-OjD">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rDA-7D-iAG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="sp6-g5-cfj" customClass="loginScreenViewController" customModule="Projet3" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BPI-yM-jGZ"/>
@@ -416,6 +419,7 @@
                         <segue destination="Zzg-og-H5X" kind="custom" identifier="idLoginSegue" customClass="CustonSegue" customModule="Prototype_Chat" id="sz5-1A-X1J"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rDA-7D-iAG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="743" y="-178"/>
         </scene>
@@ -424,6 +428,6 @@
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Gsu-0d-go3"/>
+        <segue reference="39k-Bn-Lkb"/>
     </inferredMetricsTieBreakers>
 </document>

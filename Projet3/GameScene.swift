@@ -11,6 +11,7 @@ import AVFoundation
 
 class GameScene: SKScene {
     //Variables globale à la classe
+    var viewController: UIViewController? //Identifie le menuPrincipal
     var table = SKNode()
     var nodesSelected = [SKSpriteNode]()
     var savedSelected = [SKSpriteNode]()
@@ -52,6 +53,7 @@ class GameScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        
         sprite.name = "Spaceship"
         initLesSons()
         updateVisibiliteCorbeille()
@@ -216,6 +218,13 @@ class GameScene: SKScene {
                     if name == "boutonmenu" {
                         //TODO: Ajouter la transition vers le menu (no idea how)
                         //GABRIEL va te'l faire en trois secondes
+                        
+                        var vc: UIViewController = UIViewController()
+                        vc = self.view!.window!.rootViewController!
+                        //vc.performSegueWithIdentifier("backToMenu", sender: vc)
+                        self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
+                        
+
                     }
                     
                     if name == "boutonmur" {
