@@ -9,7 +9,12 @@
 import SpriteKit
 import AVFoundation
 
-class GameScene: SKScene {
+class GameScene: SKScene, UITextFieldDelegate {
+    //Variables pour les labels
+    var labelPosition:SKLabelNode?
+    var textPositionX:UITextField?
+    var textPositionY:UITextField?
+    
     //Variables globale à la classe
     var viewController: UIViewController? //Identifie le menuPrincipal
     var table = SKNode()
@@ -71,6 +76,23 @@ class GameScene: SKScene {
         
         //On initialise la variable table pour utilisation facile dans la classe
         table = self.childNodeWithName("table")!
+        
+        //Les labels et text fields
+        labelPosition = SKLabelNode(fontNamed: "Arial")
+        labelPosition!.text = "Position (x,y)"
+        labelPosition!.position = CGPoint(x: CGRectGetMaxX(self.frame)-200, y: CGRectGetMidY(self.frame)+185)
+        labelPosition!.fontSize = 15
+        self.addChild(labelPosition!)
+        
+        textPositionX = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
+        self.view!.addSubview(textPositionX!)
+        textPositionX!.backgroundColor = UIColor.grayColor()
+        textPositionX!.delegate = self
+        
+        textPositionY = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
+        self.view!.addSubview(textPositionY!)
+        textPositionY!.backgroundColor = UIColor.grayColor()
+        textPositionY!.delegate = self
     }
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
@@ -86,6 +108,7 @@ class GameScene: SKScene {
                 for node in nodesSelected{
                     node.size.width = node.size.width * sender.scale
                     node.size.height = node.size.height * sender.scale
+                    node.physicsBody = SKPhysicsBody.init(texture: sprite.texture!, size: sprite.size)
                 }
                 sender.scale = 1
             }else{
@@ -125,9 +148,9 @@ class GameScene: SKScene {
                     }
                 }
                 
-                let centre = CGPoint(x: (maxX+minX)/2, y: (maxY+minY)/2)
+                let centre = CGPoint(x: (maxX-minX)/2+minX, y: (maxY-minY)+minY/2)
                 
-                print("x: \((maxX+minX)/2) y: \((maxY+minY)/2)")
+                //print("x: \((maxX-minX)/2+minX) y: \((maxY-minY)+minY/2)")
                 
                 let nodeCentre = SKNode()
                 nodeCentre.position = centre
@@ -339,8 +362,7 @@ class GameScene: SKScene {
                                 sprite.yScale = 0.5
                                 sprite.position = location
                                 
-                                sprite.physicsBody = SKPhysicsBody.init(texture: sprite.texture!,
-                                    size: sprite.size)
+                                sprite.physicsBody = SKPhysicsBody.init(texture: sprite.texture!, size: sprite.size)
                                 
                                 sprite.physicsBody?.affectedByGravity = false
                                 sprite.physicsBody?.allowsRotation = false
@@ -375,6 +397,7 @@ class GameScene: SKScene {
                 }
             }
         }
+        updateTextProprieteObjet()
     }
     
     func surTable(location: CGPoint, node: SKSpriteNode) -> Bool
@@ -417,7 +440,6 @@ class GameScene: SKScene {
         
         if let objSelectionne = touchedNode as? SKSpriteNode
         {
-                
             if nodesSelected.contains(objSelectionne)
             {
                 nodesSelected = nodesSelected.filter {$0 != objSelectionne}
@@ -436,6 +458,7 @@ class GameScene: SKScene {
             }
             // jouer un son
             AudioServicesPlaySystemSound(sonSelection);
+            updateTextProprieteObjet()
         }
     }
     
@@ -447,6 +470,52 @@ class GameScene: SKScene {
         {
             self.childNodeWithName("boutonDelete")?.alpha = 0
         }
+    }
+    
+    func updateTextProprieteObjet(){
+        if nodesSelected.count == 1 {
+            textPositionX!.text = nodesSelected[0].position.x.description
+            textPositionY!.text = nodesSelected[0].position.y.description
+            
+            self.textPositionX?.enabled = true
+            textPositionX!.backgroundColor = UIColor.whiteColor()
+            
+            self.textPositionY?.enabled = true
+            textPositionY!.backgroundColor = UIColor.whiteColor()
+            
+        }else{
+            textPositionX!.text = ""
+            textPositionY!.text = ""
+            
+            self.textPositionX?.enabled = false
+            textPositionX!.backgroundColor = UIColor.grayColor()
+            
+            self.textPositionY?.enabled = false
+            textPositionY!.backgroundColor = UIColor.grayColor()
+        }
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textPositionX!.resignFirstResponder()
+        textPositionY!.resignFirstResponder()
+        
+        if(textPositionX!.text! != "" && textPositionY!.text! != "" && nodesSelected.count == 1){
+            if let x = NSNumberFormatter().numberFromString(textPositionX!.text!) {
+                if let y = NSNumberFormatter().numberFromString(textPositionY!.text!){
+                    let xFloat = CGFloat(x)
+                    let yFloat = CGFloat(y)
+                    let point = CGPoint(x: xFloat, y: yFloat)
+                    if table.containsPoint(point) {
+                        nodesSelected[0].position = point
+                    }else{
+                        textPositionX!.text! = nodesSelected[0].position.x.description
+                        textPositionY!.text! = nodesSelected[0].position.y.description
+                    }
+                }
+            }
+        }
+        
+        return true
     }
     
     func initLesSons(){
