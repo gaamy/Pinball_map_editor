@@ -16,17 +16,17 @@ class GameScene: SKScene, UITextFieldDelegate {
     var textPositionY:UITextField?
     
     //Variables globale à la classe
+    var nomObjet = "Spaceship"
     var viewController: UIViewController? //Identifie le menuPrincipal
     var table = SKNode()
-    var nodesSelected = [SKSpriteNode]()
-    var savedSelected = [SKSpriteNode]()
+    var nodesSelected = [Objet]()
+    var savedSelected = [Objet]()
     var selection = false
-    var sprite = Objet()
     var construireMur = false
     let chemin = CGPathCreateMutable()
     var murTemp = SKNode()
     var deplacement = false
-    var nodeQuiSeDeplace = SKSpriteNode()
+    var nodeTouchee = Objet()
     var endroitPrecedent = CGPoint()
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -39,7 +39,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var theRotation:CGFloat = 0
     
     //Les listes de noms
-    let listeDesBoutons = [
+    let listeDesBoutonsDeCreation = [
         "boutonaccelerateur",
         "boutonbutoirCirc",
         "boutonbutoirTriDroit",
@@ -53,13 +53,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         "boutonpaletteGauche2",
         "boutonportail",
         "boutonressort",
-        "boutontrou",
-        "boutondeplacement"]
+        "boutontrou"]
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        sprite.name = "Spaceship"
         initLesSons()
         updateVisibiliteCorbeille()
         
@@ -98,7 +96,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
         if (sender.state == .Began){
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
-            print("Debut du pincement")
         }
         if sender.state == .Changed {
             //Pendant la le pincement
@@ -108,19 +105,18 @@ class GameScene: SKScene, UITextFieldDelegate {
                 for node in nodesSelected{
                     node.size.width = node.size.width * sender.scale
                     node.size.height = node.size.height * sender.scale
-                    node.physicsBody = SKPhysicsBody.init(texture: sprite.texture!, size: sprite.size)
+                    setPhysicsBody(node, masque: 1)
                 }
                 sender.scale = 1
             }else{
                 //Ici on scale la vue au complet (zoom)
                 //TODO: Ajouter un max et un min au scale de la scène
-                self.view!.transform = CGAffineTransformScale(self.view!.transform, sender.scale, sender.scale)
+                self.view!.transform = CGAffineTransformScale( self.view!.transform, sender.scale, sender.scale)
                 sender.scale = 1
             }
         }
         if sender.state == .Ended {
             //Après le pincement
-            print("Fini de pincer")
         }
     }
     
@@ -215,9 +211,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                 if table.containsPoint(touchedNode.position)
                 {
                     //On cast le SKNode en SKPriteNode
-                    if let monNode = touchedNode as? SKSpriteNode
+                    if let monNode = touchedNode as? Objet
                     {
-                        nodeQuiSeDeplace = monNode
+                        nodeTouchee = monNode
                     }
                 }
             
@@ -230,7 +226,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             //TODO: Utilisez la bounding box a la place.
             //TODO: Régler le bug qui fait que quand je fais un gesture, ça déplace les objets!!!
-            if selection && nodesSelected.contains(nodeQuiSeDeplace)
+            if selection && nodesSelected.contains(nodeTouchee)
             {
                     for node in nodesSelected
                     {
@@ -277,7 +273,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         if deplacement
         {
             deplacement = false
-            nodeQuiSeDeplace = SKSpriteNode()
+            nodeTouchee = Objet()
         }else
         {
             for touch in (touches ) {
@@ -304,7 +300,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }
-                    if !surTable(location, node: (touchedNode as? SKSpriteNode)!)
+                    if !surTable(location, node: (touchedNode as? Objet)!)
                     {
                         if selection
                         {
@@ -321,7 +317,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                                     //On retrouve le nom du node sélectionné
                                     if enfant.name == nodesSelected[0].name
                                     {
-                                        if let monEnfant = enfant as? SKSpriteNode
+                                        if let monEnfant = enfant as? Objet
                                         {
                                             nodesSelected.append(monEnfant)
                                             monEnfant.alpha = 0.5
@@ -356,20 +352,10 @@ class GameScene: SKScene, UITextFieldDelegate {
                             }
                         }else
                         {
-                            if !cliqueSurBoutonObj(name) && name == "table" && sprite.name != "Spaceship" && !construireMur
+                            if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
                             {
-                                sprite.xScale = 0.5
-                                sprite.yScale = 0.5
-                                sprite.position = location
-                                
-                                sprite.physicsBody = SKPhysicsBody.init(texture: sprite.texture!, size: sprite.size)
-                                
-                                sprite.physicsBody?.affectedByGravity = false
-                                sprite.physicsBody?.allowsRotation = false
-                                //Était pour test, p-e pas nécéssaire anymore
-                                sprite.physicsBody?.categoryBitMask = 0x1
-                                
-                                self.addChild(sprite.copy() as! SKSpriteNode)
+                                //let endroitSurTable = table.convertPoint(location, fromNode: self)
+                                creerObjet(location)
                                 
                                 // jouer un son
                                 AudioServicesPlaySystemSound(sonObjSurTable);
@@ -400,7 +386,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         updateTextProprieteObjet()
     }
     
-    func surTable(location: CGPoint, node: SKSpriteNode) -> Bool
+    func surTable(location: CGPoint, node: Objet) -> Bool
     {
         let largeur = node.size.width / 2
         let hauteur = node.size.height / 2
@@ -419,13 +405,48 @@ class GameScene: SKScene, UITextFieldDelegate {
             return false
         }
     }
+    
+    /**
+     Cette méthode permet de créer un objet sur la table de jeu.
+     
+     Entrée:
+     - endroitSurTable: Endoit où l'objet sera créé, en coordonnée de la table
+     
+     Note importante:
+     - Cette méthode utilise la variable de classe "nomObjet" pour fabriquer le bon objet
+     */
+    func creerObjet(endroitSurTable: CGPoint){
+        let objet = Objet(imageNamed: nomObjet)
+        objet.name = nomObjet
+        
+        //Ici je set le ratio des objets pour garder celui de la scène et non celui de la table
+        //let monRatio = self.frame.height / self.frame.width
+        
+        objet.xScale = 0.5
+        objet.yScale = 0.5 //* monRatio
+        
+        objet.position = endroitSurTable
+        
+        setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
+        
+        self.addChild(objet.copy() as! Objet)
+    }
+    
+    func setPhysicsBody(objet: Objet, masque: UInt32){
+        objet.physicsBody = SKPhysicsBody.init(texture: objet.texture!, size: objet.size)
+        
+        objet.physicsBody?.affectedByGravity = false
+        objet.physicsBody?.allowsRotation = false
+        
+        //Catégorie (masque) pour les collisions
+        objet.physicsBody?.categoryBitMask = masque
+    }
 
+    ///Appelé lorsqu'on clique sur un objet de type "bouton"
     func cliqueSurBoutonObj(name: String) -> Bool{
-        if listeDesBoutons.contains(name){
+        if listeDesBoutonsDeCreation.contains(name){
             construireMur = false
-            let nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
-            sprite = Objet(imageNamed: nomObjet)
-            sprite.name = nomObjet
+            nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
             // jouer un son
             AudioServicesPlaySystemSound(sonSelectionOutil);
             return true
@@ -433,12 +454,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         return false
     }
     
-    //En sélectionne ou désélectionne l'objet qu'on reçoit en parametre
+    ///On sélectionne ou désélectionne l'objet qu'on reçoit en parametre
     func cliqueAutreQueBouton(touchedNode: SKNode, location: CGPoint){
         //let noeud = self.physicsWorld.bodyAtPoint(location)
         //print(nodo?.node?.name)
         
-        if let objSelectionne = touchedNode as? SKSpriteNode
+        if let objSelectionne = touchedNode as? Objet
         {
             if nodesSelected.contains(objSelectionne)
             {
@@ -472,6 +493,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    ///Met à jour le text des zones de text
     func updateTextProprieteObjet(){
         if nodesSelected.count == 1 {
             textPositionX!.text = nodesSelected[0].position.x.description
@@ -495,6 +517,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
 
+    ///Reçoit un "enter" d'un text field (n'importe quel)
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textPositionX!.resignFirstResponder()
         textPositionY!.resignFirstResponder()
@@ -518,6 +541,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         return true
     }
     
+    ///Initialise les sons
     func initLesSons(){
         let sonCorbeilleURL = NSBundle.mainBundle().URLForResource("corbeille", withExtension: "mp3")
         AudioServicesCreateSystemSoundID(sonCorbeilleURL!, &sonCorbeille)
