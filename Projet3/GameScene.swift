@@ -14,6 +14,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     var labelPosition:SKLabelNode?
     var textPositionX:UITextField?
     var textPositionY:UITextField?
+    var labelRotation:SKLabelNode?
+    var textRotation:UITextField?
+    var labelScale:SKLabelNode?
+    var textScale:UITextField?
     
     //Variables globale à la classe
     var nomObjet = "Spaceship"
@@ -75,22 +79,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         //On initialise la variable table pour utilisation facile dans la classe
         table = self.childNodeWithName("table")!
         
-        //Les labels et text fields
-        labelPosition = SKLabelNode(fontNamed: "Arial")
-        labelPosition!.text = "Position (x,y)"
-        labelPosition!.position = CGPoint(x: CGRectGetMaxX(self.frame)-200, y: CGRectGetMidY(self.frame)+185)
-        labelPosition!.fontSize = 15
-        self.addChild(labelPosition!)
+        //Initialise les labels et les text fields des propriétés
+        initLabels()
         
-        textPositionX = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
-        self.view!.addSubview(textPositionX!)
-        textPositionX!.backgroundColor = UIColor.grayColor()
-        textPositionX!.delegate = self
         
-        textPositionY = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
-        self.view!.addSubview(textPositionY!)
-        textPositionY!.backgroundColor = UIColor.grayColor()
-        textPositionY!.delegate = self
     }
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
@@ -498,6 +490,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         if nodesSelected.count == 1 {
             textPositionX!.text = nodesSelected[0].position.x.description
             textPositionY!.text = nodesSelected[0].position.y.description
+            textRotation!.text = nodesSelected[0].zRotation.description
+            //textScaleX!.text = nodesSelected[0].xScale.description
+            //textScaleY!.text = nodesSelected[0].yScale.description
             
             self.textPositionX?.enabled = true
             textPositionX!.backgroundColor = UIColor.whiteColor()
@@ -505,15 +500,22 @@ class GameScene: SKScene, UITextFieldDelegate {
             self.textPositionY?.enabled = true
             textPositionY!.backgroundColor = UIColor.whiteColor()
             
+            self.textRotation?.enabled = true
+            textRotation!.backgroundColor = UIColor.whiteColor()
+            
         }else{
             textPositionX!.text = ""
             textPositionY!.text = ""
+            textRotation!.text = ""
             
             self.textPositionX?.enabled = false
             textPositionX!.backgroundColor = UIColor.grayColor()
             
             self.textPositionY?.enabled = false
             textPositionY!.backgroundColor = UIColor.grayColor()
+            
+            self.textRotation?.enabled = false
+            textRotation!.backgroundColor = UIColor.grayColor()
         }
     }
 
@@ -521,6 +523,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textPositionX!.resignFirstResponder()
         textPositionY!.resignFirstResponder()
+        textRotation!.resignFirstResponder()
         
         if(textPositionX!.text! != "" && textPositionY!.text! != "" && nodesSelected.count == 1){
             if let x = NSNumberFormatter().numberFromString(textPositionX!.text!) {
@@ -535,6 +538,13 @@ class GameScene: SKScene, UITextFieldDelegate {
                         textPositionY!.text! = nodesSelected[0].position.y.description
                     }
                 }
+            }
+        }
+        
+        if(textRotation!.text! != "" && nodesSelected.count == 1){
+            if let z = NSNumberFormatter().numberFromString(textRotation!.text!) {
+                    let zFloat = CGFloat(z)
+                    nodesSelected[0].zRotation = zFloat
             }
         }
         
@@ -556,5 +566,47 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
+    }
+    
+    ///Fonction qui initialise les labels et text fields pour les propriétés
+    func initLabels(){
+        //Cette partie initialise les propriétés des objets
+        labelPosition = SKLabelNode(fontNamed: "Arial")
+        labelPosition!.text = "Position (x,y)"
+        labelPosition!.position = CGPoint(x: CGRectGetMaxX(self.frame)-200, y: CGRectGetMidY(self.frame)+185)
+        labelPosition!.fontSize = 15
+        self.addChild(labelPosition!)
+        
+        textPositionX = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
+        self.view!.addSubview(textPositionX!)
+        textPositionX!.backgroundColor = UIColor.grayColor()
+        textPositionX!.delegate = self
+        
+        textPositionY = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
+        self.view!.addSubview(textPositionY!)
+        textPositionY!.backgroundColor = UIColor.grayColor()
+        textPositionY!.delegate = self
+        
+        labelRotation = SKLabelNode(fontNamed: "Arial")
+        labelRotation!.text = "Rotation (z)"
+        labelRotation!.position = CGPoint(x: CGRectGetMaxX(self.frame)-205, y: CGRectGetMidY(self.frame)+145)
+        labelRotation!.fontSize = 15
+        self.addChild(labelRotation!)
+        
+        textRotation = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-160, width: 50, height: 20))
+        self.view!.addSubview(textRotation!)
+        textRotation!.backgroundColor = UIColor.grayColor()
+        textRotation!.delegate = self
+        
+        labelScale = SKLabelNode(fontNamed: "Arial")
+        labelScale!.text = "Échelle"
+        labelScale!.position = CGPoint(x: CGRectGetMaxX(self.frame)-218, y: CGRectGetMidY(self.frame)+105)
+        labelScale!.fontSize = 15
+        self.addChild(labelScale!)
+        
+        textScale = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-120, width: 50, height: 20))
+        self.view!.addSubview(textScale!)
+        textScale!.backgroundColor = UIColor.grayColor()
+        textScale!.delegate = self
     }
 }
