@@ -573,6 +573,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
     }
     
+    ///selectionne 
     func selectNode(newObjectSelection: Objet?) {
         newObjectSelection!.alpha = 0.5
         nodesSelected.append(newObjectSelection!)
