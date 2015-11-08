@@ -256,6 +256,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             line.physicsBody?.affectedByGravity = false
             line.physicsBody?.allowsRotation = false
+           
             //Test pour les collisions
             line.physicsBody?.categoryBitMask = 0x1
             
@@ -274,18 +275,14 @@ class GameScene: SKScene, UITextFieldDelegate {
                 
                 if let name = touchedNode.name
                 {
-                    
+                    //quand le bouton Menu est pese, on retourne au menu principal
                     if name == "boutonmenu" {
-                        //TODO: Ajouter la transition vers le menu (no idea how)
-                        //GABRIEL va te'l faire en trois secondes
-                        
                         var vc: UIViewController = UIViewController()
                         vc = self.view!.window!.rootViewController!
-                        //vc.performSegueWithIdentifier("backToMenu", sender: vc)
                         self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
-                        
-
                     }
+                    
+                    
                     
                     if name == "boutonmur" {
                         construireMur = true
@@ -299,6 +296,31 @@ class GameScene: SKScene, UITextFieldDelegate {
                             if name == "save_select"
                             {
                                 savedSelected = nodesSelected
+                            }
+                            
+                            //Outils dublication
+                            if name == "boutonDuplication"
+                            {
+                               // var newNode = NewNode()
+                                for selectedNode in nodesSelected
+                                {
+                                    let test : SKSpriteNode = SKSpriteNode()
+                                    test.texture = selectedNode.texture
+                                    test.size = selectedNode.size
+                                    test.position.x = selectedNode.position.x+10
+                                    test.position.y = selectedNode.position.y+10
+                                    
+                                    //var newNodeSprite = Objet()
+                                    
+                                    //newNode  SKSpriteNode = node.copy() as! SKSpriteNode
+                                    
+                                    //newNode.position.x = node.position.x + node.size.width
+                                    //newNode.position.y = node.position.y + node.size.height
+                                    self.addChild(test)
+                                    //self.addChild(selectedNode.copy() as! SKSpriteNode)//newNode)
+                                    
+                                    nodesSelected.removeAtIndex(nodesSelected.indexOf(selectedNode)!)
+                                }
                             }
                             
                             if name == "same_select" && nodesSelected.count == 1
