@@ -18,7 +18,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     var textRotation:UITextField?
     var labelScale:SKLabelNode?
     var textScale:UITextField?
-    
     var labelPoints:SKLabelNode?
     var textPoints:UITextField?
     
