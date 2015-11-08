@@ -21,7 +21,14 @@ class GameScene: SKScene, UITextFieldDelegate {
     var labelPoints:SKLabelNode?
     var textPoints:UITextField?
     
+    var labelBilleGratuite:SKLabelNode?
+    var textBilleGratuite:UITextField?
+    var labelDiff:SKLabelNode?
+    var textDiff:UITextField?
+    
     //Variables globale à la classe
+    var ptsBilleGratuite = 1000
+    var coteDifficulte = 2
     var nomObjet = "Spaceship"
     var viewController: UIViewController? //Identifie le menuPrincipal
     var table = SKNode()
@@ -495,6 +502,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     ///Met à jour le text des zones de text
     func updateTextProprieteObjet(){
+        
+        textBilleGratuite!.text = String(ptsBilleGratuite)
+        textDiff!.text = String(coteDifficulte)
+        
         if nodesSelected.count == 1 {
             textPositionX!.text = NSString(format: "%.0f", nodesSelected[0].position.x) as String
             textPositionY!.text = NSString(format: "%.0f", nodesSelected[0].position.y) as String
@@ -550,6 +561,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         textPositionX!.resignFirstResponder()
         textPositionY!.resignFirstResponder()
         textRotation!.resignFirstResponder()
+        textBilleGratuite!.resignFirstResponder()
+        textDiff!.resignFirstResponder()
         
         if(textPositionX!.text! != "" && textPositionY!.text! != "" && nodesSelected.count == 1){
             if let x = NSNumberFormatter().numberFromString(textPositionX!.text!) {
@@ -582,10 +595,27 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         
-        if(textPoints!.text! != "" && nodesSelected.count == 1 && nodesSelected[0].name == "cible" || nodesSelected[0].name == "butoirTriDroit" || nodesSelected[0].name == "butoirTriGauche"){
-            if let s = NSNumberFormatter().numberFromString(textPoints!.text!) {
+        if(textPoints!.text! != "" && nodesSelected.count == 1){
+            if nodesSelected[0].name == "cible" || nodesSelected[0].name == "butoirTriDroit" || nodesSelected[0].name == "butoirTriGauche" {
+                if let s = NSNumberFormatter().numberFromString(textPoints!.text!) {
+                    let sInt = Int(s)
+                    nodesSelected[0].points = sInt
+                }
+            }
+            
+        }
+        
+        if(textBilleGratuite!.text! != ""){
+            if let s = NSNumberFormatter().numberFromString(textBilleGratuite!.text!) {
                 let sInt = Int(s)
-                nodesSelected[0].points = sInt
+                ptsBilleGratuite = sInt
+            }
+        }
+        
+        if(textDiff!.text! != ""){
+            if let s = NSNumberFormatter().numberFromString(textDiff!.text!) {
+                let sInt = Int(s)
+                coteDifficulte = sInt
             }
         }
         
@@ -679,5 +709,29 @@ class GameScene: SKScene, UITextFieldDelegate {
         self.view!.addSubview(textPoints!)
         textPoints!.backgroundColor = UIColor.grayColor()
         textPoints!.delegate = self
+        
+        labelBilleGratuite = SKLabelNode(fontNamed: "Arial")
+        labelBilleGratuite!.text = "Bille gratuite (points)"
+        labelBilleGratuite!.position = CGPoint(x: CGRectGetMaxX(self.frame)-175, y: CGRectGetMidY(self.frame)-15)
+        labelBilleGratuite!.fontSize = 15
+        self.addChild(labelBilleGratuite!)
+        
+        textBilleGratuite = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-0, width: 50, height: 20))
+        self.view!.addSubview(textBilleGratuite!)
+        textBilleGratuite!.backgroundColor = UIColor.whiteColor()
+        textBilleGratuite!.delegate = self
+        
+        labelDiff = SKLabelNode(fontNamed: "Arial")
+        labelDiff!.text = "Cote de difficulté"
+        labelDiff!.position = CGPoint(x: CGRectGetMaxX(self.frame)-185, y: CGRectGetMidY(self.frame)-55)
+        labelDiff!.fontSize = 15
+        self.addChild(labelDiff!)
+        
+        textDiff = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)+40, width: 50, height: 20))
+        self.view!.addSubview(textDiff!)
+        textDiff!.backgroundColor = UIColor.whiteColor()
+        textDiff!.delegate = self
+        
+        updateTextProprieteObjet()
     }
 }
