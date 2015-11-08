@@ -11,7 +11,7 @@ import SpriteKit
 
 class Objet: SKSpriteNode {
     //Propriétés additionnelles
-    var points : Int?
+    var points  = 100 //Valeur des points donnée par une cible par défaut
     
     
      func copier() -> Objet {

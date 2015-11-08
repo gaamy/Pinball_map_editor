@@ -19,8 +19,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     var labelScale:SKLabelNode?
     var textScale:UITextField?
     
-    var labelPtsCible:SKLabelNode?
-    var textPtsCible:UITextField?
+    var labelPoints:SKLabelNode?
+    var textPoints:UITextField?
     
     //Variables globale à la classe
     var nomObjet = "Spaceship"
@@ -318,8 +318,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                                     
                                 }
                             }
-                            
-                            if name == "same_select" && nodesSelected.count == 1
+                            if name == "boutonsame_select" && nodesSelected.count == 1
                             {
                                 //On vérifie sur les enfants de la scène
                                 for enfant in self.children
@@ -439,7 +438,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet.position = endroitSurTable
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
-        
+            
         self.addChild(objet.copy() as! Objet)
     }
     
@@ -500,8 +499,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         if nodesSelected.count == 1 {
             textPositionX!.text = NSString(format: "%.0f", nodesSelected[0].position.x) as String
             textPositionY!.text = NSString(format: "%.0f", nodesSelected[0].position.y) as String
-            textRotation!.text = nodesSelected[0].zRotation.description
+            textRotation!.text = NSString(format: "%.01f", nodesSelected[0].zRotation) as String
             textScale!.text = nodesSelected[0].xScale.description
+            
+            if nodesSelected[0].name == "cible" || nodesSelected[0].name == "butoirTriDroit" || nodesSelected[0].name == "butoirTriGauche" {
+                textPoints!.text = String(nodesSelected[0].points)
+                
+                self.textPoints?.enabled = true
+                textPoints!.backgroundColor = UIColor.whiteColor()
+            }
             
             self.textPositionX?.enabled = true
             textPositionX!.backgroundColor = UIColor.whiteColor()
@@ -514,11 +520,14 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             self.textRotation?.enabled = true
             textRotation!.backgroundColor = UIColor.whiteColor()
+            
+            
         }else{
             textPositionX!.text = ""
             textPositionY!.text = ""
             textRotation!.text = ""
             textScale!.text = ""
+            textPoints!.text = ""
             
             self.textPositionX?.enabled = false
             textPositionX!.backgroundColor = UIColor.grayColor()
@@ -531,6 +540,9 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             self.textScale?.enabled = false
             textScale!.backgroundColor = UIColor.grayColor()
+            
+            self.textPoints?.enabled = false
+            textPoints!.backgroundColor = UIColor.grayColor()
         }
     }
 
@@ -568,6 +580,13 @@ class GameScene: SKScene, UITextFieldDelegate {
                 let sFloat = CGFloat(s)
                 nodesSelected[0].xScale = sFloat
                 nodesSelected[0].yScale = sFloat
+            }
+        }
+        
+        if(textPoints!.text! != "" && nodesSelected.count == 1 && nodesSelected[0].name == "cible" || nodesSelected[0].name == "butoirTriDroit" || nodesSelected[0].name == "butoirTriGauche"){
+            if let s = NSNumberFormatter().numberFromString(textPoints!.text!) {
+                let sInt = Int(s)
+                nodesSelected[0].points = sInt
             }
         }
         
@@ -650,15 +669,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         textScale!.backgroundColor = UIColor.grayColor()
         textScale!.delegate = self
         
-        labelPtsCible = SKLabelNode(fontNamed: "Arial")
-        labelPtsCible!.text = "Points cible"
-        labelPtsCible!.position = CGPoint(x: CGRectGetMaxX(self.frame)-205, y: CGRectGetMidY(self.frame)+65)
-        labelPtsCible!.fontSize = 15
-        self.addChild(labelPtsCible!)
+        labelPoints = SKLabelNode(fontNamed: "Arial")
+        labelPoints!.text = "Points"
+        labelPoints!.position = CGPoint(x: CGRectGetMaxX(self.frame)-222, y: CGRectGetMidY(self.frame)+65)
+        labelPoints!.fontSize = 15
+        self.addChild(labelPoints!)
         
-        textPtsCible = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-80, width: 50, height: 20))
-        self.view!.addSubview(textPtsCible!)
-        textPtsCible!.backgroundColor = UIColor.grayColor()
-        textPtsCible!.delegate = self
+        textPoints = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-80, width: 50, height: 20))
+        self.view!.addSubview(textPoints!)
+        textPoints!.backgroundColor = UIColor.grayColor()
+        textPoints!.delegate = self
     }
 }
