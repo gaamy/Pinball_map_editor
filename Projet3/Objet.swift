@@ -12,4 +12,19 @@ import SpriteKit
 class Objet: SKSpriteNode {
     //Propriétés additionnelles
     var points : Int?
+    
+    
+     func copier() -> Objet {
+        let objectCopy = Objet()
+        objectCopy.points = points
+        objectCopy.name = name
+        objectCopy.texture = texture
+        objectCopy.position.x = position.x + size.height/2
+        objectCopy.position.y = position.y + size.width/2
+
+        objectCopy.zRotation = zRotation
+        objectCopy.zRotation = zRotation
+        objectCopy.size = size
+        return objectCopy
+    }
 }

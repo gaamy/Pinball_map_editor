@@ -302,24 +302,15 @@ class GameScene: SKScene, UITextFieldDelegate {
                             if name == "boutonDuplication"
                             {
                                // var newNode = NewNode()
-                                for selectedNode in nodesSelected
+                                for node in nodesSelected
                                 {
-                                    let test : SKSpriteNode = SKSpriteNode()
-                                    test.texture = selectedNode.texture
-                                    test.size = selectedNode.size
-                                    test.position.x = selectedNode.position.x+10
-                                    test.position.y = selectedNode.position.y+10
+                                    unselectNode(node)
+                                    let nodeCopie = node.copier()
+                                    self.addChild(nodeCopie)
+                                    selectNode(nodeCopie)
                                     
-                                    //var newNodeSprite = Objet()
                                     
-                                    //newNode  SKSpriteNode = node.copy() as! SKSpriteNode
                                     
-                                    //newNode.position.x = node.position.x + node.size.width
-                                    //newNode.position.y = node.position.y + node.size.height
-                                    self.addChild(test)
-                                    //self.addChild(selectedNode.copy() as! SKSpriteNode)//newNode)
-                                    
-                                    nodesSelected.removeAtIndex(nodesSelected.indexOf(selectedNode)!)
                                 }
                             }
                             
@@ -366,10 +357,11 @@ class GameScene: SKScene, UITextFieldDelegate {
                             }
                         }else
                         {
+                            //C'est ici que les nouveaux objets sont cree
                             if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
                             {
                                 //let endroitSurTable = table.convertPoint(location, fromNode: self)
-                                creerObjet(location)
+                                creerObjet(location,typeObjet: nomObjet)
                                 
                                 // jouer un son
                                 AudioServicesPlaySystemSound(sonObjSurTable);
@@ -429,9 +421,9 @@ class GameScene: SKScene, UITextFieldDelegate {
      Note importante:
      - Cette méthode utilise la variable de classe "nomObjet" pour fabriquer le bon objet
      */
-    func creerObjet(endroitSurTable: CGPoint){
-        let objet = Objet(imageNamed: nomObjet)
-        objet.name = nomObjet
+    func creerObjet(endroitSurTable: CGPoint, typeObjet: String){
+        let objet = Objet(imageNamed: typeObjet)
+        objet.name = typeObjet
         
         //Ici je set le ratio des objets pour garder celui de la scène et non celui de la table
         //let monRatio = self.frame.height / self.frame.width
@@ -477,19 +469,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         {
             if nodesSelected.contains(objSelectionne)
             {
-                nodesSelected = nodesSelected.filter {$0 != objSelectionne}
-                objSelectionne.alpha = 1
-                if nodesSelected.isEmpty
-                {
-                    selection = false
-                    updateVisibiliteCorbeille()
-                }
+                unselectNode(objSelectionne)
             }else
             {
-                objSelectionne.alpha = 0.5
-                nodesSelected.append(objSelectionne)
-                selection = true
-                updateVisibiliteCorbeille()
+                selectNode(objSelectionne)
             }
             // jouer un son
             AudioServicesPlaySystemSound(sonSelection);
@@ -589,6 +572,24 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* Called before each frame is rendered */
         
     }
+    
+    func selectNode(newObjectSelection: Objet?) {
+        newObjectSelection!.alpha = 0.5
+        nodesSelected.append(newObjectSelection!)
+        selection = true
+        updateVisibiliteCorbeille()
+    }
+    
+    func unselectNode(objet: Objet?) {
+        nodesSelected = nodesSelected.filter {$0 != objet!}
+        objet!.alpha = 1
+        if nodesSelected.isEmpty
+        {
+            selection = false
+            updateVisibiliteCorbeille()
+        }
+    }
+    
     
     ///Fonction qui initialise les labels et text fields pour les propriétés
     func initLabels(){
