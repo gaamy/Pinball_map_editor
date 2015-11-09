@@ -689,7 +689,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         textRotation!.delegate = self
         
         labelScale = SKLabelNode(fontNamed: "Arial")
-        labelScale!.text = "Échelle"
+        labelScale!.text = NSLocalizedString("scale", comment: "Échelle")
         labelScale!.position = CGPoint(x: CGRectGetMaxX(self.frame)-218, y: CGRectGetMidY(self.frame)+145)
         labelScale!.fontSize = 15
         self.addChild(labelScale!)
@@ -711,7 +711,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         textPoints!.delegate = self
         
         labelBilleGratuite = SKLabelNode(fontNamed: "Arial")
-        labelBilleGratuite!.text = "Bille gratuite (points)"
+        labelBilleGratuite!.text = NSLocalizedString("bille", comment: "Bille gratuite (points)")
         labelBilleGratuite!.position = CGPoint(x: CGRectGetMaxX(self.frame)-175, y: CGRectGetMidY(self.frame)-15)
         labelBilleGratuite!.fontSize = 15
         self.addChild(labelBilleGratuite!)
@@ -722,7 +722,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         textBilleGratuite!.delegate = self
         
         labelDiff = SKLabelNode(fontNamed: "Arial")
-        labelDiff!.text = "Cote de difficulté"
+        labelDiff!.text = NSLocalizedString("diff", comment: "Cote de difficulté")
         labelDiff!.position = CGPoint(x: CGRectGetMaxX(self.frame)-185, y: CGRectGetMidY(self.frame)-55)
         labelDiff!.fontSize = 15
         self.addChild(labelDiff!)

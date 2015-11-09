@@ -1,0 +1,66 @@
+
+/* Class = "UILabel"; text = "Port"; ObjectID = "2Pu-cg-5oq"; */
+"2Pu-cg-5oq.text" = "Port";
+
+/* Class = "UILabel"; text = "Nom "; ObjectID = "66L-Li-38d"; */
+"66L-Li-38d.text" = "Name ";
+
+/* Class = "UIButton"; normalTitle = "Éditeur"; ObjectID = "6Fw-u9-skh"; */
+"6Fw-u9-skh.normalTitle" = "Editor";
+
+/* Class = "UIButton"; normalTitle = "Statistiques"; ObjectID = "7ur-33-wEc"; */
+"7ur-33-wEc.normalTitle" = "Statistics";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "C0t-cy-KW0"; */
+"C0t-cy-KW0.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "message"; ObjectID = "GPc-WH-9Jc"; */
+"GPc-WH-9Jc.placeholder" = "message";
+
+/* Class = "UILabel"; text = "username"; ObjectID = "LGM-41-VTW"; */
+"LGM-41-VTW.text" = "username";
+
+/* Class = "UIButton"; normalTitle = "←"; ObjectID = "RfW-fo-WEc"; */
+"RfW-fo-WEc.normalTitle" = "←";
+
+/* Class = "UILabel"; text = "Satisiques du joueur"; ObjectID = "Vhg-mI-30j"; */
+"Vhg-mI-30j.text" = "Player's statistics";
+
+/* Class = "UIButton"; normalTitle = "Authentification"; ObjectID = "bFD-HV-TW1"; */
+"bFD-HV-TW1.normalTitle" = "Authentification";
+
+/* Class = "UILabel"; text = "password"; ObjectID = "bHs-ud-iER"; */
+"bHs-ud-iER.text" = "password";
+
+/* Class = "UILabel"; text = "Host"; ObjectID = "bZY-rc-pjM"; */
+"bZY-rc-pjM.text" = "Host";
+
+/* Class = "UIButton"; normalTitle = "Connecter"; ObjectID = "csj-bZ-7wr"; */
+"csj-bZ-7wr.normalTitle" = "Connect";
+
+/* Class = "UIButton"; normalTitle = "Back to login"; ObjectID = "dnX-kR-URy"; */
+"dnX-kR-URy.normalTitle" = "Back to login";
+
+/* Class = "UIButton"; normalTitle = "←"; ObjectID = "emo-7R-Nln"; */
+"emo-7R-Nln.normalTitle" = "←";
+
+/* Class = "UIButton"; normalTitle = "Utiliser anonymement"; ObjectID = "es0-Wn-cou"; */
+"es0-Wn-cou.normalTitle" = "Anonymous usage";
+
+/* Class = "UILabel"; text = "Chat Client Prototype"; ObjectID = "pc3-Df-obB"; */
+"pc3-Df-obB.text" = "Chat";
+
+/* Class = "UIButton"; normalTitle = "Chat"; ObjectID = "qlf-jL-Oqx"; */
+"qlf-jL-Oqx.normalTitle" = "Chat";
+
+/* Class = "UIButton"; normalTitle = "Envoyer"; ObjectID = "sBj-ry-oCX"; */
+"sBj-ry-oCX.normalTitle" = "Send";
+
+/* Class = "UILabel"; text = "Tappez votre nom ici ➤"; ObjectID = "sNV-PU-7Hk"; */
+"sNV-PU-7Hk.text" = "Type your name here ➤";
+
+/* Class = "UILabel"; text = "Your username?"; ObjectID = "vy9-Du-Yew"; */
+"vy9-Du-Yew.text" = "Your username?";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "wAX-vd-9mQ"; */
+"wAX-vd-9mQ.normalTitle" = "Back";

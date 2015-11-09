@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  Projet3
+
+  Created by David Gourde on 15-11-09.
+  Copyright © 2015 David Gourde. All rights reserved.
+*/
+
+"scale" = "Échelle";
+"bille" = "Bille gratuite (points)";
+"diff" = "Cote de difficulté";
