@@ -54,7 +54,7 @@
 		2D0F7C9F1BF11EB700020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D0F7CA11BF127D400020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		2D0F7CA51BF12E0200020C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Base; path = Base.lproj/GameScene.sks; sourceTree = "<group>"; };
-		2D6D37721BF7E1A4004385FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = en; path = en.lproj/GameScene.sks; sourceTree = "<group>"; };
+		2D6D37731BF7EB3E004385FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = en; path = en.lproj/GameScene.sks; sourceTree = "<group>"; };
 		2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Objet.swift; sourceTree = "<group>"; };
 		2DFD73C51BB0514C00744B61 /* corbeille.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = corbeille.mp3; sourceTree = "<group>"; };
 		2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = placerObjetSurTable.mp3; sourceTree = "<group>"; };
@@ -323,7 +323,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				2D0F7CA51BF12E0200020C40 /* Base */,
-				2D6D37721BF7E1A4004385FB /* en */,
+				2D6D37731BF7EB3E004385FB /* en */,
 			);
 			name = GameScene.sks;
 			sourceTree = "<group>";
