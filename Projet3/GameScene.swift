@@ -32,6 +32,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     var nomObjet = "Spaceship"
     var viewController: UIViewController? //Identifie le menuPrincipal
     var table = SKNode()
+    var menuGauche = SKNode()
+    var menuDroit = SKNode()
     var nodesSelected = [Objet]()
     var savedSelected = [Objet]()
     var selection = false
@@ -41,6 +43,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     var deplacement = false
     var nodeTouchee = Objet()
     var endroitPrecedent = CGPoint()
+    var menuGaucheOuvert = true
+    var menuDroitOuvert = true
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
     var sonObjSurTable: SystemSoundID = 0
@@ -85,12 +89,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         let gestureRec2 = UIRotationGestureRecognizer(target: self, action: "rotationDeLObjet:")
         self.view!.addGestureRecognizer(gestureRec2)
         
-        //On initialise la variable table pour utilisation facile dans la classe
+        //On initialise la table et les menus pour une utilisation facile par la suite
         table = self.childNodeWithName("table")!
+        menuGauche = self.childNodeWithName("menuGauche")!
+        menuDroit = self.childNodeWithName("menuDroit")!
         
         //Initialise les labels et les text fields des propriétés
         initLabels()
         
+        updateVisibiliteCorbeille()
         
     }
     
@@ -284,6 +291,50 @@ class GameScene: SKScene, UITextFieldDelegate {
                 let location = touch.locationInNode(self)
                 let touchedNode = self.nodeAtPoint(location)
                 
+                if touchedNode == menuGauche {
+                    if menuGaucheOuvert {
+                        let moveLeft = SKAction.moveByX(-200, y:0, duration:0.2)
+                        menuGauche.runAction(moveLeft)
+                        menuGaucheOuvert = false
+                    }else {
+                        let moveRight = SKAction.moveByX(200, y:0, duration:0.2)
+                        menuGauche.runAction(moveRight)
+                        menuGaucheOuvert = true
+                    }
+                    return
+                }
+                
+                if touchedNode == menuDroit {
+                    if menuDroitOuvert {
+                        let moveRight = SKAction.moveByX(200, y:0, duration:0.2)
+                        menuDroit.runAction(moveRight)
+                        
+                        textPositionX?.hidden = true
+                        textPositionY?.hidden = true
+                        self.textRotation?.hidden = true
+                        self.textScale?.hidden = true
+                        self.textPoints?.hidden = true
+                        self.textBilleGratuite?.hidden = true
+                        self.textDiff?.hidden = true
+                        
+                        menuDroitOuvert = false
+                    }else {
+                        let moveLeft = SKAction.moveByX(-200, y:0, duration:0.2)
+                        menuDroit.runAction(moveLeft, completion: {
+                            self.textPositionX?.hidden = false;
+                            self.textPositionY?.hidden = false;
+                            self.textRotation?.hidden = false;
+                            self.textScale?.hidden = false;
+                            self.textPoints?.hidden = false;
+                            self.textBilleGratuite?.hidden = false;
+                            self.textDiff?.hidden = false;
+                        })
+                        
+                        menuDroitOuvert = true
+                    }
+                    return
+                }
+                
                 if let name = touchedNode.name
                 {
                     //quand le bouton Menu est pese, on retourne au menu principal
@@ -300,7 +351,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                         // jouer un son
                         AudioServicesPlaySystemSound(sonSelectionOutil);
                     }
-                    if !surTable(location, node: (touchedNode as? Objet)!)
+                    if !surTable(location, node: touchedNode)
                     {
                         if selection
                         {
@@ -402,24 +453,24 @@ class GameScene: SKScene, UITextFieldDelegate {
         updateTextProprieteObjet()
     }
     
-    func surTable(location: CGPoint, node: Objet) -> Bool
+    func surTable(location: CGPoint, node: SKNode) -> Bool
     {
-        let largeur = node.size.width / 2
-        let hauteur = node.size.height / 2
-        let gauche = CGPoint(x:location.x - largeur,y:location.y)
-        let droite = CGPoint(x:location.x + largeur,y:location.y)
-        let haut = CGPoint(x:location.x,y:location.y + hauteur)
-        let bas = CGPoint(x:location.x,y:location.y - hauteur)
-        if table.containsPoint(gauche) &&
-            table.containsPoint(droite) &&
-            table.containsPoint(haut) &&
-            table.containsPoint(bas)
-        {
-            return true
-        }else
-        {
-            return false
+        if let noeud = node as? Objet {
+            let largeur = noeud.size.width / 2
+            let hauteur = noeud.size.height / 2
+            let gauche = CGPoint(x:location.x - largeur,y:location.y)
+            let droite = CGPoint(x:location.x + largeur,y:location.y)
+            let haut = CGPoint(x:location.x,y:location.y + hauteur)
+            let bas = CGPoint(x:location.x,y:location.y - hauteur)
+            if table.containsPoint(gauche) &&
+                table.containsPoint(droite) &&
+                table.containsPoint(haut) &&
+                table.containsPoint(bas)
+            {
+                return true
+            }
         }
+        return false
     }
     
     /**
@@ -493,10 +544,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     func updateVisibiliteCorbeille(){
         if selection
         {
-            self.childNodeWithName("boutonDelete")?.alpha = 1
+            menuGauche.childNodeWithName("boutonDelete")?.alpha = 1
         }else
         {
-            self.childNodeWithName("boutonDelete")?.alpha = 0
+            menuGauche.childNodeWithName("boutonDelete")?.alpha = 0
         }
     }
     
@@ -660,12 +711,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     ///Fonction qui initialise les labels et text fields pour les propriétés
     func initLabels(){
-        //Cette partie initialise les propriétés des objets
-        labelPosition = SKLabelNode(fontNamed: "Arial")
-        labelPosition!.text = "Position (x,y)"
-        labelPosition!.position = CGPoint(x: CGRectGetMaxX(self.frame)-200, y: CGRectGetMidY(self.frame)+185)
-        labelPosition!.fontSize = 15
-        self.addChild(labelPosition!)
+        
         
         textPositionX = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
         self.view!.addSubview(textPositionX!)
@@ -677,55 +723,25 @@ class GameScene: SKScene, UITextFieldDelegate {
         textPositionY!.backgroundColor = UIColor.grayColor()
         textPositionY!.delegate = self
         
-        labelRotation = SKLabelNode(fontNamed: "Arial")
-        labelRotation!.text = "Rotation (z)"
-        labelRotation!.position = CGPoint(x: CGRectGetMaxX(self.frame)-205, y: CGRectGetMidY(self.frame)+105)
-        labelRotation!.fontSize = 15
-        self.addChild(labelRotation!)
-        
         textRotation = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-120, width: 50, height: 20))
         self.view!.addSubview(textRotation!)
         textRotation!.backgroundColor = UIColor.grayColor()
         textRotation!.delegate = self
-        
-        labelScale = SKLabelNode(fontNamed: "Arial")
-        labelScale!.text = NSLocalizedString("scale", comment: "Échelle")
-        labelScale!.position = CGPoint(x: CGRectGetMaxX(self.frame)-218, y: CGRectGetMidY(self.frame)+145)
-        labelScale!.fontSize = 15
-        self.addChild(labelScale!)
         
         textScale = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-160, width: 50, height: 20))
         self.view!.addSubview(textScale!)
         textScale!.backgroundColor = UIColor.grayColor()
         textScale!.delegate = self
         
-        labelPoints = SKLabelNode(fontNamed: "Arial")
-        labelPoints!.text = "Points"
-        labelPoints!.position = CGPoint(x: CGRectGetMaxX(self.frame)-222, y: CGRectGetMidY(self.frame)+65)
-        labelPoints!.fontSize = 15
-        self.addChild(labelPoints!)
-        
         textPoints = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-80, width: 50, height: 20))
         self.view!.addSubview(textPoints!)
         textPoints!.backgroundColor = UIColor.grayColor()
         textPoints!.delegate = self
         
-        labelBilleGratuite = SKLabelNode(fontNamed: "Arial")
-        labelBilleGratuite!.text = NSLocalizedString("bille", comment: "Bille gratuite (points)")
-        labelBilleGratuite!.position = CGPoint(x: CGRectGetMaxX(self.frame)-175, y: CGRectGetMidY(self.frame)-15)
-        labelBilleGratuite!.fontSize = 15
-        self.addChild(labelBilleGratuite!)
-        
         textBilleGratuite = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-0, width: 50, height: 20))
         self.view!.addSubview(textBilleGratuite!)
         textBilleGratuite!.backgroundColor = UIColor.whiteColor()
         textBilleGratuite!.delegate = self
-        
-        labelDiff = SKLabelNode(fontNamed: "Arial")
-        labelDiff!.text = NSLocalizedString("diff", comment: "Cote de difficulté")
-        labelDiff!.position = CGPoint(x: CGRectGetMaxX(self.frame)-185, y: CGRectGetMidY(self.frame)-55)
-        labelDiff!.fontSize = 15
-        self.addChild(labelDiff!)
         
         textDiff = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)+40, width: 50, height: 20))
         self.view!.addSubview(textDiff!)
