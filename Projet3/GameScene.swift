@@ -218,14 +218,14 @@ class GameScene: SKScene, UITextFieldDelegate {
             let touchedNode = nodeAtPoint(location)
             
             endroitPrecedent = location
-                if table.containsPoint(touchedNode.position)
+            if table.containsPoint(touchedNode.position)
+            {
+                //On cast le SKNode en SKPriteNode
+                if let monNode = touchedNode as? Objet
                 {
-                    //On cast le SKNode en SKPriteNode
-                    if let monNode = touchedNode as? Objet
-                    {
-                        nodeTouchee = monNode
-                    }
+                    nodeTouchee = monNode
                 }
+            }
             
         }
     }
@@ -238,17 +238,17 @@ class GameScene: SKScene, UITextFieldDelegate {
             //TODO: Régler le bug qui fait que quand je fais un gesture, ça déplace les objets!!!
             if selection && nodesSelected.contains(nodeTouchee)
             {
-                    for node in nodesSelected
+                for node in nodesSelected
+                {
+                    let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
+                    //TODO: On doit utiliser soit la boite englobante ou soit les bordures des sprites
+                    if surTable(nouvEndroit, node: node)
                     {
-                            let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
-                            //TODO: On doit utiliser soit la boite englobante ou soit les bordures des sprites
-                            if surTable(nouvEndroit, node: node)
-                            {
-                                node.position = nouvEndroit
-                            }
+                        node.position = nouvEndroit
                     }
-                    deplacement = true
-                    endroitPrecedent = location
+                }
+                deplacement = true
+                endroitPrecedent = location
             }
         }
     }
@@ -274,7 +274,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             line.physicsBody?.affectedByGravity = false
             line.physicsBody?.allowsRotation = false
-           
+            
             //Test pour les collisions
             line.physicsBody?.categoryBitMask = 0x1
             
@@ -291,153 +291,54 @@ class GameScene: SKScene, UITextFieldDelegate {
                 let location = touch.locationInNode(self)
                 let touchedNode = self.nodeAtPoint(location)
                 
-                if touchedNode == menuGauche {
-                    if menuGaucheOuvert {
-                        let moveLeft = SKAction.moveByX(-200, y:0, duration:0.2)
-                        menuGauche.runAction(moveLeft)
-                        menuGaucheOuvert = false
-                    }else {
-                        let moveRight = SKAction.moveByX(200, y:0, duration:0.2)
-                        menuGauche.runAction(moveRight)
-                        menuGaucheOuvert = true
-                    }
-                    return
-                }
-                
-                if touchedNode == menuDroit {
-                    if menuDroitOuvert {
-                        let moveRight = SKAction.moveByX(200, y:0, duration:0.2)
-                        menuDroit.runAction(moveRight)
-                        
-                        textPositionX?.hidden = true
-                        textPositionY?.hidden = true
-                        self.textRotation?.hidden = true
-                        self.textScale?.hidden = true
-                        self.textPoints?.hidden = true
-                        self.textBilleGratuite?.hidden = true
-                        self.textDiff?.hidden = true
-                        
-                        menuDroitOuvert = false
-                    }else {
-                        let moveLeft = SKAction.moveByX(-200, y:0, duration:0.2)
-                        menuDroit.runAction(moveLeft, completion: {
-                            self.textPositionX?.hidden = false;
-                            self.textPositionY?.hidden = false;
-                            self.textRotation?.hidden = false;
-                            self.textScale?.hidden = false;
-                            self.textPoints?.hidden = false;
-                            self.textBilleGratuite?.hidden = false;
-                            self.textDiff?.hidden = false;
-                        })
-                        
-                        menuDroitOuvert = true
-                    }
-                    return
-                }
+                toggleMenus(touchedNode)
                 
                 if let name = touchedNode.name
                 {
-                    //quand le bouton Menu est pese, on retourne au menu principal
-                    if name == "boutonmenu" {
-                        var vc: UIViewController = UIViewController()
-                        vc = self.view!.window!.rootViewController!
-                        self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
-                    }
-                    
-                    
-                    
-                    if name == "boutonmur" {
+                    switch name {
+                    case "boutonmenu":
+                        quitterModeEdition()
+                    case "boutonmur":
                         construireMur = true
-                        // jouer un son
-                        AudioServicesPlaySystemSound(sonSelectionOutil);
+                        AudioServicesPlaySystemSound(sonSelectionOutil)
+                    default: break
                     }
                     if !surTable(location, node: touchedNode)
                     {
                         if selection
                         {
-                            if name == "boutonsave_select"
-                            {
+                            switch name {
+                            case "boutonsave_select":
                                 savedSelected = nodesSelected
+                            case "boutonDuplication":
+                                dupplication()
+                            case "boutonsame_select":
+                                sameSelect()
+                            default: break
                             }
                             
-                            //Outils dublication
-                            if name == "boutonDuplication"
-                            {
-                               // var newNode = NewNode()
-                                for node in nodesSelected
-                                {
-                                    unselectNode(node)
-                                    let nodeCopie = node.copier()
-                                    self.addChild(nodeCopie)
-                                    selectNode(nodeCopie)
-                                    
-                                    
-                                    
-                                }
+                            selection = false
+                            updateVisibiliteCorbeille()
+                            if name == "boutonDelete" {
+                                effacerNoeuds()
                             }
-                            if name == "boutonsame_select" && nodesSelected.count == 1
-                            {
-                                //On vérifie sur les enfants de la scène
-                                for enfant in self.children
-                                {
-                                    //On retrouve le nom du node sélectionné
-                                    if enfant.name == nodesSelected[0].name
-                                    {
-                                        if let monEnfant = enfant as? Objet
-                                        {
-                                            nodesSelected.append(monEnfant)
-                                            monEnfant.alpha = 0.5
-                                        }
-                                    }
-                                }
-                            }else
-                            {
-                                selection = false
-                                updateVisibiliteCorbeille()
-                                if name == "boutonDelete"
-                                {
-                                    //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
-                                    for node in nodesSelected
-                                    {
-                                        savedSelected = savedSelected.filter {$0 != node}
-                                        node.removeFromParent()
-                                    }
-                                    
-                                    // jouer un son
-                                    AudioServicesPlaySystemSound(sonCorbeille);
-                                }
-                                //On delete les nodes sélectionnés
-                                for node in nodesSelected
-                                {
-                                    node.alpha = 1
-                                }
-                                nodesSelected.removeAll()
-                                
-                                //TODO: Vérifier si nécéssaire
-                                cliqueSurBoutonObj(name)
-                            }
+                            
+                            deselectionnerTout()
+                            
+                            //TODO: Vérifier si nécéssaire
+                            cliqueSurBoutonObj(name)
                         }else
                         {
-                            //C'est ici que les nouveaux objets sont cree
+                            //C'est ici que les nouveaux objets sont créés
                             if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
                             {
                                 //let endroitSurTable = table.convertPoint(location, fromNode: self)
                                 creerObjet(location,typeObjet: nomObjet)
                                 
-                                // jouer un son
                                 AudioServicesPlaySystemSound(sonObjSurTable);
                             }else if name == "boutonload_select"
                             {
-                                nodesSelected = savedSelected
-                                if nodesSelected.count > 0
-                                {
-                                    for node in nodesSelected
-                                    {
-                                        node.alpha = 0.5
-                                    }
-                                    selection = true
-                                    updateVisibiliteCorbeille()
-                                }
+                                loadSelect()
                             }
                         }
                     }else
@@ -453,6 +354,51 @@ class GameScene: SKScene, UITextFieldDelegate {
         updateTextProprieteObjet()
     }
     
+    func quitterModeEdition(){
+        var vc: UIViewController = UIViewController()
+        vc = self.view!.window!.rootViewController!
+        self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
+    }
+    
+    ///Fonction qui resélectionne les noeurs de la sélection enregistrés (qui charge la sélection)
+    ///-Actionné par le bouton loadSelect
+    func loadSelect(){
+        nodesSelected = savedSelected
+        if nodesSelected.count > 0
+        {
+            for node in nodesSelected
+            {
+                node.alpha = 0.5
+            }
+            selection = true
+            updateVisibiliteCorbeille()
+        }
+    }
+    
+    ///Fonction qui efface les noeuds qui sont sélectionné
+    ///-Actionné par le bouton delete
+    func effacerNoeuds(){
+        //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
+        for node in nodesSelected
+        {
+            savedSelected = savedSelected.filter {$0 != node}
+            node.removeFromParent()
+        }
+        
+        // jouer un son
+        AudioServicesPlaySystemSound(sonCorbeille);
+    }
+    
+    ///Cette fonction permet de désélectionner tous les noeuds sélectionnés
+    func deselectionnerTout(){
+        for node in nodesSelected
+        {
+            node.alpha = 1
+        }
+        nodesSelected.removeAll()
+    }
+    
+    ///Fonction qui vérifie si le noeud est sur la table ou non
     func surTable(location: CGPoint, node: SKNode) -> Bool
     {
         if let noeud = node as? Objet {
@@ -471,6 +417,39 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         return false
+    }
+    
+    ///Fonction qui dupplique les objets sélectionnés
+    ///-Actionné par le bouton dupplication
+    func dupplication(){
+        // var newNode = NewNode()
+        for node in nodesSelected
+        {
+            unselectNode(node)
+            let nodeCopie = node.copier()
+            self.addChild(nodeCopie)
+            selectNode(nodeCopie)
+        }
+    }
+    
+    ///Fonction qui sélectionne tous les objets du même type
+    ///-Actionné par le bouton sameSelect
+    func sameSelect(){
+        //On vérifie sur les enfants de la scène
+        if nodesSelected.count == 1 {
+            for enfant in self.children
+            {
+                //On retrouve le nom du node sélectionné
+                if enfant.name == nodesSelected[0].name
+                {
+                    if let monEnfant = enfant as? Objet
+                    {
+                        nodesSelected.append(monEnfant)
+                        monEnfant.alpha = 0.5
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -495,10 +474,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet.position = endroitSurTable
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
-            
+        
         self.addChild(objet.copy() as! Objet)
     }
     
+    ///Fonction qui set un physicsbody (boite englobante et physique si nécéssaire)
     func setPhysicsBody(objet: Objet, masque: UInt32){
         objet.physicsBody = SKPhysicsBody.init(texture: objet.texture!, size: objet.size)
         
@@ -508,7 +488,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Catégorie (masque) pour les collisions
         objet.physicsBody?.categoryBitMask = masque
     }
-
+    
     ///Appelé lorsqu'on clique sur un objet de type "bouton"
     func cliqueSurBoutonObj(name: String) -> Bool{
         if listeDesBoutonsDeCreation.contains(name){
@@ -541,6 +521,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    ///Fonction qui met à jour la visibilité de la corbeille
     func updateVisibiliteCorbeille(){
         if selection
         {
@@ -548,6 +529,72 @@ class GameScene: SKScene, UITextFieldDelegate {
         }else
         {
             menuGauche.childNodeWithName("boutonDelete")?.alpha = 0
+        }
+    }
+    
+    ///Fonction qui sélectionne un objet
+    func selectNode(newObjectSelection: Objet?) {
+        newObjectSelection!.alpha = 0.5
+        nodesSelected.append(newObjectSelection!)
+        selection = true
+        updateVisibiliteCorbeille()
+    }
+    
+    ///Fonction qui désélectionne un objet
+    func unselectNode(objet: Objet?) {
+        nodesSelected = nodesSelected.filter {$0 != objet!}
+        objet!.alpha = 1
+        if nodesSelected.isEmpty
+        {
+            selection = false
+            updateVisibiliteCorbeille()
+        }
+    }
+    
+    ///Fonction qui ajuste les menus s'ils sont touchés
+    func toggleMenus(touchedNode: SKNode){
+        if touchedNode == menuGauche {
+            if menuGaucheOuvert {
+                let moveLeft = SKAction.moveByX(-200, y:0, duration:0.2)
+                menuGauche.runAction(moveLeft)
+                menuGaucheOuvert = false
+            }else {
+                let moveRight = SKAction.moveByX(200, y:0, duration:0.2)
+                menuGauche.runAction(moveRight)
+                menuGaucheOuvert = true
+            }
+            return
+        }
+        
+        if touchedNode == menuDroit {
+            if menuDroitOuvert {
+                let moveRight = SKAction.moveByX(200, y:0, duration:0.2)
+                menuDroit.runAction(moveRight)
+                
+                textPositionX?.hidden = true
+                textPositionY?.hidden = true
+                self.textRotation?.hidden = true
+                self.textScale?.hidden = true
+                self.textPoints?.hidden = true
+                self.textBilleGratuite?.hidden = true
+                self.textDiff?.hidden = true
+                
+                menuDroitOuvert = false
+            }else {
+                let moveLeft = SKAction.moveByX(-200, y:0, duration:0.2)
+                menuDroit.runAction(moveLeft, completion: {
+                    self.textPositionX?.hidden = false;
+                    self.textPositionY?.hidden = false;
+                    self.textRotation?.hidden = false;
+                    self.textScale?.hidden = false;
+                    self.textPoints?.hidden = false;
+                    self.textBilleGratuite?.hidden = false;
+                    self.textDiff?.hidden = false;
+                })
+                
+                menuDroitOuvert = true
+            }
+            return
         }
     }
     
@@ -606,7 +653,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             textPoints!.backgroundColor = UIColor.grayColor()
         }
     }
-
+    
     ///Reçoit un "enter" d'un text field (n'importe quel)
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textPositionX!.resignFirstResponder()
@@ -633,8 +680,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         if(textRotation!.text! != "" && nodesSelected.count == 1){
             if let z = NSNumberFormatter().numberFromString(textRotation!.text!) {
-                    let zFloat = CGFloat(z)
-                    nodesSelected[0].zRotation = zFloat
+                let zFloat = CGFloat(z)
+                nodesSelected[0].zRotation = zFloat
             }
         }
         
@@ -684,30 +731,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         let sonSelectionURL = NSBundle.mainBundle().URLForResource("Selection", withExtension: "mp3")
         AudioServicesCreateSystemSoundID(sonSelectionURL!, &sonSelection)
     }
-   
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
     }
-    
-    ///selectionne 
-    func selectNode(newObjectSelection: Objet?) {
-        newObjectSelection!.alpha = 0.5
-        nodesSelected.append(newObjectSelection!)
-        selection = true
-        updateVisibiliteCorbeille()
-    }
-    
-    func unselectNode(objet: Objet?) {
-        nodesSelected = nodesSelected.filter {$0 != objet!}
-        objet!.alpha = 1
-        if nodesSelected.isEmpty
-        {
-            selection = false
-            updateVisibiliteCorbeille()
-        }
-    }
-    
     
     ///Fonction qui initialise les labels et text fields pour les propriétés
     func initLabels(){
