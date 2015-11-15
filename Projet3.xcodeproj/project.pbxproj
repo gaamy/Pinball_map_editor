@@ -17,8 +17,10 @@
 		2D0F7C9C1BF11EB400020C40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F7C9E1BF11EB400020C40 /* Localizable.strings */; };
 		2D0F7CA21BF12DFE00020C40 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F7CA41BF12DFE00020C40 /* GameScene.sks */; };
 		2D6D37751BF7FF89004385FB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6D37741BF7FF89004385FB /* Extensions.swift */; };
+		2D6D37791BF82114004385FB /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D37771BF82114004385FB /* spark.png */; };
+		2D6D377B1BF82186004385FB /* deleteNodeEffect.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */; };
+		2D6D377D1BF8244F004385FB /* corbeille.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D377C1BF8244F004385FB /* corbeille.mp3 */; };
 		2DEC1FDC1BEAF1F60077EAB5 /* Objet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */; };
-		2DFD73C61BB0514C00744B61 /* corbeille.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C51BB0514C00744B61 /* corbeille.mp3 */; };
 		2DFD73C91BB0D2F500744B61 /* placerObjetSurTable.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */; };
 		2DFD73CA1BB0D2F500744B61 /* SelectionOutil.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */; };
 		2DFD73CC1BB0D52900744B61 /* Selection.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73CB1BB0D52900744B61 /* Selection.mp3 */; };
@@ -57,8 +59,10 @@
 		2D0F7CA51BF12E0200020C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Base; path = Base.lproj/GameScene.sks; sourceTree = "<group>"; };
 		2D6D37731BF7EB3E004385FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = en; path = en.lproj/GameScene.sks; sourceTree = "<group>"; };
 		2D6D37741BF7FF89004385FB /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		2D6D37771BF82114004385FB /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = deleteNodeEffect.sks; sourceTree = "<group>"; };
+		2D6D377C1BF8244F004385FB /* corbeille.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = corbeille.mp3; sourceTree = "<group>"; };
 		2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Objet.swift; sourceTree = "<group>"; };
-		2DFD73C51BB0514C00744B61 /* corbeille.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = corbeille.mp3; sourceTree = "<group>"; };
 		2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = placerObjetSurTable.mp3; sourceTree = "<group>"; };
 		2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SelectionOutil.mp3; sourceTree = "<group>"; };
 		2DFD73CB1BB0D52900744B61 /* Selection.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Selection.mp3; sourceTree = "<group>"; };
@@ -130,8 +134,10 @@
 		2D0D41151BA8E50F00B25A7B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				2DFD73C51BB0514C00744B61 /* corbeille.mp3 */,
 				2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */,
+				2D6D377C1BF8244F004385FB /* corbeille.mp3 */,
+				2D6D37771BF82114004385FB /* spark.png */,
+				2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */,
 				2DFD73CB1BB0D52900744B61 /* Selection.mp3 */,
 				2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */,
 				2D0D41161BA8E50F00B25A7B /* Info.plist */,
@@ -239,14 +245,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D6D377B1BF82186004385FB /* deleteNodeEffect.sks in Resources */,
+				2D6D37791BF82114004385FB /* spark.png in Resources */,
 				2DFD73C91BB0D2F500744B61 /* placerObjetSurTable.mp3 in Resources */,
 				2DFD73CC1BB0D52900744B61 /* Selection.mp3 in Resources */,
 				2D0D41261BA8E50F00B25A7B /* LaunchScreen.xib in Resources */,
 				2D0D41231BA8E50F00B25A7B /* Images.xcassets in Resources */,
 				2D0F7C9C1BF11EB400020C40 /* Localizable.strings in Resources */,
 				2DFD73CA1BB0D2F500744B61 /* SelectionOutil.mp3 in Resources */,
+				2D6D377D1BF8244F004385FB /* corbeille.mp3 in Resources */,
 				2D0F7CA21BF12DFE00020C40 /* GameScene.sks in Resources */,
-				2DFD73C61BB0514C00744B61 /* corbeille.mp3 in Resources */,
 				2D0D41211BA8E50F00B25A7B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

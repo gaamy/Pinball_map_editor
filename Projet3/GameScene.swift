@@ -255,7 +255,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
         if deplacement
         {
             deplacement = false
@@ -364,6 +363,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         for node in nodesSelected
         {
             savedSelected = savedSelected.filter {$0 != node}
+            animationExplosion(node)
             node.removeFromParent()
         }
         
@@ -470,6 +470,13 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
         
         self.addChild(objet.copy() as! Objet)
+    }
+    
+    func animationExplosion(node: SKNode) {
+        if let fireParticles = SKEmitterNode(fileNamed: "deleteNodeEffect") {
+            fireParticles.position = node.position
+            addChild(fireParticles)
+        }
     }
     
     ///Fonction qui set un physicsbody (boite englobante et physique si nécéssaire)
