@@ -302,16 +302,12 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 dupplication()
                             case "boutonsame_select":
                                 sameSelect()
-                            default: break
-                            }
-                            
-                            selection = false
-                            updateVisibiliteCorbeille()
-                            if name == "boutonDelete" {
+                            case "boutonDelete":
                                 effacerNoeuds()
+                            default:
+                                deselectionnerTout()
+                                break
                             }
-                            
-                            deselectionnerTout()
                             
                             //TODO: Vérifier si nécéssaire
                             cliqueSurBoutonObj(name)
@@ -356,10 +352,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         {
             for node in nodesSelected
             {
-                node.alpha = 0.5
+                selectNode(node)
             }
-            selection = true
-            updateVisibiliteCorbeille()
         }
     }
     
@@ -373,17 +367,21 @@ class GameScene: SKScene, UITextFieldDelegate {
             node.removeFromParent()
         }
         
+        //On efface la sélection, donc plus rien n'est sélectionné
+        selection = false
+        updateVisibiliteCorbeille()
+        
         // jouer un son
         AudioServicesPlaySystemSound(sonCorbeille);
     }
     
     ///Cette fonction permet de désélectionner tous les noeuds sélectionnés
     func deselectionnerTout(){
+        selection = false
         for node in nodesSelected
         {
-            node.alpha = 1
+            unselectNode(node)
         }
-        nodesSelected.removeAll()
     }
     
     ///Fonction qui vérifie si le noeud est sur la table ou non
@@ -432,8 +430,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 {
                     if let monEnfant = enfant as? Objet
                     {
-                        nodesSelected.append(monEnfant)
-                        monEnfant.alpha = 0.5
+                        selectNode(monEnfant)
                     }
                 }
             }
@@ -465,7 +462,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Indique qu'on est en train de construire un mur
         if longeurMur != nil && angleMur != nil {
-            if longeurMur! < 5 || longeurMur > 250 {
+            if longeurMur! < 5 {
                 return
             }
             objet.size.width = longeurMur!
