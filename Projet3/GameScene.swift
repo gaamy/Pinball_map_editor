@@ -465,7 +465,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Indique qu'on est en train de construire un mur
         if longeurMur != nil && angleMur != nil {
-            if longeurMur! < 5 {
+            if longeurMur! < 5 || longeurMur > 250 {
                 return
             }
             objet.size.width = longeurMur!
