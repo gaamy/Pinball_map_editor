@@ -289,6 +289,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                     if surTable(nouvEndroit, node: node)
                     {
                         node.position = nouvEndroit
+                        feuFeuJolieFeu(node)
                     }
                 }
                 deplacement = true
@@ -525,6 +526,26 @@ class GameScene: SKScene, UITextFieldDelegate {
         if let fireParticles = SKEmitterNode(fileNamed: "deleteNodeEffect") {
             fireParticles.position = node.position
             addChild(fireParticles)
+            
+            //On doit delete la mémoire relié aux particules après l'animation
+            let delai = SKAction.waitForDuration(1)
+            self.runAction(delai, completion: {
+                fireParticles.removeFromParent()
+            })
+        }
+    }
+    
+    func feuFeuJolieFeu(node: SKNode) {
+        if let fireParticles = SKEmitterNode(fileNamed: "feu") {
+            fireParticles.position = node.position
+            addChild(fireParticles)
+            
+            //On doit delete la mémoire relié aux particules après l'animation
+            let delai = SKAction.waitForDuration(1)
+            self.runAction(delai, completion: {
+                fireParticles.removeFromParent()
+            })
+            
         }
     }
     
