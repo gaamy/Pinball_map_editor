@@ -383,9 +383,18 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func quitterModeEdition(){
-        var vc: UIViewController = UIViewController()
-        vc = self.view!.window!.rootViewController!
-        self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Quitter",
+            message: "Êtes-vous certains de vouloir quitter? Assurez-vous d'avoir sauvegardé vos changements.",
+            buttons: ["Quitter" , "Annuler"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Quitter" {
+                    var vc: UIViewController = UIViewController()
+                    vc = self.view!.window!.rootViewController!
+                    self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
+                } else if buttonPressed == "Annuler" {
+                    //On fait rien sinon
+                }
+        }
     }
     
     func swipePossible(valeur: Bool){
