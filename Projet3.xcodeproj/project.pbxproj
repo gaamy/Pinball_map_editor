@@ -16,6 +16,7 @@
 		2D0D41321BA8E50F00B25A7B /* Projet3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D41311BA8E50F00B25A7B /* Projet3Tests.swift */; };
 		2D0F7C9C1BF11EB400020C40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F7C9E1BF11EB400020C40 /* Localizable.strings */; };
 		2D0F7CA21BF12DFE00020C40 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F7CA41BF12DFE00020C40 /* GameScene.sks */; };
+		2D6D37751BF7FF89004385FB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6D37741BF7FF89004385FB /* Extensions.swift */; };
 		2DEC1FDC1BEAF1F60077EAB5 /* Objet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */; };
 		2DFD73C61BB0514C00744B61 /* corbeille.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C51BB0514C00744B61 /* corbeille.mp3 */; };
 		2DFD73C91BB0D2F500744B61 /* placerObjetSurTable.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */; };
@@ -55,6 +56,7 @@
 		2D0F7CA11BF127D400020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		2D0F7CA51BF12E0200020C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Base; path = Base.lproj/GameScene.sks; sourceTree = "<group>"; };
 		2D6D37731BF7EB3E004385FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = en; path = en.lproj/GameScene.sks; sourceTree = "<group>"; };
+		2D6D37741BF7FF89004385FB /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Objet.swift; sourceTree = "<group>"; };
 		2DFD73C51BB0514C00744B61 /* corbeille.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = corbeille.mp3; sourceTree = "<group>"; };
 		2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = placerObjetSurTable.mp3; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				2D0D41241BA8E50F00B25A7B /* LaunchScreen.xib */,
 				2D0D41151BA8E50F00B25A7B /* Supporting Files */,
 				FC0D79F31BEFCC6500B11C47 /* XmlManager.swift */,
+				2D6D37741BF7FF89004385FB /* Extensions.swift */,
 			);
 			path = Projet3;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				2D0D411C1BA8E50F00B25A7B /* GameScene.swift in Sources */,
 				2DEC1FDC1BEAF1F60077EAB5 /* Objet.swift in Sources */,
 				2D0D411E1BA8E50F00B25A7B /* GameViewController.swift in Sources */,
+				2D6D37751BF7FF89004385FB /* Extensions.swift in Sources */,
 				FC1DCC2E1BCF7BF600353F74 /* ViewController.swift in Sources */,
 				2D0D41181BA8E50F00B25A7B /* AppDelegate.swift in Sources */,
 				FC1DCC341BCF7C5D00353F74 /* CustonSegueUnwind.swift in Sources */,

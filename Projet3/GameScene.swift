@@ -45,6 +45,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     var endroitPrecedent = CGPoint()
     var menuGaucheOuvert = true
     var menuDroitOuvert = true
+    var murPosInitiale: CGPoint?
+    
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
     var sonObjSurTable: SystemSoundID = 0
@@ -209,8 +211,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //débutMur
         let debutMur = touches.first
-        let position1 = debutMur!.locationInNode(self)
-        CGPathMoveToPoint(chemin, nil, position1.x, position1.y)
+        murPosInitiale = debutMur!.locationInNode(self)
         //finMur
         
         for touch in touches {
@@ -255,32 +256,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        if construireMur && !deplacement {
-            let touch = touches.first
-            
-            let position2 = touch!.locationInNode(self)
-            
-            CGPathAddLineToPoint(chemin, nil, position2.x, position2.y)
-            CGPathCloseSubpath(chemin)
-            
-            //Changer la ligne pour un sprite de la bonne taille/scale
-            let line = SKShapeNode()
-            line.path = chemin
-            line.strokeColor = UIColor.blackColor()
-            line.lineWidth = 5
-            line.name = "mur"
-            
-            line.physicsBody = SKPhysicsBody(edgeChainFromPath: chemin)
-            
-            line.physicsBody?.affectedByGravity = false
-            line.physicsBody?.allowsRotation = false
-            
-            //Test pour les collisions
-            line.physicsBody?.categoryBitMask = 0x1
-            
-            self.addChild(line)
-        }
-        
         if deplacement
         {
             deplacement = false
@@ -295,6 +270,19 @@ class GameScene: SKScene, UITextFieldDelegate {
                 
                 if let name = touchedNode.name
                 {
+                    
+                    if construireMur && !deplacement && name == "table" {
+                        let touch = touches.first
+                        let position2 = touch!.locationInNode(self)
+                        
+                        if table.containsPoint(murPosInitiale!) && table.containsPoint(position2) {
+                            let longeurMur = murPosInitiale?.distance(position2)
+                            let angleMur = murPosInitiale?.angle(position2)
+                            
+                            creerObjet(murPosInitiale!.centre(position2), typeObjet: "mur", longeurMur: longeurMur, angleMur: angleMur)
+                        }
+                    }
+                    
                     switch name {
                     case "boutonmenu":
                         quitterModeEdition()
@@ -461,7 +449,7 @@ class GameScene: SKScene, UITextFieldDelegate {
      Note importante:
      - Cette méthode utilise la variable de classe "nomObjet" pour fabriquer le bon objet
      */
-    func creerObjet(endroitSurTable: CGPoint, typeObjet: String){
+    func creerObjet(endroitSurTable: CGPoint, typeObjet: String, longeurMur: CGFloat?=nil, angleMur: CGFloat?=nil){
         let objet = Objet(imageNamed: typeObjet)
         objet.name = typeObjet
         
@@ -474,6 +462,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet.position = endroitSurTable
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
+        
+        //Indique qu'on est en train de construire un mur
+        if longeurMur != nil && angleMur != nil {
+            if longeurMur! < 5 {
+                return
+            }
+            objet.size.width = longeurMur!
+            objet.zRotation = angleMur!
+        }
         
         self.addChild(objet.copy() as! Objet)
     }
