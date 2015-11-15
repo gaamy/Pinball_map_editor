@@ -241,7 +241,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
+        //Si on touche avec plusieurs doit, c'est surement un gesture, on ne fait rien
+        if (touches.count > 1) {
+            return
+        }
         
         //On enregistre la position initiale du mur
         murPosInitiale = touches.first!.locationInNode(self)
@@ -256,7 +259,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 if nom.substringToIndex(nom.startIndex.advancedBy(4))  == "menu" {
                     menuTouchee = touchedNode
                 }else{
-                    swipePossible(false)
+                    swipePossible(false) //On bloque les swipes pendant le déplacement
                 }
             }
             
@@ -275,6 +278,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        //Si on touche avec plusieurs doit, c'est surement un gesture, on ne fait rien
+        if (touches.count > 1) {
+            return
+        }
+        
         for touch in touches {
             let location = touch.locationInNode(self)
             
@@ -300,12 +308,17 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        swipePossible(true)
+        swipePossible(true) //On débloque les swipes après avoir terminé le déplacement
+        nodeTouchee = Objet() //On réinitialise l'objet touché dans touchesBegin
+        
+        //Si on touche avec plusieurs doit, c'est surement un gesture, on ne fait rien
+        if (touches.count > 1) {
+            return
+        }
         
         if deplacement
         {
             deplacement = false
-            nodeTouchee = Objet()
         }else
         {
             for touch in (touches ) {
