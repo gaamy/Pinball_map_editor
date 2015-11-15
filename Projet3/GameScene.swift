@@ -46,6 +46,9 @@ class GameScene: SKScene, UITextFieldDelegate {
     var menuGaucheOuvert = true
     var menuDroitOuvert = true
     var murPosInitiale: CGPoint?
+    var menuTouchee = SKNode()
+    var leftSwipe = UISwipeGestureRecognizer()
+    var rightSwipe = UISwipeGestureRecognizer()
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -91,6 +94,16 @@ class GameScene: SKScene, UITextFieldDelegate {
         let gestureRec2 = UIRotationGestureRecognizer(target: self, action: "rotationDeLObjet:")
         self.view!.addGestureRecognizer(gestureRec2)
         
+        //Mes gestures de swype pour les barres latérales
+        leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipes:"))
+        rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipes:"))
+        
+        leftSwipe.direction = .Left
+        rightSwipe.direction = .Right
+        
+        view.addGestureRecognizer(leftSwipe)
+        view.addGestureRecognizer(rightSwipe)
+        
         //On initialise la table et les menus pour une utilisation facile par la suite
         table = self.childNodeWithName("table")!
         menuGauche = self.childNodeWithName("menuGauche")!
@@ -101,6 +114,27 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         updateVisibiliteCorbeille()
         
+    }
+    
+    ///Fonctopn qui gère les swypes gestures
+    ///-On l'utilise pour montrer ou cacher les barres latérales
+    func handleSwipes(sender:UISwipeGestureRecognizer) {
+        //Un swype vers la gauche
+        if (sender.direction == .Left) {
+            if menuTouchee == menuGauche && menuGaucheOuvert {
+                toggleMenus(menuTouchee)
+            }else if menuTouchee == menuDroit && !menuDroitOuvert {
+                toggleMenus(menuTouchee)
+            }
+        }
+        //Un swype vers la droite
+        if (sender.direction == .Right) {
+            if menuTouchee == menuGauche && !menuGaucheOuvert {
+                toggleMenus(menuTouchee)
+            }else if menuTouchee == menuDroit && menuDroitOuvert {
+                toggleMenus(menuTouchee)
+            }
+        }
     }
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
@@ -209,15 +243,24 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        //débutMur
-        let debutMur = touches.first
-        murPosInitiale = debutMur!.locationInNode(self)
-        //finMur
+        //On enregistre la position initiale du mur
+        murPosInitiale = touches.first!.locationInNode(self)
         
         for touch in touches {
             let location = touch.locationInNode(self)
             let touchedNode = nodeAtPoint(location)
             
+            //On désactive les swipes dans l'écran si c'est pas un menu,
+            //Sinon on ne peut plus déplacer un objet sans être arrêté par le gesture
+            if let nom = touchedNode.name {
+                if nom.substringToIndex(nom.startIndex.advancedBy(4))  == "menu" {
+                    menuTouchee = touchedNode
+                }else{
+                    swipePossible(false)
+                }
+            }
+            
+            //On enregistre l'endroit précédent pour le déplacement des objets
             endroitPrecedent = location
             if table.containsPoint(touchedNode.position)
             {
@@ -256,6 +299,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
+        swipePossible(true)
+        
         if deplacement
         {
             deplacement = false
@@ -265,8 +310,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             for touch in (touches ) {
                 let location = touch.locationInNode(self)
                 let touchedNode = self.nodeAtPoint(location)
-                
-                toggleMenus(touchedNode)
                 
                 if let name = touchedNode.name
                 {
@@ -342,6 +385,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         var vc: UIViewController = UIViewController()
         vc = self.view!.window!.rootViewController!
         self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
+    }
+    
+    func swipePossible(valeur: Bool){
+        leftSwipe.enabled = valeur
+        rightSwipe.enabled = valeur
     }
     
     ///Fonction qui resélectionne les noeurs de la sélection enregistrés (qui charge la sélection)
