@@ -255,6 +255,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
         if deplacement
         {
             deplacement = false
