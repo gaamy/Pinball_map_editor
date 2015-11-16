@@ -355,44 +355,44 @@ class GameScene: SKScene, UITextFieldDelegate {
                             AudioServicesPlaySystemSound(sonSelectionOutil)
                         default: break
                         }
-                            if touchedNode.type != typeObj.objet
+                        if touchedNode.type != typeObj.objet
+                        {
+                            if selection
                             {
-                                if selection
-                                {
-                                    switch name {
-                                    case "outilsave_select":
-                                        savedSelected = nodesSelected
-                                    case "outilDuplication":
-                                        dupplication()
-                                    case "outilsame_select":
-                                        sameSelect()
-                                    case "outilDelete":
-                                        effacerNoeuds()
-                                    default:
-                                        deselectionnerTout()
-                                        break
-                                    }
-                                    
-                                    //TODO: Vérifier si nécéssaire
-                                    cliqueSurBoutonObj(name)
-                                }else
-                                {
-                                    //C'est ici que les nouveaux objets sont créés
-                                    if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
-                                    {
-                                        //let endroitSurTable = table.convertPoint(location, fromNode: self)
-                                        creerObjet(location,typeObjet: nomObjet)
-                                        
-                                        AudioServicesPlaySystemSound(sonObjSurTable);
-                                    }else if name == "outilload_select"
-                                    {
-                                        loadSelect()
-                                    }
+                                switch name {
+                                case "outilsave_select":
+                                    savedSelected = nodesSelected
+                                case "outilDuplication":
+                                    dupplication()
+                                case "outilsame_select":
+                                    sameSelect()
+                                case "outilDelete":
+                                    effacerNoeuds()
+                                default:
+                                    deselectionnerTout()
+                                    break
                                 }
+                                
+                                //TODO: Vérifier si nécéssaire
+                                cliqueSurBoutonObj(name)
                             }else
                             {
-                                cliqueObjet(touchedNode, location: location)
+                                //C'est ici que les nouveaux objets sont créés
+                                if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
+                                {
+                                    //let endroitSurTable = table.convertPoint(location, fromNode: self)
+                                    creerObjet(location,typeObjet: nomObjet)
+                                    
+                                    AudioServicesPlaySystemSound(sonObjSurTable);
+                                }else if name == "outilload_select"
+                                {
+                                    loadSelect()
+                                }
                             }
+                        }else
+                        {
+                            cliqueObjet(touchedNode, location: location)
+                        }
                     }
                 }
             }
