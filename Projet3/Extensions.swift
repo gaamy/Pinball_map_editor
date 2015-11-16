@@ -9,6 +9,12 @@
 import Foundation
 import SpriteKit
 
+enum typeObj{
+    case objet
+    case boutonObjet
+    case autre
+}
+
 extension CGPoint {
     ///Fonction qui calcule la distance entre deux points
     func distance(point: CGPoint) -> CGFloat {

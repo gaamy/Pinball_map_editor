@@ -130,7 +130,6 @@
 				2D0D41241BA8E50F00B25A7B /* LaunchScreen.xib */,
 				2D0D41151BA8E50F00B25A7B /* Supporting Files */,
 				FC0D79F31BEFCC6500B11C47 /* XmlManager.swift */,
-				2D6D37741BF7FF89004385FB /* Extensions.swift */,
 			);
 			path = Projet3;
 			sourceTree = "<group>";
@@ -146,6 +145,7 @@
 				2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */,
 				2D0D41161BA8E50F00B25A7B /* Info.plist */,
 				2D0F7C9E1BF11EB400020C40 /* Localizable.strings */,
+				2D6D37741BF7FF89004385FB /* Extensions.swift */,
 				2D6D37861BF8273B004385FB /* feu.sks */,
 				2D6D37881BF93DC1004385FB /* Popups.swift */,
 			);

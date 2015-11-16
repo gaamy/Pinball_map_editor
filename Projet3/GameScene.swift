@@ -45,10 +45,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     var endroitPrecedent = CGPoint()
     var menuGaucheOuvert = true
     var menuDroitOuvert = true
-    var murPosInitiale: CGPoint?
+    var posInitiale: CGPoint?
     var menuTouchee = SKNode()
     var leftSwipe = UISwipeGestureRecognizer()
     var rightSwipe = UISwipeGestureRecognizer()
+    var pan = false
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -59,23 +60,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     //Variables pour la rotation des objets
     var offset:CGFloat = 0
     var theRotation:CGFloat = 0
-    
-    //Les listes de noms
-    let listeDesBoutonsDeCreation = [
-        "boutonaccelerateur",
-        "boutonbutoirCirc",
-        "boutonbutoirTriDroit",
-        "boutonbutoirTriGauche",
-        "boutoncible",
-        "boutondestructeur",
-        "boutongenerateur",
-        "boutonpaletteDroite1",
-        "boutonpaletteDroite2",
-        "boutonpaletteGauche1",
-        "boutonpaletteGauche2",
-        "boutonportail",
-        "boutonressort",
-        "boutontrou"]
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -111,6 +95,17 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Initialise les labels et les text fields des propriétés
         initLabels()
+        
+        //On set les types de noeuds de la scène correctement pour utilisation futur
+        for node in menuGauche.children {
+            if let obj = node as? Objet {
+                if let nom = obj.name {
+                    if nom.containsString("bouton") {
+                        obj.type = typeObj.boutonObjet
+                    }
+                }
+            }
+        }
         
         updateVisibiliteCorbeille()
         
@@ -246,8 +241,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             return
         }
         
-        //On enregistre la position initiale du mur
-        murPosInitiale = touches.first!.locationInNode(self)
+        //On enregistre la position initiale (pour le mur et déplacements table)
+        posInitiale = touches.first!.locationInNode(self)
         
         for touch in touches {
             let location = touch.locationInNode(self)
@@ -256,7 +251,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             //On désactive les swipes dans l'écran si c'est pas un menu,
             //Sinon on ne peut plus déplacer un objet sans être arrêté par le gesture
             if let nom = touchedNode.name {
-                if nom.substringToIndex(nom.startIndex.advancedBy(4))  == "menu" {
+                if nom.containsString("menu") {
                     menuTouchee = touchedNode
                 }else{
                     swipePossible(false) //On bloque les swipes pendant le déplacement
@@ -302,6 +297,21 @@ class GameScene: SKScene, UITextFieldDelegate {
                 }
                 deplacement = true
                 endroitPrecedent = location
+            }else if !construireMur && nodeAtPoint(location) == table && nodeTouchee == table && pan {
+                for node in self.children {
+                    if let noeud = node as? Objet {
+                        if noeud.type == typeObj.objet {
+                            let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
+                            noeud.position.x += offSetPosition.x
+                            noeud.position.y += offSetPosition.y
+                        }
+                    }
+                }
+                let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
+                table.position.x += offSetPosition.x
+                table.position.y += offSetPosition.y
+                posInitiale = location
+                deplacement = true
             }
         }
     }
@@ -323,72 +333,67 @@ class GameScene: SKScene, UITextFieldDelegate {
         {
             for touch in (touches ) {
                 let location = touch.locationInNode(self)
-                let touchedNode = self.nodeAtPoint(location)
-                
-                if let name = touchedNode.name
-                {
+                if let touchedNode = self.nodeAtPoint(location) as? Objet {
                     
-                    if construireMur && !deplacement && name == "table" {
-                        let touch = touches.first
-                        let position2 = touch!.locationInNode(self)
+                    if let name = touchedNode.name
+                    {
+                        if name == "outilPan" {
+                            pan = !pan
+                        }
                         
-                        if table.containsPoint(murPosInitiale!) && table.containsPoint(position2) {
-                            let longeurMur = murPosInitiale?.distance(position2)
-                            let angleMur = murPosInitiale?.angle(position2)
-                            
-                            creerObjet(murPosInitiale!.centre(position2), typeObjet: "mur", longeurMur: longeurMur, angleMur: angleMur)
+                        if construireMur && !deplacement && name == "table" {
+                            let touch = touches.first
+                            let position2 = touch!.locationInNode(self)
+                            creerMur(position2)
                         }
-                    }
-                    
-                    switch name {
-                    case "boutonmenu":
-                        quitterModeEdition()
-                    case "boutonmur":
-                        construireMur = true
-                        AudioServicesPlaySystemSound(sonSelectionOutil)
-                    default: break
-                    }
-                    if !surTable(location, node: touchedNode)
-                    {
-                        if selection
-                        {
-                            switch name {
-                            case "boutonsave_select":
-                                savedSelected = nodesSelected
-                            case "boutonDuplication":
-                                dupplication()
-                            case "boutonsame_select":
-                                sameSelect()
-                            case "boutonDelete":
-                                effacerNoeuds()
-                            default:
-                                deselectionnerTout()
-                                break
-                            }
-                            
-                            //TODO: Vérifier si nécéssaire
-                            cliqueSurBoutonObj(name)
-                        }else
-                        {
-                            //C'est ici que les nouveaux objets sont créés
-                            if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
-                            {
-                                //let endroitSurTable = table.convertPoint(location, fromNode: self)
-                                creerObjet(location,typeObjet: nomObjet)
-                                
-                                AudioServicesPlaySystemSound(sonObjSurTable);
-                            }else if name == "boutonload_select"
-                            {
-                                loadSelect()
-                            }
+                        
+                        switch name {
+                        case "outilmenu":
+                            quitterModeEdition()
+                        case "boutonmur":
+                            construireMur = true
+                            AudioServicesPlaySystemSound(sonSelectionOutil)
+                        default: break
                         }
-                    }else
-                    {
-                        cliqueAutreQueBouton(touchedNode, location: location)
+                            if touchedNode.type != typeObj.objet
+                            {
+                                if selection
+                                {
+                                    switch name {
+                                    case "outilsave_select":
+                                        savedSelected = nodesSelected
+                                    case "outilDuplication":
+                                        dupplication()
+                                    case "outilsame_select":
+                                        sameSelect()
+                                    case "outilDelete":
+                                        effacerNoeuds()
+                                    default:
+                                        deselectionnerTout()
+                                        break
+                                    }
+                                    
+                                    //TODO: Vérifier si nécéssaire
+                                    cliqueSurBoutonObj(name)
+                                }else
+                                {
+                                    //C'est ici que les nouveaux objets sont créés
+                                    if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
+                                    {
+                                        //let endroitSurTable = table.convertPoint(location, fromNode: self)
+                                        creerObjet(location,typeObjet: nomObjet)
+                                        
+                                        AudioServicesPlaySystemSound(sonObjSurTable);
+                                    }else if name == "outilload_select"
+                                    {
+                                        loadSelect()
+                                    }
+                                }
+                            }else
+                            {
+                                cliqueObjet(touchedNode, location: location)
+                            }
                     }
-                }else
-                {
-                    cliqueAutreQueBouton(touchedNode, location: location)
                 }
             }
         }
@@ -407,6 +412,15 @@ class GameScene: SKScene, UITextFieldDelegate {
                 } else if buttonPressed == "Annuler" {
                     //On fait rien sinon
                 }
+        }
+    }
+    
+    func creerMur(position2: CGPoint){
+        if table.containsPoint(posInitiale!) && table.containsPoint(position2) {
+            let longeurMur = posInitiale?.distance(position2)
+            let angleMur = posInitiale?.angle(position2)
+            
+            creerObjet(posInitiale!.centre(position2), typeObjet: "mur", longeurMur: longeurMur, angleMur: angleMur)
         }
     }
     
@@ -435,6 +449,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         for node in nodesSelected
         {
             savedSelected = savedSelected.filter {$0 != node}
+            unselectNode(node)
             animationExplosion(node)
             node.removeFromParent()
         }
@@ -442,6 +457,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         //On efface la sélection, donc plus rien n'est sélectionné
         selection = false
         updateVisibiliteCorbeille()
+        
+        //On update les zone de texte des propriétés de l'objet
+        updateTextProprieteObjet()
         
         // jouer un son
         AudioServicesPlaySystemSound(sonCorbeille);
@@ -484,7 +502,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         for node in nodesSelected
         {
             unselectNode(node)
-            let nodeCopie = node.copier()
+            let nodeCopie = node.duppliquer()
+            setPhysicsBody(nodeCopie, masque: 1) //Masque: 1 -> Objets sur la table
             self.addChild(nodeCopie)
             selectNode(nodeCopie)
         }
@@ -529,10 +548,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet.yScale = 0.5 //* monRatio
         
         objet.position = endroitSurTable
+        objet.zPosition = -14
+        objet.type = typeObj.objet //Nous indique que c'est un objet
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
         
-        //Indique qu'on est en train de construire un mur
+        //Pour la construction d'un mur
         if longeurMur != nil && angleMur != nil {
             if longeurMur! < 5 {
                 return
@@ -541,7 +562,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             objet.zRotation = angleMur!
         }
         
-        self.addChild(objet.copy() as! Objet)
+        self.addChild(objet.copier())
+        
     }
     
     func animationExplosion(node: SKNode) {
@@ -584,7 +606,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     ///Appelé lorsqu'on clique sur un objet de type "bouton"
     func cliqueSurBoutonObj(name: String) -> Bool{
-        if listeDesBoutonsDeCreation.contains(name){
+        if name.containsString("bouton"){
             construireMur = false
             nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
             // jouer un son
@@ -595,7 +617,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     ///On sélectionne ou désélectionne l'objet qu'on reçoit en parametre
-    func cliqueAutreQueBouton(touchedNode: SKNode, location: CGPoint){
+    func cliqueObjet(touchedNode: SKNode, location: CGPoint){
         //let noeud = self.physicsWorld.bodyAtPoint(location)
         //print(nodo?.node?.name)
         
@@ -618,10 +640,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     func updateVisibiliteCorbeille(){
         if selection
         {
-            menuGauche.childNodeWithName("boutonDelete")?.alpha = 1
+            menuGauche.childNodeWithName("outilDelete")?.alpha = 1
         }else
         {
-            menuGauche.childNodeWithName("boutonDelete")?.alpha = 0
+            menuGauche.childNodeWithName("outilDelete")?.alpha = 0
         }
     }
     
@@ -721,8 +743,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             self.textRotation?.enabled = true
             textRotation!.backgroundColor = UIColor.whiteColor()
-            
-            
         }else{
             textPositionX!.text = ""
             textPositionY!.text = ""
