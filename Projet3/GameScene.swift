@@ -50,6 +50,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     var leftSwipe = UISwipeGestureRecognizer()
     var rightSwipe = UISwipeGestureRecognizer()
     var pan = false
+    var marqueurSelectionBouton = SKShapeNode()
+    var marqueurSelectionOutil = SKShapeNode()
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -339,6 +341,11 @@ class GameScene: SKScene, UITextFieldDelegate {
                     {
                         if name == "outilPan" {
                             pan = !pan
+                            if pan {
+                                selectionnerOutil("outilPan")
+                            }else{
+                                deselectionnerOutil("outilPan")
+                            }
                         }
                         
                         if construireMur && !deplacement && name == "table" {
@@ -364,6 +371,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                                     savedSelected = nodesSelected
                                 case "outilDuplication":
                                     dupplication()
+                                    flashSelectionOutil("outilDuplication")
                                 case "outilsame_select":
                                     sameSelect()
                                 case "outilDelete":
@@ -607,6 +615,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Appelé lorsqu'on clique sur un objet de type "bouton"
     func cliqueSurBoutonObj(name: String) -> Bool{
         if name.containsString("bouton"){
+            selectionnerBouton(name)
             construireMur = false
             nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
             // jouer un son
@@ -614,6 +623,34 @@ class GameScene: SKScene, UITextFieldDelegate {
             return true
         }
         return false
+    }
+    
+    func selectionnerBouton(name: String){
+        marqueurSelectionBouton.removeFromParent()
+        let noeud = menuGauche.childNodeWithName(name)
+        marqueurSelectionBouton = SKShapeNode(rect: (noeud?.frame)!)
+        marqueurSelectionOutil.zPosition = -4
+        menuGauche.addChild(marqueurSelectionBouton)
+    }
+    
+    func selectionnerOutil(name: String){
+        marqueurSelectionOutil.removeFromParent()
+        let noeud = menuGauche.childNodeWithName(name)
+        marqueurSelectionOutil = SKShapeNode(rect: (noeud?.frame)!)
+        marqueurSelectionOutil.zPosition = -4
+        menuGauche.addChild(marqueurSelectionOutil)
+    }
+    
+    func deselectionnerOutil(name: String){
+        marqueurSelectionOutil.removeFromParent()
+    }
+    
+    func flashSelectionOutil(name: String){
+        selectionnerOutil(name)
+        let delai = SKAction.waitForDuration(0.1)
+        self.runAction(delai, completion: {
+            self.deselectionnerOutil(name)
+        })
     }
     
     ///On sélectionne ou désélectionne l'objet qu'on reçoit en parametre
