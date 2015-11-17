@@ -29,6 +29,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
     var coteDifficulte = 2
+    
     var nomObjet = "Spaceship"
     var viewController: UIViewController? //Identifie le menuPrincipal
     var table = SKNode()
@@ -37,7 +38,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     var nodesSelected = [Objet]()
     var savedSelected = [Objet]()
     var construireMur = false
-    let chemin = CGPathCreateMutable()
     var murTemp = SKNode()
     var deplacement = false
     var nodeTouchee = Objet()
@@ -107,6 +107,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                 }
             }
         }
+        
+        playBackgroundMusic("MusiqueEspace")
         
         updateVisibiliteCorbeille()
         

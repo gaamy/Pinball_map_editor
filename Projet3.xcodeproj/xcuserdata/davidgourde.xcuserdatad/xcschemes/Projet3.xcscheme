@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D0D41111BA8E50F00B25A7B"
-               BuildableName = "Projet3.app"
+               BuildableName = "MonProjet.app"
                BlueprintName = "Projet3"
                ReferencedContainer = "container:Projet3.xcodeproj">
             </BuildableReference>
@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D0D412A1BA8E50F00B25A7B"
-               BuildableName = "Projet3Tests.xctest"
+               BuildableName = "Projet3.xctest"
                BlueprintName = "Projet3Tests"
                ReferencedContainer = "container:Projet3.xcodeproj">
             </BuildableReference>
@@ -47,7 +47,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D0D412A1BA8E50F00B25A7B"
-               BuildableName = "Projet3Tests.xctest"
+               BuildableName = "Projet3.xctest"
                BlueprintName = "Projet3Tests"
                ReferencedContainer = "container:Projet3.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D0D41111BA8E50F00B25A7B"
-            BuildableName = "Projet3.app"
+            BuildableName = "MonProjet.app"
             BlueprintName = "Projet3"
             ReferencedContainer = "container:Projet3.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D0D41111BA8E50F00B25A7B"
-            BuildableName = "Projet3.app"
+            BuildableName = "MonProjet.app"
             BlueprintName = "Projet3"
             ReferencedContainer = "container:Projet3.xcodeproj">
          </BuildableReference>
@@ -99,7 +99,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D0D41111BA8E50F00B25A7B"
-            BuildableName = "Projet3.app"
+            BuildableName = "MonProjet.app"
             BlueprintName = "Projet3"
             ReferencedContainer = "container:Projet3.xcodeproj">
          </BuildableReference>

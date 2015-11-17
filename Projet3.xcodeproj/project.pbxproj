@@ -22,6 +22,8 @@
 		2D6D377D1BF8244F004385FB /* corbeille.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D377C1BF8244F004385FB /* corbeille.mp3 */; };
 		2D6D37871BF8273B004385FB /* feu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D37861BF8273B004385FB /* feu.sks */; };
 		2D6D37891BF93DC1004385FB /* Popups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6D37881BF93DC1004385FB /* Popups.swift */; };
+		2DD9F4881BFBDCB70085AC39 /* JouerMusique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD9F4871BFBDCB70085AC39 /* JouerMusique.swift */; };
+		2DD9F48A1BFBE14C0085AC39 /* MusiqueEspace.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DD9F4891BFBE14C0085AC39 /* MusiqueEspace.mp3 */; };
 		2DEC1FDC1BEAF1F60077EAB5 /* Objet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */; };
 		2DFD73C91BB0D2F500744B61 /* placerObjetSurTable.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */; };
 		2DFD73CA1BB0D2F500744B61 /* SelectionOutil.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */; };
@@ -52,20 +54,21 @@
 		2D0D41201BA8E50F00B25A7B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2D0D41221BA8E50F00B25A7B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2D0D41251BA8E50F00B25A7B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		2D0D412B1BA8E50F00B25A7B /* Projet3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Projet3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D0D412B1BA8E50F00B25A7B /* Projet3.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Projet3.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0D41301BA8E50F00B25A7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D0D41311BA8E50F00B25A7B /* Projet3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projet3Tests.swift; sourceTree = "<group>"; };
 		2D0F7C9D1BF11EB400020C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D0F7C9F1BF11EB700020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D0F7CA11BF127D400020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		2D0F7CA51BF12E0200020C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Base; path = Base.lproj/GameScene.sks; sourceTree = "<group>"; };
-		2D6D37731BF7EB3E004385FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = en; path = en.lproj/GameScene.sks; sourceTree = "<group>"; };
 		2D6D37741BF7FF89004385FB /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2D6D37771BF82114004385FB /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = deleteNodeEffect.sks; sourceTree = "<group>"; };
 		2D6D377C1BF8244F004385FB /* corbeille.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = corbeille.mp3; sourceTree = "<group>"; };
 		2D6D37861BF8273B004385FB /* feu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = feu.sks; sourceTree = "<group>"; };
 		2D6D37881BF93DC1004385FB /* Popups.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popups.swift; sourceTree = "<group>"; };
+		2DD9F4871BFBDCB70085AC39 /* JouerMusique.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JouerMusique.swift; sourceTree = "<group>"; };
+		2DD9F4891BFBE14C0085AC39 /* MusiqueEspace.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MusiqueEspace.mp3; sourceTree = "<group>"; };
 		2DEC1FDB1BEAF1F60077EAB5 /* Objet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Objet.swift; sourceTree = "<group>"; };
 		2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = placerObjetSurTable.mp3; sourceTree = "<group>"; };
 		2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SelectionOutil.mp3; sourceTree = "<group>"; };
@@ -108,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				2D0D41121BA8E50F00B25A7B /* Projet3.app */,
-				2D0D412B1BA8E50F00B25A7B /* Projet3Tests.xctest */,
+				2D0D412B1BA8E50F00B25A7B /* Projet3.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,11 +146,13 @@
 				2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */,
 				2DFD73CB1BB0D52900744B61 /* Selection.mp3 */,
 				2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */,
+				2DD9F4891BFBE14C0085AC39 /* MusiqueEspace.mp3 */,
 				2D0D41161BA8E50F00B25A7B /* Info.plist */,
 				2D0F7C9E1BF11EB400020C40 /* Localizable.strings */,
 				2D6D37741BF7FF89004385FB /* Extensions.swift */,
 				2D6D37861BF8273B004385FB /* feu.sks */,
 				2D6D37881BF93DC1004385FB /* Popups.swift */,
+				2DD9F4871BFBDCB70085AC39 /* JouerMusique.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -204,7 +209,7 @@
 			);
 			name = Projet3Tests;
 			productName = Projet3Tests;
-			productReference = 2D0D412B1BA8E50F00B25A7B /* Projet3Tests.xctest */;
+			productReference = 2D0D412B1BA8E50F00B25A7B /* Projet3.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -260,6 +265,7 @@
 				2D6D37871BF8273B004385FB /* feu.sks in Resources */,
 				2D0F7C9C1BF11EB400020C40 /* Localizable.strings in Resources */,
 				2DFD73CA1BB0D2F500744B61 /* SelectionOutil.mp3 in Resources */,
+				2DD9F48A1BFBE14C0085AC39 /* MusiqueEspace.mp3 in Resources */,
 				2D6D377D1BF8244F004385FB /* corbeille.mp3 in Resources */,
 				2D0F7CA21BF12DFE00020C40 /* GameScene.sks in Resources */,
 				2D0D41211BA8E50F00B25A7B /* Main.storyboard in Resources */,
@@ -283,6 +289,7 @@
 				FC1DCC301BCF7BFF00353F74 /* loginScreenViewController.swift in Sources */,
 				FC0D79F41BEFCC6500B11C47 /* XmlManager.swift in Sources */,
 				2D0D411C1BA8E50F00B25A7B /* GameScene.swift in Sources */,
+				2DD9F4881BFBDCB70085AC39 /* JouerMusique.swift in Sources */,
 				2DEC1FDC1BEAF1F60077EAB5 /* Objet.swift in Sources */,
 				2D0D411E1BA8E50F00B25A7B /* GameViewController.swift in Sources */,
 				2D6D37751BF7FF89004385FB /* Extensions.swift in Sources */,
@@ -343,7 +350,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				2D0F7CA51BF12E0200020C40 /* Base */,
-				2D6D37731BF7EB3E004385FB /* en */,
 			);
 			name = GameScene.sks;
 			sourceTree = "<group>";
@@ -442,8 +448,8 @@
 				INFOPLIST_FILE = Projet3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Projet3.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = Projet3.Projet3;
+				PRODUCT_NAME = Projet3;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -455,8 +461,8 @@
 				INFOPLIST_FILE = Projet3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Projet3.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = Projet3.Projet3;
+				PRODUCT_NAME = Projet3;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
@@ -476,7 +482,7 @@
 				INFOPLIST_FILE = Projet3Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Projet3.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Projet3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Projet3.app/Projet3";
 			};
 			name = Debug;
@@ -492,7 +498,7 @@
 				INFOPLIST_FILE = Projet3Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Projet3.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Projet3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Projet3.app/Projet3";
 			};
 			name = Release;
