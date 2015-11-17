@@ -36,7 +36,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     var menuDroit = SKNode()
     var nodesSelected = [Objet]()
     var savedSelected = [Objet]()
-    var selection = false
     var construireMur = false
     let chemin = CGPathCreateMutable()
     var murTemp = SKNode()
@@ -285,7 +284,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             //TODO: Utilisez la bounding box a la place.
             //TODO: Régler le bug qui fait que quand je fais un gesture, ça déplace les objets!!!
-            if selection && nodesSelected.contains(nodeTouchee)
+            if selection() && nodesSelected.contains(nodeTouchee)
             {
                 for node in nodesSelected
                 {
@@ -364,7 +363,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                         }
                         if touchedNode.type != typeObj.objet
                         {
-                            if selection
+                            if selection()
                             {
                                 switch name {
                                 case "outilsave_select":
@@ -462,8 +461,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             node.removeFromParent()
         }
         
-        //On efface la sélection, donc plus rien n'est sélectionné
-        selection = false
         updateVisibiliteCorbeille()
         
         //On update les zone de texte des propriétés de l'objet
@@ -475,7 +472,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     ///Cette fonction permet de désélectionner tous les noeuds sélectionnés
     func deselectionnerTout(){
-        selection = false
         for node in nodesSelected
         {
             unselectNode(node)
@@ -501,6 +497,15 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         return false
+    }
+    
+    ///Fonction qui retourne vrai si un objet est sélectionné
+    func selection() -> Bool{
+        if nodesSelected.count > 0 {
+            return true
+        }else{
+            return false
+        }
     }
     
     ///Fonction qui dupplique les objets sélectionnés
@@ -675,7 +680,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     ///Fonction qui met à jour la visibilité de la corbeille
     func updateVisibiliteCorbeille(){
-        if selection
+        if selection()
         {
             menuGauche.childNodeWithName("outilDelete")?.alpha = 1
         }else
@@ -688,7 +693,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     func selectNode(newObjectSelection: Objet?) {
         newObjectSelection!.alpha = 0.5
         nodesSelected.append(newObjectSelection!)
-        selection = true
         updateVisibiliteCorbeille()
     }
     
@@ -698,7 +702,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet!.alpha = 1
         if nodesSelected.isEmpty
         {
-            selection = false
             updateVisibiliteCorbeille()
         }
     }
