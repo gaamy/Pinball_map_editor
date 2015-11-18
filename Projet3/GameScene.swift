@@ -35,12 +35,13 @@ class GameScene: SKScene, UITextFieldDelegate {
     var table = SKNode()
     var menuGauche = SKNode()
     var menuDroit = SKNode()
-    var nodesSelected = [Objet]()
-    var savedSelected = [Objet]()
+    var nodesSelected = [SKSpriteNode]()
+    var savedSelected = [SKSpriteNode]()
+    var nodesSurTable = [monObjet]()
     var construireMur = false
     var murTemp = SKNode()
     var deplacement = false
-    var nodeTouchee = Objet()
+    var nodeTouchee = SKSpriteNode()
     var endroitPrecedent = CGPoint()
     var menuGaucheOuvert = true
     var menuDroitOuvert = true
@@ -96,17 +97,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Initialise les labels et les text fields des propriétés
         initLabels()
-        
-        //On set les types de noeuds de la scène correctement pour utilisation futur
-        for node in menuGauche.children {
-            if let obj = node as? Objet {
-                if let nom = obj.name {
-                    if nom.containsString("bouton") {
-                        obj.type = typeObj.boutonObjet
-                    }
-                }
-            }
-        }
         
         playBackgroundMusic("MusiqueEspace")
         
@@ -266,7 +256,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             if table.containsPoint(touchedNode.position)
             {
                 //On cast le SKNode en SKPriteNode
-                if let monNode = touchedNode as? Objet
+                if let monNode = touchedNode as? SKSpriteNode
                 {
                     nodeTouchee = monNode
                 }
@@ -302,8 +292,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                 endroitPrecedent = location
             }else if !construireMur && nodeAtPoint(location) == table && nodeTouchee == table && pan {
                 for node in self.children {
-                    if let noeud = node as? Objet {
-                        if noeud.type == typeObj.objet {
+                    if let noeud = node as? SKSpriteNode {
+                        if noeud.name!.containsString("objet") {
                             let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
                             noeud.position.x += offSetPosition.x
                             noeud.position.y += offSetPosition.y
@@ -322,7 +312,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         swipePossible(true) //On débloque les swipes après avoir terminé le déplacement
-        nodeTouchee = Objet() //On réinitialise l'objet touché dans touchesBegin
+        nodeTouchee = SKSpriteNode() //On réinitialise l'objet touché dans touchesBegin
         
         //Si on touche avec plusieurs doit, c'est surement un gesture, on ne fait rien
         if (touches.count > 1) {
@@ -336,7 +326,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         {
             for touch in (touches ) {
                 let location = touch.locationInNode(self)
-                if let touchedNode = self.nodeAtPoint(location) as? Objet {
+                if let touchedNode = self.nodeAtPoint(location) as? SKSpriteNode {
                     
                     if let name = touchedNode.name
                     {
@@ -363,7 +353,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                             AudioServicesPlaySystemSound(sonSelectionOutil)
                         default: break
                         }
-                        if touchedNode.type != typeObj.objet
+                        if !touchedNode.name!.containsString("objet")
                         {
                             if selection()
                             {
@@ -415,6 +405,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             message: "Êtes-vous certains de vouloir quitter? Assurez-vous d'avoir sauvegardé vos changements.",
             buttons: ["Quitter" , "Annuler"]) { (buttonPressed) -> Void in
                 if buttonPressed == "Quitter" {
+                    backgroundMusicPlayer.stop()
                     var vc: UIViewController = UIViewController()
                     vc = self.view!.window!.rootViewController!
                     self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
@@ -455,12 +446,16 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///-Actionné par le bouton delete
     func effacerNoeuds(){
         //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
-        for node in nodesSelected
+        for objetCourant in nodesSurTable
         {
-            savedSelected = savedSelected.filter {$0 != node}
-            unselectNode(node)
-            animationExplosion(node)
-            node.removeFromParent()
+            let monNoeud = objetCourant.noeud
+            if nodesSelected.contains(monNoeud) {
+                savedSelected = savedSelected.filter {$0 != monNoeud}
+                nodesSurTable = nodesSurTable.filter {$0.noeud != monNoeud}
+                unselectNode(monNoeud)
+                animationExplosion(monNoeud)
+                monNoeud.removeFromParent()
+            }
         }
         
         updateVisibiliteCorbeille()
@@ -483,7 +478,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Fonction qui vérifie si le noeud est sur la table ou non
     func surTable(location: CGPoint, node: SKNode) -> Bool
     {
-        if let noeud = node as? Objet {
+        if let noeud = node as? SKSpriteNode {
             let largeur = noeud.size.width / 2
             let hauteur = noeud.size.height / 2
             let gauche = CGPoint(x:location.x - largeur,y:location.y)
@@ -513,14 +508,18 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Fonction qui dupplique les objets sélectionnés
     ///-Actionné par le bouton dupplication
     func dupplication(){
-        // var newNode = NewNode()
-        for node in nodesSelected
-        {
-            unselectNode(node)
-            let nodeCopie = node.duppliquer()
-            setPhysicsBody(nodeCopie, masque: 1) //Masque: 1 -> Objets sur la table
-            self.addChild(nodeCopie)
-            selectNode(nodeCopie)
+        
+        for objetCourant in nodesSurTable {
+            let node = objetCourant.noeud
+            if nodesSelected.contains(node) {
+                unselectNode(node)
+                let nodeCopie = node.copy() as! SKSpriteNode
+                setPhysicsBody(nodeCopie, masque: 1) //Masque: 1 -> Objets sur la table
+                let nouvObjet = monObjet(noeud: nodeCopie, points: objetCourant.points)
+                nodesSurTable.append(nouvObjet)
+                self.addChild(nodeCopie)
+                selectNode(nodeCopie)
+            }
         }
     }
     
@@ -532,9 +531,9 @@ class GameScene: SKScene, UITextFieldDelegate {
             for enfant in self.children
             {
                 //On retrouve le nom du node sélectionné
-                if enfant.name == nodesSelected[0].name
+                if enfant.name == nodesSelected[0].name && enfant != nodesSelected[0]
                 {
-                    if let monEnfant = enfant as? Objet
+                    if let monEnfant = enfant as? SKSpriteNode
                     {
                         selectNode(monEnfant)
                     }
@@ -553,8 +552,8 @@ class GameScene: SKScene, UITextFieldDelegate {
      - Cette méthode utilise la variable de classe "nomObjet" pour fabriquer le bon objet
      */
     func creerObjet(endroitSurTable: CGPoint, typeObjet: String, longeurMur: CGFloat?=nil, angleMur: CGFloat?=nil){
-        let objet = Objet(imageNamed: typeObjet)
-        objet.name = typeObjet
+        let objet = SKSpriteNode(imageNamed: typeObjet)
+        objet.name = "objet" + typeObjet
         
         //Ici je set le ratio des objets pour garder celui de la scène et non celui de la table
         //let monRatio = self.frame.height / self.frame.width
@@ -564,7 +563,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         objet.position = endroitSurTable
         objet.zPosition = -14
-        objet.type = typeObj.objet //Nous indique que c'est un objet
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
         
@@ -577,8 +575,10 @@ class GameScene: SKScene, UITextFieldDelegate {
             objet.zRotation = angleMur!
         }
         
-        self.addChild(objet.copier())
+        self.addChild(objet)
         
+        let temp = monObjet(noeud: objet)
+        nodesSurTable.append(temp)
     }
     
     func animationExplosion(node: SKNode) {
@@ -609,7 +609,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     ///Fonction qui set un physicsbody (boite englobante et physique si nécéssaire)
-    func setPhysicsBody(objet: Objet, masque: UInt32){
+    func setPhysicsBody(objet: SKSpriteNode, masque: UInt32){
         objet.physicsBody = SKPhysicsBody.init(texture: objet.texture!, size: objet.size)
         
         objet.physicsBody?.affectedByGravity = false
@@ -665,7 +665,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         //let noeud = self.physicsWorld.bodyAtPoint(location)
         //print(nodo?.node?.name)
         
-        if let objSelectionne = touchedNode as? Objet
+        if let objSelectionne = touchedNode as? SKSpriteNode
         {
             if nodesSelected.contains(objSelectionne)
             {
@@ -692,14 +692,14 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     ///Fonction qui sélectionne un objet
-    func selectNode(newObjectSelection: Objet?) {
+    func selectNode(newObjectSelection: SKSpriteNode?) {
         newObjectSelection!.alpha = 0.5
         nodesSelected.append(newObjectSelection!)
         updateVisibiliteCorbeille()
     }
     
     ///Fonction qui désélectionne un objet
-    func unselectNode(objet: Objet?) {
+    func unselectNode(objet: SKSpriteNode?) {
         nodesSelected = nodesSelected.filter {$0 != objet!}
         objet!.alpha = 1
         if nodesSelected.isEmpty
@@ -767,8 +767,13 @@ class GameScene: SKScene, UITextFieldDelegate {
             textRotation!.text = NSString(format: "%.01f", nodesSelected[0].zRotation) as String
             textScale!.text = nodesSelected[0].xScale.description
             
-            if nodesSelected[0].name == "cible" || nodesSelected[0].name == "butoirTriDroit" || nodesSelected[0].name == "butoirTriGauche" {
-                textPoints!.text = String(nodesSelected[0].points)
+            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" {
+                
+                for monNoeud in nodesSurTable {
+                    if monNoeud.noeud == nodesSelected[0] {
+                        textPoints!.text = String(monNoeud.points)
+                    }
+                }
                 
                 self.textPoints?.enabled = true
                 textPoints!.backgroundColor = UIColor.whiteColor()
@@ -849,10 +854,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
         
         if(textPoints!.text! != "" && nodesSelected.count == 1){
-            if nodesSelected[0].name == "cible" || nodesSelected[0].name == "butoirTriDroit" || nodesSelected[0].name == "butoirTriGauche" {
+            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" {
                 if let s = NSNumberFormatter().numberFromString(textPoints!.text!) {
                     let sInt = Int(s)
-                    nodesSelected[0].points = sInt
+                    
+                    for monNoeud in nodesSurTable {
+                        if monNoeud.noeud == nodesSelected[0] {
+                            monNoeud.points = sInt
+                        }
+                    }
                 }
             }
             
