@@ -128,6 +128,13 @@ class GameScene: SKScene, UITextFieldDelegate {
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
         if (sender.state == .Began){
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
+            for objetCourant in nodesSurTable {
+                let pos = table.convertPoint(objetCourant.noeud.position, fromNode: self)
+                objetCourant.noeud.removeFromParent()
+                table.addChild(objetCourant.noeud)
+                objetCourant.noeud.position = pos
+                objetCourant.noeud.zPosition = -14
+            }
         }
         if sender.state == .Changed {
             //Pendant la le pincement
@@ -143,7 +150,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             }else{
                 //Ici on scale la vue au complet (zoom)
                 //TODO: Ajouter un max et un min au scale de la scène
-                self.view!.transform = CGAffineTransformScale( self.view!.transform, sender.scale, sender.scale)
+                //table.xScale *= sender.scale
+                //table.yScale *= sender.scale
                 sender.scale = 1
             }
         }
