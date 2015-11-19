@@ -351,7 +351,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                             }
                         }
                         
-                        if construireMur && !deplacement && name == "table" {
+                        if construireMur && name == "table" {
                             let touch = touches.first
                             let position2 = touch!.locationInNode(self)
                             creerMur(position2)
@@ -393,8 +393,6 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 {
                                     //let endroitSurTable = table.convertPoint(location, fromNode: self)
                                     creerObjet(location,typeObjet: nomObjet)
-                                    
-                                    AudioServicesPlaySystemSound(sonObjSurTable);
                                 }else if name == "outilload_select"
                                 {
                                     loadSelect()
@@ -598,6 +596,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         let temp = monObjet(noeud: objet)
         nodesSurTable.append(temp)
+        
+        AudioServicesPlaySystemSound(sonObjSurTable);
     }
     
     func animationExplosion(node: SKNode) {
@@ -640,9 +640,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     ///Appelé lorsqu'on clique sur un objet de type "bouton"
     func cliqueSurBoutonObj(name: String) -> Bool{
-        if name.containsString("bouton"){
+        if name.containsString("bouton") {
             selectionnerBouton(name)
-            construireMur = false
+            if name != "boutonmur" {
+                construireMur = false
+            }
             nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
             // jouer un son
             AudioServicesPlaySystemSound(sonSelectionOutil);
