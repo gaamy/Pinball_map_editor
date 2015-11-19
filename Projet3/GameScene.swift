@@ -52,6 +52,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var pan = false
     var marqueurSelectionBouton = SKShapeNode()
     var marqueurSelectionOutil = SKShapeNode()
+    var uneFrameSurX = 0
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -293,9 +294,12 @@ class GameScene: SKScene, UITextFieldDelegate {
                     if surTable(nouvEndroit, node: node)
                     {
                         node.position = nouvEndroit
-                        feuFeuJolieFeu(node)
+                        if uneFrameSurX == 0 {
+                            feuFeuJolieFeu(node)
+                        }
                     }
                 }
+                miseAJourFrameAnimationFeu()
                 deplacement = true
                 endroitPrecedent = location
             }else if !construireMur && nodeAtPoint(location) == table && nodeTouchee == table && pan {
@@ -318,7 +322,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
+
         swipePossible(true) //On débloque les swipes après avoir terminé le déplacement
         nodeTouchee = SKSpriteNode() //On réinitialise l'objet touché dans touchesBegin
         
@@ -429,6 +433,13 @@ class GameScene: SKScene, UITextFieldDelegate {
             let angleMur = posInitiale?.angle(position2)
             
             creerObjet(posInitiale!.centre(position2), typeObjet: "mur", longeurMur: longeurMur, angleMur: angleMur)
+        }
+    }
+    
+    func miseAJourFrameAnimationFeu(){
+        ++uneFrameSurX
+        if uneFrameSurX >= nodesSelected.count / 2 {
+            uneFrameSurX = 0
         }
     }
     
