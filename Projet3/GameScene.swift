@@ -170,41 +170,13 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func rotationDeLObjet(sender: UIRotationGestureRecognizer){
+        var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
+        
         if (sender.state == .Began){
-            //On fait ici ce qu'on veut qui se passe quand la rotation débute
+            //Au début de la rotation, on trouve le centre (si sélection multiple)
             if nodesSelected.count > 1 {
-                var maxX = nodesSelected[0].position.x
-                var minX = nodesSelected[0].position.x
-                var maxY = nodesSelected[0].position.y
-                var minY = nodesSelected[0].position.y
-                
-                for node in nodesSelected{
-                    if node.position.x > maxX{
-                        maxX = node.position.x
-                    }
-                    if node.position.x < minX{
-                        minX = node.position.x
-                    }
-                    if node.position.y > maxY{
-                        maxY = node.position.y
-                    }
-                    if node.position.y > maxY{
-                        minY = node.position.y
-                    }
-                }
-                
-                let centre = CGPoint(x: (maxX-minX)/2+minX, y: (maxY-minY)+minY/2) //Point central entre objs
-                
-                for node in nodesSelected
-                {
-                    node.anchorPoint.x = node.anchorPoint.x - 1
-                    node.anchorPoint.y = node.anchorPoint.y - 1
-                    print(node.convertPoint(node.anchorPoint, fromNode: self))
-                    print(node.convertPoint(centre, fromNode: node.parent!).x)
-                    print(node.convertPoint(node.position, fromNode: node.parent!))
-                    //creerObjet(centre, typeObjet: "objetpaletteDroite1" )
-                    //nodesSurTable[nodesSurTable.count-1].noeud.position = nodesSurTable[nodesSurTable.count-1].noeud.convertPoint(centre, fromNode: self)
-                }
+                centre = centreDesNodesSelectionnees()
+                creerObjet(centre, typeObjet: "generateur")
             }
         }
         if sender.state == .Changed {
@@ -221,22 +193,39 @@ class GameScene: SKScene, UITextFieldDelegate {
                 //self.childNodeWithName("nodeCentre")?.zRotation = theRotation
                 for node in nodesSelected
                 {
-                    node.zRotation = theRotation
+                    let dx = node.position.x - centre.x // Get distance X from center
+                    let dy = node.position.y - centre.y // Get distance Y from center
+                    
+                    let current_angle = atan(dy / dx) // Current angle is the arctan of dy / dx
+                    
+                    let next_angle = current_angle + theRotation // Sum how much you want to rotate in radians
+                    
+                    let rotationRadius = node.position.distance(centre)
+                    
+                    // the new x is: center + radius*cos(x)
+                    // the new y is: center + radius*sin(y)
+                    // if dx < 0 you need to get the oposite value of the position
+                    let new_x = dx >= 0 ? centre.x + rotationRadius * cos(next_angle) : centre.x - rotationRadius * cos(next_angle)
+                    let new_y = dx >= 0 ? centre.y + rotationRadius * sin(next_angle) : centre.y - rotationRadius * sin(next_angle)
+                    
+                    let new_point = CGPoint(x: new_x, y: new_y)
+                    
+                    let action = SKAction.moveTo(new_point, duration: 0.2)
+                    
+                    node.runAction(action)
                 }
             }
         }
         if sender.state == .Ended {
             //Après la rotation
-            self.offset = theRotation * -1
-            
-            for node in nodesSelected
-            {
-                node.zRotation = theRotation
-                //node.removeFromParent()
-                //self.addChild(node)
+            if nodesSelected.count == 1 {
+                self.offset = theRotation * -1
+                
+                for node in nodesSelected
+                {
+                    node.zRotation = theRotation
+                }
             }
-            
-            //self.childNodeWithName("nodeCentre")?.removeFromParent()
             updateTextProprieteObjet()
             
         }
@@ -715,6 +704,30 @@ class GameScene: SKScene, UITextFieldDelegate {
         {
             menuGauche.childNodeWithName("outilDelete")?.alpha = 0
         }
+    }
+    
+    func centreDesNodesSelectionnees() -> CGPoint{
+        var maxX = nodesSelected[0].position.x
+        var minX = nodesSelected[0].position.x
+        var maxY = nodesSelected[0].position.y
+        var minY = nodesSelected[0].position.y
+        
+        for node in nodesSelected{
+            if node.position.x > maxX{
+                maxX = node.position.x
+            }
+            if node.position.x < minX{
+                minX = node.position.x
+            }
+            if node.position.y > maxY{
+                maxY = node.position.y
+            }
+            if node.position.y < minY{
+                minY = node.position.y
+            }
+        }
+        
+        return CGPoint(x: (maxX-minX)/2+minX, y: (maxY-minY)+minY/2)
     }
     
     ///Fonction qui sélectionne un objet
