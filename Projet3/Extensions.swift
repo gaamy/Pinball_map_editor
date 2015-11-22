@@ -31,3 +31,13 @@ extension CGPoint {
         return CGPoint(x: (point.x - x)/2 + x, y: (point.y - y)/2 + y)
     }
 }
+
+extension CGFloat {
+    var degreeEnRadian : CGFloat {
+        return self * CGFloat(M_PI) / 180.0
+    }
+    
+    var RadianEnDegree : CGFloat {
+        return self * 180.0 / CGFloat(M_PI)
+    }
+}

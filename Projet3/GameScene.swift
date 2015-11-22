@@ -96,6 +96,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         menuGauche = self.childNodeWithName("menuGauche")!
         menuDroit = self.childNodeWithName("menuDroit")!
         
+        //On set la physique de la table
+        let rect = CGRect(origin:CGPoint(x:table.frame.origin.x-table.position.x, y:table.frame.origin.y-table.position.y), size:table.frame.size)
+        table.physicsBody = SKPhysicsBody(edgeLoopFromRect:rect)
+        
         //Initialise les labels et les text fields des propriétés
         initLabels()
         
@@ -129,23 +133,26 @@ class GameScene: SKScene, UITextFieldDelegate {
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
         if (sender.state == .Began){
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
-            for objetCourant in nodesSurTable {
+            /*for objetCourant in nodesSurTable {
                 let pos = table.convertPoint(objetCourant.noeud.position, fromNode: self)
                 objetCourant.noeud.removeFromParent()
                 table.addChild(objetCourant.noeud)
                 objetCourant.noeud.position = pos
                 objetCourant.noeud.zPosition = -14
-            }
+            }*/
         }
         if sender.state == .Changed {
             //Pendant la le pincement
             
             if nodesSelected.count > 0 {
                 //TODO, on doit aussi scale la boite englobante**
-                for node in nodesSelected{
-                    node.size.width = node.size.width * sender.scale
-                    node.size.height = node.size.height * sender.scale
-                    setPhysicsBody(node, masque: 1)
+                for objet in nodesSurTable {
+                    if nodesSelected.contains(objet.noeud) {
+                        objet.noeud.size.width = objet.noeud.size.width * sender.scale
+                        objet.noeud.size.height = objet.noeud.size.height * sender.scale
+                        objet.scale *= sender.scale
+                        setPhysicsBody(objet.noeud, masque: 1)
+                    }
                 }
                 sender.scale = 1
             }else{
@@ -186,20 +193,17 @@ class GameScene: SKScene, UITextFieldDelegate {
                     }
                 }
                 
-                let centre = CGPoint(x: (maxX-minX)/2+minX, y: (maxY-minY)+minY/2)
-                
-                //print("x: \((maxX-minX)/2+minX) y: \((maxY-minY)+minY/2)")
-                
-                let nodeCentre = SKNode()
-                nodeCentre.position = centre
-                nodeCentre.name = "nodeCentre"
-                self.addChild(nodeCentre)
+                let centre = CGPoint(x: (maxX-minX)/2+minX, y: (maxY-minY)+minY/2) //Point central entre objs
                 
                 for node in nodesSelected
                 {
-                    //node.removeFromParent()
-                    //self.childNodeWithName("nodeCentre")?.addChild(node)
-                    node.anchorPoint = centre
+                    node.anchorPoint.x = node.anchorPoint.x - 1
+                    node.anchorPoint.y = node.anchorPoint.y - 1
+                    print(node.convertPoint(node.anchorPoint, fromNode: self))
+                    print(node.convertPoint(centre, fromNode: node.parent!).x)
+                    print(node.convertPoint(node.position, fromNode: node.parent!))
+                    //creerObjet(centre, typeObjet: "objetpaletteDroite1" )
+                    //nodesSurTable[nodesSurTable.count-1].noeud.position = nodesSurTable[nodesSurTable.count-1].noeud.convertPoint(centre, fromNode: self)
                 }
             }
         }
@@ -227,6 +231,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             for node in nodesSelected
             {
+                node.zRotation = theRotation
                 //node.removeFromParent()
                 //self.addChild(node)
             }
@@ -575,13 +580,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Ici je set le ratio des objets pour garder celui de la scène et non celui de la table
         //let monRatio = self.frame.height / self.frame.width
         
-        objet.xScale = 0.5
-        objet.yScale = 0.5 //* monRatio
+        objet.size.width *= 0.5
+        objet.size.height *= 0.5 //* monRatio
         
         objet.position = endroitSurTable
         objet.zPosition = -14
-        
-        setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
         
         //Pour la construction d'un mur
         if longeurMur != nil && angleMur != nil {
@@ -591,6 +594,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             objet.size.width = longeurMur!
             objet.zRotation = angleMur!
         }
+        
+        setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
         
         self.addChild(objet)
         
@@ -785,8 +790,13 @@ class GameScene: SKScene, UITextFieldDelegate {
         if nodesSelected.count == 1 {
             textPositionX!.text = NSString(format: "%.0f", nodesSelected[0].position.x) as String
             textPositionY!.text = NSString(format: "%.0f", nodesSelected[0].position.y) as String
-            textRotation!.text = NSString(format: "%.01f", nodesSelected[0].zRotation) as String
-            textScale!.text = nodesSelected[0].xScale.description
+            textRotation!.text = NSString(format: "%.01f", nodesSelected[0].zRotation.RadianEnDegree) as String
+            for objet in nodesSurTable {
+                if objet.noeud == nodesSelected[0] {
+                    textScale!.text = NSString(format: "%.01f", objet.scale) as String
+                }
+            }
+            
             
             if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" {
                 
@@ -843,9 +853,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         textBilleGratuite!.resignFirstResponder()
         textDiff!.resignFirstResponder()
         
+        let converter = NSNumberFormatter()
+        converter.decimalSeparator = "."
+        
         if(textPositionX!.text! != "" && textPositionY!.text! != "" && nodesSelected.count == 1){
-            if let x = NSNumberFormatter().numberFromString(textPositionX!.text!) {
-                if let y = NSNumberFormatter().numberFromString(textPositionY!.text!){
+            if let x = converter.numberFromString(textPositionX!.text!) {
+                if let y = converter.numberFromString(textPositionY!.text!){
                     let xFloat = CGFloat(x)
                     let yFloat = CGFloat(y)
                     let point = CGPoint(x: xFloat, y: yFloat)
@@ -855,28 +868,48 @@ class GameScene: SKScene, UITextFieldDelegate {
                         textPositionX!.text! = nodesSelected[0].position.x.description
                         textPositionY!.text! = nodesSelected[0].position.y.description
                     }
+                }else{
+                    updateTextProprieteObjet()
                 }
+            }else{
+                updateTextProprieteObjet()
             }
         }
         
         if(textRotation!.text! != "" && nodesSelected.count == 1){
-            if let z = NSNumberFormatter().numberFromString(textRotation!.text!) {
+            if let z = converter.numberFromString(textRotation!.text!) {
                 let zFloat = CGFloat(z)
-                nodesSelected[0].zRotation = zFloat
+                nodesSelected[0].zRotation = zFloat.degreeEnRadian
+            }else{
+                updateTextProprieteObjet()
             }
         }
         
         if(textScale!.text! != "" && nodesSelected.count == 1){
-            if let s = NSNumberFormatter().numberFromString(textScale!.text!) {
+            if let s = converter.numberFromString(textScale!.text!) {
                 let sFloat = CGFloat(s)
-                nodesSelected[0].xScale = sFloat
-                nodesSelected[0].yScale = sFloat
+                
+                for objet in nodesSurTable {
+                    if objet.noeud == nodesSelected[0] {
+                        if objet.scale != 0 && sFloat >= 0.2 {
+                            //objet.noeud.size.height /= objet.scale
+                            //objet.noeud.size.width /= objet.scale
+                            objet.noeud.size.height = (objet.noeud.size.height / objet.scale) * sFloat
+                            objet.noeud.size.width = (objet.noeud.size.width / objet.scale) * sFloat
+                            
+                            objet.scale = sFloat
+                            setPhysicsBody(objet.noeud, masque: 1)
+                        }
+                    }
+                }
+            }else{
+                updateTextProprieteObjet()
             }
         }
         
         if(textPoints!.text! != "" && nodesSelected.count == 1){
             if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" {
-                if let s = NSNumberFormatter().numberFromString(textPoints!.text!) {
+                if let s = converter.numberFromString(textPoints!.text!) {
                     let sInt = Int(s)
                     
                     for monNoeud in nodesSurTable {
@@ -884,22 +917,28 @@ class GameScene: SKScene, UITextFieldDelegate {
                             monNoeud.points = sInt
                         }
                     }
+                }else{
+                    updateTextProprieteObjet()
                 }
             }
             
         }
         
         if(textBilleGratuite!.text! != ""){
-            if let s = NSNumberFormatter().numberFromString(textBilleGratuite!.text!) {
+            if let s = converter.numberFromString(textBilleGratuite!.text!) {
                 let sInt = Int(s)
                 ptsBilleGratuite = sInt
+            }else{
+                updateTextProprieteObjet()
             }
         }
         
         if(textDiff!.text! != ""){
-            if let s = NSNumberFormatter().numberFromString(textDiff!.text!) {
+            if let s = converter.numberFromString(textDiff!.text!) {
                 let sInt = Int(s)
                 coteDifficulte = sInt
+            }else{
+                updateTextProprieteObjet()
             }
         }
         

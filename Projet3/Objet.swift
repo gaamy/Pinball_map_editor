@@ -11,15 +11,18 @@ import Foundation
 
 class monObjet {
     var noeud: SKSpriteNode
-    var points: Int 
+    var points: Int
+    var scale: CGFloat
     
     init(noeud: SKSpriteNode){
         self.noeud = noeud
         points = 100
+        scale = 1
     }
     
     init(noeud: SKSpriteNode, points: Int){
         self.noeud = noeud
         self.points = points
+        scale = 1
     }
 }
