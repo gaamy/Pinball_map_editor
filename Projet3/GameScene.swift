@@ -29,6 +29,9 @@ class GameScene: SKScene, UITextFieldDelegate {
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
     var coteDifficulte = 2
+    var ptsButoirCirc = 5
+    var ptsButoirTri = 5
+    var ptsCible = 5
     
     var nomObjet = "Spaceship"
     var viewController: UIViewController? //Identifie le menuPrincipal
@@ -53,6 +56,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var marqueurSelectionBouton = SKShapeNode()
     var marqueurSelectionOutil = SKShapeNode()
     var uneFrameSurX = 0
+    var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -170,13 +174,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func rotationDeLObjet(sender: UIRotationGestureRecognizer){
-        var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
-        
         if (sender.state == .Began){
             //Au début de la rotation, on trouve le centre (si sélection multiple)
             if nodesSelected.count > 1 {
-                centre = centreDesNodesSelectionnees()
-                creerObjet(centre, typeObjet: "generateur")
+                centre = centreDesNodesSelectionnees() //Centre des objets en sélection
+                print("mon premier centre" + String(centre))
             }
         }
         if sender.state == .Changed {
@@ -196,9 +198,15 @@ class GameScene: SKScene, UITextFieldDelegate {
                     let dx = node.position.x - centre.x // Get distance X from center
                     let dy = node.position.y - centre.y // Get distance Y from center
                     
+                    print("mon centre: " + String(centre))
+                    print("mon dx: " + String(dx))
+                    print("mon dy: " + String(dy))
+                    
                     let current_angle = atan(dy / dx) // Current angle is the arctan of dy / dx
+                    print(current_angle)
                     
                     let next_angle = current_angle + theRotation // Sum how much you want to rotate in radians
+                    print("next angle: " + String(next_angle))
                     
                     let rotationRadius = node.position.distance(centre)
                     
@@ -706,6 +714,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    ////Méthode qui retourne le CGPoint du centre des objets sélectionnés
     func centreDesNodesSelectionnees() -> CGPoint{
         var maxX = nodesSelected[0].position.x
         var minX = nodesSelected[0].position.x
@@ -727,7 +736,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         
-        return CGPoint(x: (maxX-minX)/2+minX, y: (maxY-minY)+minY/2)
+        return CGPoint(x: (((maxX-minX)/2)+minX), y: (((maxY-minY)/2)+minY))
     }
     
     ///Fonction qui sélectionne un objet
@@ -811,11 +820,25 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
             
             
-            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" {
+            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" || nodesSelected[0].name == "objetbutoirCirc" {
                 
                 for monNoeud in nodesSurTable {
                     if monNoeud.noeud == nodesSelected[0] {
-                        textPoints!.text = String(monNoeud.points)
+                        switch nodesSelected[0].name! {
+                        case "objetcible":
+                            textPoints!.text = String(self.ptsCible)
+                            break
+                        case "objetbutoirTriDroit":
+                            textPoints!.text = String(self.ptsButoirTri)
+                            break
+                        case "objetbutoirTriGauche":
+                            textPoints!.text = String(self.ptsButoirTri)
+                            break
+                        case "objetbutoirCirc":
+                            textPoints!.text = String(self.ptsButoirCirc)
+                            break
+                        default: break
+                        }
                     }
                 }
                 
@@ -921,13 +944,27 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
         
         if(textPoints!.text! != "" && nodesSelected.count == 1){
-            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" {
+            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" || nodesSelected[0].name == "objetbutoirCirc" {
                 if let s = converter.numberFromString(textPoints!.text!) {
                     let sInt = Int(s)
                     
                     for monNoeud in nodesSurTable {
                         if monNoeud.noeud == nodesSelected[0] {
-                            monNoeud.points = sInt
+                            switch nodesSelected[0].name! {
+                            case "objetcible":
+                                self.ptsCible = sInt
+                                break
+                            case "objetbutoirTriDroit":
+                                self.ptsButoirTri = sInt
+                                break
+                            case "objetbutoirTriGauche":
+                                self.ptsButoirTri = sInt
+                                break
+                            case "objetbutoirCirc":
+                                self.ptsButoirCirc = sInt
+                                break
+                            default: break
+                            }
                         }
                     }
                 }else{
