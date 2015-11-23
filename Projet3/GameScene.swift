@@ -178,7 +178,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             //Au début de la rotation, on trouve le centre (si sélection multiple)
             if nodesSelected.count > 1 {
                 centre = centreDesNodesSelectionnees() //Centre des objets en sélection
-                print("mon premier centre" + String(centre))
             }
         }
         if sender.state == .Changed {
@@ -198,15 +197,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                     let dx = node.position.x - centre.x // Get distance X from center
                     let dy = node.position.y - centre.y // Get distance Y from center
                     
-                    print("mon centre: " + String(centre))
-                    print("mon dx: " + String(dx))
-                    print("mon dy: " + String(dy))
-                    
                     let current_angle = atan(dy / dx) // Current angle is the arctan of dy / dx
-                    print(current_angle)
                     
                     let next_angle = current_angle + theRotation // Sum how much you want to rotate in radians
-                    print("next angle: " + String(next_angle))
                     
                     let rotationRadius = node.position.distance(centre)
                     
@@ -686,7 +679,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///On sélectionne ou désélectionne l'objet qu'on reçoit en parametre
     func cliqueObjet(touchedNode: SKNode, location: CGPoint){
         //let noeud = self.physicsWorld.bodyAtPoint(location)
-        //print(nodo?.node?.name)
         
         if let objSelectionne = touchedNode as? SKSpriteNode
         {
