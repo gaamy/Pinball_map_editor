@@ -147,6 +147,7 @@ xcuserdata/
 #
 #!xcuserdata/**/xcschemes/*
 
+*.xcuserdata
 ####
 # XCode 4 workspaces - more detailed
 #
