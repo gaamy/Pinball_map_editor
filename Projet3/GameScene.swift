@@ -28,6 +28,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
+    var ptsPasserNiveau = 2000
     var coteDifficulte = 2
     var ptsButoirCirc = 5
     var ptsButoirTri = 5
@@ -1060,10 +1061,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     func chargerProprietesXML(carte : Carte){
         ptsBilleGratuite = carte.proprietes.pointagePourBillegratuite!
         coteDifficulte = carte.proprietes.niveauDiffulte!
-        pointageButoirCirculaire =  carte.proprietes.pointageButoirCirculaire!
-        pointageButoirTriangulaire = carte.proprietes.pointageButoirTriangulaire!
-        pointageCible = carte.proprietes.pointageCible!
-        pointagePourPasserNiveau = carte.proprietes.pointagePourPasserNiveau!
+        ptsButoirCirc =  carte.proprietes.pointageButoirCirculaire!
+        ptsButoirTri = carte.proprietes.pointageButoirTriangulaire!
+        ptsCible = carte.proprietes.pointageCible!
+        ptsPasserNiveau = carte.proprietes.pointagePourPasserNiveau!
+
     }
     
     ///Charge les objets de "carte" sur la scene actuelle
@@ -1148,11 +1150,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     func preparerCarteXML(carte:Carte){
         ///enregistrer les proprietes
         carte.proprietes.setDifficulte(self.coteDifficulte)
-        carte.proprietes.setPointageButoirCirculaire(self.pointageButoirCirculaire)
-        carte.proprietes.setPointageButoirTriangulaire(self.pointageButoirTriangulaire)
+        carte.proprietes.setPointageButoirCirculaire(self.ptsButoirCirc)
+        carte.proprietes.setPointageButoirTriangulaire(self.ptsButoirTri)
         carte.proprietes.setPointagePourBillegratuite(self.ptsBilleGratuite)
-        carte.proprietes.setPointageCible(self.pointageCible)
-        carte.proprietes.setPointagePourPasserNiveau(self.pointagePourPasserNiveau)
+        carte.proprietes.setPointageCible(self.ptsCible)
+        carte.proprietes.setPointagePourPasserNiveau(self.ptsPasserNiveau)
         
         ///Ajouter une table
         carte.arbre.ajouterTable(0, posY: 0)
