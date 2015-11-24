@@ -28,6 +28,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
+    var ptsPasserNiveau = 2000
     var coteDifficulte = 2
     var ptsButoirCirc = 5
     var ptsButoirTri = 5
@@ -68,8 +69,17 @@ class GameScene: SKScene, UITextFieldDelegate {
     var offset:CGFloat = 0
     var theRotation:CGFloat = 0
     
+    //Variable qui represente la carte de jeux (pour XML)
+    var carte : Carte!
+    
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        
+        ///Chargement de la scene selon la Carte xml (si on a edite une carte existante)
+        if carte != nil{
+            chargerCarte(carte)
+        }
         
         initLesSons()
         updateVisibiliteCorbeille()
@@ -355,6 +365,18 @@ class GameScene: SKScene, UITextFieldDelegate {
                         switch name {
                         case "outilmenu":
                             quitterModeEdition()
+                            
+                            ///sauvegarde de carte sous format xml
+                        case "outilSauvegarde":
+                            //enrregistrement de la nouvelle carte
+                            if carte == nil{
+                                sauvegarderNouvelleCarte()
+                            }
+                            else{ //enregistrement d'une carte existante
+                                //sauvegarderCarteActuelle()
+                                sauvegarderNouvelleCarte()
+                            }
+
                         case "boutonmur":
                             construireMur = true
                             AudioServicesPlaySystemSound(sonSelectionOutil)
@@ -1044,5 +1066,147 @@ class GameScene: SKScene, UITextFieldDelegate {
         textDiff!.delegate = self
         
         updateTextProprieteObjet()
+    }
+    
+    ///Construit la scene selon l'objet Carte.
+    ///Ceci inclus les objets et les configurations
+    func chargerCarte(carte : Carte){
+        ///TODO:
+        ///afficer le nom de la carte en hau du mode editeur
+        
+        ///charger les configurations de la carte
+        chargerProprietesXML(carte)
+        
+        ///cree les objets de l'arbre (on a besoin de )
+        chargerObjetsXML(carte)
+        
+        
+    }
+    
+    ///Charge les proprietes de "carte" sur la scene actuelle
+    func chargerProprietesXML(carte : Carte){
+        ptsBilleGratuite = carte.proprietes.pointagePourBillegratuite!
+        coteDifficulte = carte.proprietes.niveauDiffulte!
+        ptsButoirCirc =  carte.proprietes.pointageButoirCirculaire!
+        ptsButoirTri = carte.proprietes.pointageButoirTriangulaire!
+        ptsCible = carte.proprietes.pointageCible!
+        ptsPasserNiveau = carte.proprietes.pointagePourPasserNiveau!
+
+    }
+    
+    ///Charge les objets de "carte" sur la scene actuelle
+    func chargerObjetsXML(carte: Carte){
+        
+        ///Cretion des portails
+        //TODO: connecter les portails enssemble : (1,2) (3,4) .. etc
+        for portail in carte.arbre.portail{
+            let positionXML = CGPoint(x: portail.positionX!, y: portail.positionY!)
+            ///Todo: convertion vers coordones crlient leger
+            creerObjet(positionXML,typeObjet: portail.type!)
+            
+        }
+        
+        ///Creation des murs
+        for mur in carte.arbre.mur{
+            let positionXML = CGPoint(x: mur.positionX!, y: mur.positionY!)
+            ///Todo: convertion vers coordones crlient leger
+            creerObjet(positionXML,typeObjet: mur.type!)
+            
+        }
+        
+        ///Creation des autres objets
+        for objet in carte.arbre.autresObjets{
+            let positionXML = CGPoint(x: objet.positionX!, y: objet.positionY!)
+            ///Todo: convertion vers coordones crlient leger
+            let typeObjetXML = objet.type!
+            creerObjet(table.convertPoint(positionXML, toNode: table),typeObjet: typeObjetXML)
+            
+            
+        }
+        
+    }
+    
+    ///Cree un objet de type Carte et la sauvegarde sous format xml
+    func sauvegarderNouvelleCarte(){
+        
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Sauvegarder Carte",
+            message: "Sauvegarde d'une nouvelle carte. Choisissez un nom pour votre carte.",
+            buttons: ["Sauvegarder" , "Annuler"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Sauvegarder" {
+                    
+                    let nomNouvelleSauvegarde = "nouvelleCarte3.xml"
+                    self.carte = Carte(nom: nomNouvelleSauvegarde)
+                    
+                    self.preparerCarteXML(self.carte)
+                    
+                    let parseur = ParseurXML()
+                    
+                    ///si le fichier n'existe pas deja
+                    if !self.fichierExiste(nomNouvelleSauvegarde,listeDeURL: parseur.fichiersSauvegardeURLs){
+                        
+                        if let xmlString = self.carte.toXmlString(){
+                            parseur.sauvegarderStringXML(xmlString, nomFichier: nomNouvelleSauvegarde)
+                        }
+                    }
+                        //utilisez un autre nom de fichier pour sauvegarder
+                    else{
+                        print("utilisez un autre nom de fichier pour sauvegarder")
+                    }
+                    
+                    
+                } else if buttonPressed == "Annuler" {
+                    //On fait rien sinon
+                }
+        }
+    }
+    
+    ///verifie si
+    func fichierExiste(fichierRecherche:String , listeDeURL : [NSURL]) -> Bool{
+        for urlFichier in listeDeURL{
+            let nomfichier = urlFichier.lastPathComponent!
+            if nomfichier == fichierRecherche{
+                return true
+            }
+        }
+        return false
+    }
+    
+    ///Remplis l'objet carte avec les objets et proprietes de la carte actuelle
+    func preparerCarteXML(carte:Carte){
+        ///enregistrer les proprietes
+        carte.proprietes.setDifficulte(self.coteDifficulte)
+        carte.proprietes.setPointageButoirCirculaire(self.ptsButoirCirc)
+        carte.proprietes.setPointageButoirTriangulaire(self.ptsButoirTri)
+        carte.proprietes.setPointagePourBillegratuite(self.ptsBilleGratuite)
+        carte.proprietes.setPointageCible(self.ptsCible)
+        carte.proprietes.setPointagePourPasserNiveau(self.ptsPasserNiveau)
+        
+        ///Ajouter une table
+        carte.arbre.ajouterTable(0, posY: 0)
+        
+        ///enregistrer les objets de la scene
+        for objet in nodesSurTable{
+            let nom = objet.noeud.name!
+            switch  nom {
+            case "objetmur":
+                //carte.arbre.ajouterMur(objet.noeud.position.x, posY: objet.noeud.position.y, largeurMur: ??, angleRotation: ??)
+                print("TODO objetMur")
+            case "objetportail":
+                carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echellePortail: 0/*objet.noeud.scale??*/, angleRotation: 0)
+                print("TODO portail")
+            default:
+                let nomObjet = nom.substringFromIndex(nom.startIndex.advancedBy(5))
+                
+                carte.arbre.ajouterAutreObjet(nomObjet, posX: Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echelleObjet: 0/*objet.noeud.scale??*/, angleRotation: 0)
+            }
+        }
+    }
+    
+    ///Sauvegarde la carte acutelle en écrasant la carte sur le disque
+    func sauvegarderCarteActuelle(){
+        //supprimer la sauvegare anterieur
+        //faire une nouvelle sauvegarde
+        
     }
 }
