@@ -137,19 +137,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
         if (sender.state == .Began){
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
-            /*for objetCourant in nodesSurTable {
-                let pos = table.convertPoint(objetCourant.noeud.position, fromNode: self)
-                objetCourant.noeud.removeFromParent()
-                table.addChild(objetCourant.noeud)
-                objetCourant.noeud.position = pos
-                objetCourant.noeud.zPosition = -14
-            }*/
         }
         if sender.state == .Changed {
             //Pendant la le pincement
             
             if nodesSelected.count > 0 {
-                //TODO, on doit aussi scale la boite englobante**
                 for objet in nodesSurTable {
                     if nodesSelected.contains(objet.noeud) {
                         objet.noeud.size.width = objet.noeud.size.width * sender.scale
@@ -214,6 +206,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                     let action = SKAction.moveTo(new_point, duration: 0.2)
                     
                     node.runAction(action)
+                    
+                    node.zRotation = theRotation //A ajuster...
                 }
             }
         }
@@ -491,8 +485,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     func surTable(location: CGPoint, node: SKNode) -> Bool
     {
         if let noeud = node as? SKSpriteNode {
-            let largeur = noeud.size.width / 2
-            let hauteur = noeud.size.height / 2
+            
+            //On utilise l'accumulatedFrame pour prendre en compte la rotation et le scaling des objets
+            let largeur = (noeud.calculateAccumulatedFrame().maxX - noeud.calculateAccumulatedFrame().minX)/2
+            let hauteur = (noeud.calculateAccumulatedFrame().maxY - noeud.calculateAccumulatedFrame().minY)/2
+            
             let gauche = CGPoint(x:location.x - largeur,y:location.y)
             let droite = CGPoint(x:location.x + largeur,y:location.y)
             let haut = CGPoint(x:location.x,y:location.y + hauteur)
