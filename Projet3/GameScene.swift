@@ -26,20 +26,12 @@ class GameScene: SKScene, UITextFieldDelegate {
     var labelDiff:SKLabelNode?
     var textDiff:UITextField?
     
-    ///TODO::Petite correction a faire
-    ///On a besoin de configurations par defaut pour le pointage des objets.
-    /// Ce pointage est global pour tout les objets de meme type, et non individuel
-    //Variables globale à la classe		    //Variables globale à la classe
-    ///Configurations de la carte de jeux
-    ///TODO:David
-    ///j'ai mis des valeurs par default random
-    var ptsBilleGratuite = 50
-    var coteDifficulte = 1
-    var pointageButoirCirculaire = 5
-    var pointageButoirTriangulaire = 5
-    var pointageCible = 5
-    var pointagePourPasserNiveau = 200
-
+    //Variables globale à la classe
+    var ptsBilleGratuite = 1000
+    var coteDifficulte = 2
+    var ptsButoirCirc = 5
+    var ptsButoirTri = 5
+    var ptsCible = 5
     
     var nomObjet = "Spaceship"
     var viewController: UIViewController? //Identifie le menuPrincipal
