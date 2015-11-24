@@ -33,6 +33,10 @@
 		FC1DCC301BCF7BFF00353F74 /* loginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1DCC2F1BCF7BFF00353F74 /* loginScreenViewController.swift */; };
 		FC1DCC321BCF7C5900353F74 /* CustonSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1DCC311BCF7C5900353F74 /* CustonSegue.swift */; };
 		FC1DCC341BCF7C5D00353F74 /* CustonSegueUnwind.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1DCC331BCF7C5D00353F74 /* CustonSegueUnwind.swift */; };
+		FC6290681C05083700CDBF52 /* Carte.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290641C05083700CDBF52 /* Carte.swift */; };
+		FC6290691C05083700CDBF52 /* ViewControllerChoixEditeur.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */; };
+		FC62906A1C05083700CDBF52 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290661C05083700CDBF52 /* AEXML.swift */; };
+		FC62906B1C05083700CDBF52 /* ParseurXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290671C05083700CDBF52 /* ParseurXML.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +82,10 @@
 		FC1DCC2F1BCF7BFF00353F74 /* loginScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginScreenViewController.swift; sourceTree = "<group>"; };
 		FC1DCC311BCF7C5900353F74 /* CustonSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustonSegue.swift; sourceTree = "<group>"; };
 		FC1DCC331BCF7C5D00353F74 /* CustonSegueUnwind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustonSegueUnwind.swift; sourceTree = "<group>"; };
+		FC6290641C05083700CDBF52 /* Carte.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Carte.swift; sourceTree = "<group>"; };
+		FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerChoixEditeur.swift; sourceTree = "<group>"; };
+		FC6290661C05083700CDBF52 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXML.swift; sourceTree = "<group>"; };
+		FC6290671C05083700CDBF52 /* ParseurXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseurXML.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +138,10 @@
 				2D0D411F1BA8E50F00B25A7B /* Main.storyboard */,
 				2D0D41221BA8E50F00B25A7B /* Images.xcassets */,
 				2D0D41241BA8E50F00B25A7B /* LaunchScreen.xib */,
+				FC6290641C05083700CDBF52 /* Carte.swift */,
+				FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */,
+				FC6290661C05083700CDBF52 /* AEXML.swift */,
+				FC6290671C05083700CDBF52 /* ParseurXML.swift */,
 				2D0D41151BA8E50F00B25A7B /* Supporting Files */,
 				FC0D79F31BEFCC6500B11C47 /* XmlManager.swift */,
 			);
@@ -287,16 +299,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC1DCC301BCF7BFF00353F74 /* loginScreenViewController.swift in Sources */,
+				FC6290681C05083700CDBF52 /* Carte.swift in Sources */,
 				FC0D79F41BEFCC6500B11C47 /* XmlManager.swift in Sources */,
 				2DD9F48C1BFBEE2B0085AC39 /* Objet.swift in Sources */,
+				FC6290691C05083700CDBF52 /* ViewControllerChoixEditeur.swift in Sources */,
 				2D0D411C1BA8E50F00B25A7B /* GameScene.swift in Sources */,
 				2DD9F4881BFBDCB70085AC39 /* JouerMusique.swift in Sources */,
 				2D0D411E1BA8E50F00B25A7B /* GameViewController.swift in Sources */,
 				2D6D37751BF7FF89004385FB /* Extensions.swift in Sources */,
 				FC1DCC2E1BCF7BF600353F74 /* ViewController.swift in Sources */,
+				FC62906A1C05083700CDBF52 /* AEXML.swift in Sources */,
 				2D0D41181BA8E50F00B25A7B /* AppDelegate.swift in Sources */,
 				FC1DCC341BCF7C5D00353F74 /* CustonSegueUnwind.swift in Sources */,
 				2D6D37891BF93DC1004385FB /* Popups.swift in Sources */,
+				FC62906B1C05083700CDBF52 /* ParseurXML.swift in Sources */,
 				FC1DCC321BCF7C5900353F74 /* CustonSegue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
