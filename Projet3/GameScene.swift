@@ -123,6 +123,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Fonctopn qui gère les swypes gestures
     ///-On l'utilise pour montrer ou cacher les barres latérales
     func handleSwipes(sender:UISwipeGestureRecognizer) {
+        detruireMurTemporaire()
         //Un swype vers la gauche
         if (sender.direction == .Left) {
             if menuTouchee == menuGauche && menuGaucheOuvert {
@@ -143,6 +144,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
         if (sender.state == .Began){
+            detruireMurTemporaire()
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
         }
         if sender.state == .Changed {
@@ -193,6 +195,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Cette fonction s'assure de la rotation et rotation multiple
     func rotationDeLObjet(sender: UIRotationGestureRecognizer){
         if (sender.state == .Began){
+            detruireMurTemporaire()
             //Au début de la rotation, on trouve le centre (si sélection multiple)
             if nodesSelected.count > 1 {
                 centre = centreDesNodesSelectionnees() //Centre des objets en sélection
@@ -294,7 +297,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 miseAJourFrameAnimationFeu()
                 deplacement = true
                 endroitPrecedent = location
-            }else if !construireMur && nodeAtPoint(location) == table && nodeTouchee == table && pan {
+            }else if nodeAtPoint(location) == table && nodeTouchee == table && pan {
                 for node in self.children {
                     if let noeud = node as? SKSpriteNode {
                         if noeud.name!.containsString("objet") {
@@ -309,7 +312,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 table.position.y += offSetPosition.y
                 posInitiale = location
                 deplacement = true
-            }else if construireMur && nodeAtPoint(location) == table {
+            }else if construireMur && nodeAtPoint(location) == table && !pan {
                 let touch = touches.first
                 let position2 = touch!.locationInNode(self)
                 detruireMurTemporaire()
@@ -351,7 +354,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                             }
                         }
                         
-                        if construireMur {
+                        if construireMur && !pan {
                             let touch = touches.first
                             let position2 = touch!.locationInNode(self)
                             creerMur(position2)
@@ -596,7 +599,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 setPhysicsBody(nodeCopie, masque: 1) //Masque: 1 -> Objets sur la table
                 nodeCopie.xScale *= tempX
                 nodeCopie.yScale *= tempY
-                let nouvObjet = monObjet(noeud: nodeCopie, points: objetCourant.points)
+                let nouvObjet = monObjet(noeud: nodeCopie)
                 if surTable(nodesSurTable[nodesSurTable.count-1].noeud.position, node: nodesSurTable[nodesSurTable.count-1].noeud){
                     nodesSurTable.append(nouvObjet)
                     nodesSurTable[nodesSurTable.count-1].scale = objetCourant.scale
@@ -649,7 +652,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Pour la construction d'un mur
         if longeurMur != nil && angleMur != nil {
-            if longeurMur! < 5 {
+            if longeurMur! < 20 {
                 return
             }
             objet.size.width = longeurMur!
