@@ -58,16 +58,13 @@ class GameScene: SKScene, UITextFieldDelegate {
     var marqueurSelectionOutil = SKShapeNode()
     var uneFrameSurX = 0
     var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
+    var peutTourner = true
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
     var sonObjSurTable: SystemSoundID = 0
     var sonSelectionOutil: SystemSoundID = 0
     var sonSelection: SystemSoundID = 0
-    
-    //Variables pour la rotation des objets
-    var offset:CGFloat = 0
-    var theRotation:CGFloat = 0
     
     //Variable qui represente la carte de jeux (pour XML)
     var carte : Carte!
@@ -175,6 +172,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    ///Cette fonction s'assure de la rotation et rotation multiple
     func rotationDeLObjet(sender: UIRotationGestureRecognizer){
         if (sender.state == .Began){
             //Au début de la rotation, on trouve le centre (si sélection multiple)
@@ -183,54 +181,31 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         if sender.state == .Changed {
-            //TODO: On doit pouvoir faire une rotation multiple à partir du centre de tous les objets
-            
-            //Pendant la rotation
-            theRotation = CGFloat(sender.rotation) + self.offset
-            theRotation = theRotation * -1
-            
-            //Si une seule node, on la rotate normalement
             if nodesSelected.count == 1 {
-                nodesSelected[0].zRotation = theRotation
+                nodesSelected[0].zRotation -= sender.rotation
+                sender.rotation = 0
             }else if nodesSelected.count > 1 {
-                //self.childNodeWithName("nodeCentre")?.zRotation = theRotation
                 for node in nodesSelected
                 {
-                    let dx = node.position.x - centre.x // Get distance X from center
-                    let dy = node.position.y - centre.y // Get distance Y from center
+                    let dx = node.position.x - centre.x // distance en x avec le centre
+                    let dy = node.position.y - centre.y // distance en y avec le centre
                     
-                    let current_angle = atan(dy / dx) // Current angle is the arctan of dy / dx
-                    
-                    let next_angle = current_angle + theRotation // Sum how much you want to rotate in radians
-                    
+                    let current_angle = atan(dy / dx)
+                    let next_angle = current_angle - sender.rotation
                     let rotationRadius = node.position.distance(centre)
                     
-                    // the new x is: center + radius*cos(x)
-                    // the new y is: center + radius*sin(y)
-                    // if dx < 0 you need to get the oposite value of the position
                     let new_x = dx >= 0 ? centre.x + rotationRadius * cos(next_angle) : centre.x - rotationRadius * cos(next_angle)
                     let new_y = dx >= 0 ? centre.y + rotationRadius * sin(next_angle) : centre.y - rotationRadius * sin(next_angle)
-                    
                     let new_point = CGPoint(x: new_x, y: new_y)
                     
-                    let action = SKAction.moveTo(new_point, duration: 0.2)
-                    
-                    node.runAction(action)
-                    
-                    node.zRotation = theRotation //A ajuster...
+                    node.position = new_point
+                    node.zRotation = node.zRotation - sender.rotation
                 }
+                sender.rotation = 0
             }
         }
         if sender.state == .Ended {
-            //Après la rotation
-            if nodesSelected.count == 1 {
-                self.offset = theRotation * -1
-                
-                for node in nodesSelected
-                {
-                    node.zRotation = theRotation
-                }
-            }
+            //Après la rotation, on update les propriétés car la rotation a changé
             updateTextProprieteObjet()
             
         }
