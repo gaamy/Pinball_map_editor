@@ -309,12 +309,20 @@ class GameScene: SKScene, UITextFieldDelegate {
                 table.position.y += offSetPosition.y
                 posInitiale = location
                 deplacement = true
+            }else if construireMur && nodeAtPoint(location) == table {
+                let touch = touches.first
+                let position2 = touch!.locationInNode(self)
+                detruireMurTemporaire()
+                creerMurTemporaire(position2)
             }
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 
+        //On vérifie si un mur temporaire existe, si oui on le détruit
+        detruireMurTemporaire()
+        
         swipePossible(true) //On débloque les swipes après avoir terminé le déplacement
         nodeTouchee = SKSpriteNode() //On réinitialise l'objet touché dans touchesBegin
         
@@ -343,7 +351,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                             }
                         }
                         
-                        if construireMur && name == "table" {
+                        if construireMur {
                             let touch = touches.first
                             let position2 = touch!.locationInNode(self)
                             creerMur(position2)
@@ -436,6 +444,46 @@ class GameScene: SKScene, UITextFieldDelegate {
             let angleMur = posInitiale?.angle(position2)
             
             creerObjet(posInitiale!.centre(position2), typeObjet: "mur", longeurMur: longeurMur, angleMur: angleMur)
+        }
+    }
+    
+    func creerMurTemporaire(position2: CGPoint){
+        if table.containsPoint(posInitiale!) && table.containsPoint(position2) {
+            let longeurMur = posInitiale?.distance(position2)
+            let angleMur = posInitiale?.angle(position2)
+            
+            let objet = SKSpriteNode(imageNamed: "mur")
+            objet.name = "temp"
+            
+            objet.size.width *= 0.5
+            objet.size.height *= 0.5
+            
+            objet.position = posInitiale!.centre(position2)
+            objet.zPosition = -14
+            
+            objet.size.width = longeurMur!
+            objet.zRotation = angleMur!
+            
+            setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
+            
+            objet.xScale *= scaleTable
+            objet.yScale *= scaleTable
+            
+            self.addChild(objet)
+            
+            let temp = monObjet(noeud: objet)
+            nodesSurTable.append(temp)
+        }
+    }
+    
+    func detruireMurTemporaire(){
+        if construireMur {
+            if nodesSurTable.count > 0 {
+                if nodesSurTable[nodesSurTable.count-1].noeud.name == "temp" {
+                    nodesSurTable[nodesSurTable.count-1].noeud.removeFromParent()
+                    nodesSurTable.removeLast()
+                }
+            }
         }
     }
     
