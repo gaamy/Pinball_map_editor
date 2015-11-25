@@ -59,6 +59,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var uneFrameSurX = 0
     var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
     var peutTourner = true
+    var scaleTable:CGFloat = 1
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -117,7 +118,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         playBackgroundMusic("MusiqueEspace")
         
         updateVisibiliteCorbeille()
-        
     }
     
     ///Fonctopn qui gère les swypes gestures
@@ -151,19 +151,37 @@ class GameScene: SKScene, UITextFieldDelegate {
             if nodesSelected.count > 0 {
                 for objet in nodesSurTable {
                     if nodesSelected.contains(objet.noeud) {
-                        objet.noeud.size.width = objet.noeud.size.width * sender.scale
-                        objet.noeud.size.height = objet.noeud.size.height * sender.scale
-                        objet.scale *= sender.scale
-                        setPhysicsBody(objet.noeud, masque: 1)
+                        let largeurInitiale = objet.noeud.xScale
+                        let hauteurInitiale = objet.noeud.yScale
+                        objet.noeud.xScale *= sender.scale
+                        objet.noeud.yScale *= sender.scale
+                        if !surTable(objet.noeud.position, node: objet.noeud) {
+                            objet.noeud.xScale = largeurInitiale
+                            objet.noeud.yScale = hauteurInitiale
+                        }else{
+                            objet.scale *= sender.scale
+                        }
                     }
                 }
-                sender.scale = 1
+                sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
             }else{
                 //Ici on scale la vue au complet (zoom)
                 //TODO: Ajouter un max et un min au scale de la scène
-                //table.xScale *= sender.scale
-                //table.yScale *= sender.scale
-                sender.scale = 1
+                for objet in nodesSurTable {
+                    objet.positionSurTableAvantZoom = table.convertPoint(objet.noeud.position, fromNode: self)
+                }
+                
+                table.xScale *= sender.scale
+                table.yScale *= sender.scale
+                scaleTable *= sender.scale
+                
+                for objet in nodesSurTable {
+                    objet.noeud.xScale *= sender.scale
+                    objet.noeud.yScale *= sender.scale
+                    objet.noeud.position = self.convertPoint(objet.positionSurTableAvantZoom, fromNode: table)
+                }
+                
+                sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
             }
         }
         if sender.state == .Ended {
@@ -520,9 +538,16 @@ class GameScene: SKScene, UITextFieldDelegate {
             if nodesSelected.contains(node) {
                 unselectNode(node)
                 let nodeCopie = node.copy() as! SKSpriteNode
+                let tempX = nodeCopie.xScale
+                let tempY = nodeCopie.yScale
+                nodeCopie.xScale /= nodeCopie.xScale
+                nodeCopie.yScale /= nodeCopie.yScale
                 setPhysicsBody(nodeCopie, masque: 1) //Masque: 1 -> Objets sur la table
+                nodeCopie.xScale *= tempX
+                nodeCopie.yScale *= tempY
                 let nouvObjet = monObjet(noeud: nodeCopie, points: objetCourant.points)
                 nodesSurTable.append(nouvObjet)
+                nodesSurTable[nodesSurTable.count-1].scale = objetCourant.scale
                 self.addChild(nodeCopie)
                 selectNode(nodeCopie)
             }
@@ -561,11 +586,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         let objet = SKSpriteNode(imageNamed: typeObjet)
         objet.name = "objet" + typeObjet
         
-        //Ici je set le ratio des objets pour garder celui de la scène et non celui de la table
-        //let monRatio = self.frame.height / self.frame.width
-        
         objet.size.width *= 0.5
-        objet.size.height *= 0.5 //* monRatio
+        objet.size.height *= 0.5
         
         objet.position = endroitSurTable
         objet.zPosition = -14
@@ -581,12 +603,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
         
+        objet.xScale *= scaleTable
+        objet.yScale *= scaleTable
+        
         self.addChild(objet)
         
         let temp = monObjet(noeud: objet)
         nodesSurTable.append(temp)
         
-        AudioServicesPlaySystemSound(sonObjSurTable);
+        AudioServicesPlaySystemSound(sonObjSurTable)
     }
     
     func animationExplosion(node: SKNode) {
@@ -914,13 +939,10 @@ class GameScene: SKScene, UITextFieldDelegate {
                 for objet in nodesSurTable {
                     if objet.noeud == nodesSelected[0] {
                         if objet.scale != 0 && sFloat >= 0.2 {
-                            //objet.noeud.size.height /= objet.scale
-                            //objet.noeud.size.width /= objet.scale
-                            objet.noeud.size.height = (objet.noeud.size.height / objet.scale) * sFloat
-                            objet.noeud.size.width = (objet.noeud.size.width / objet.scale) * sFloat
-                            
+                            //TODO: Ajouter un test savoir si trop grand (comme dans méthode scale)
+                            objet.noeud.xScale = objet.noeud.xScale / objet.scale * sFloat
+                            objet.noeud.yScale = objet.noeud.yScale / objet.scale * sFloat
                             objet.scale = sFloat
-                            setPhysicsBody(objet.noeud, masque: 1)
                         }
                     }
                 }
