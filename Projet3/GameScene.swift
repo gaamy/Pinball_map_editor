@@ -58,16 +58,14 @@ class GameScene: SKScene, UITextFieldDelegate {
     var marqueurSelectionOutil = SKShapeNode()
     var uneFrameSurX = 0
     var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
+    var peutTourner = true
+    var scaleTable:CGFloat = 1
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
     var sonObjSurTable: SystemSoundID = 0
     var sonSelectionOutil: SystemSoundID = 0
     var sonSelection: SystemSoundID = 0
-    
-    //Variables pour la rotation des objets
-    var offset:CGFloat = 0
-    var theRotation:CGFloat = 0
     
     //Variable qui represente la carte de jeux (pour XML)
     var carte : Carte!
@@ -120,12 +118,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         playBackgroundMusic("MusiqueEspace")
         
         updateVisibiliteCorbeille()
-        
     }
     
     ///Fonctopn qui gère les swypes gestures
     ///-On l'utilise pour montrer ou cacher les barres latérales
     func handleSwipes(sender:UISwipeGestureRecognizer) {
+        detruireMurTemporaire()
         //Un swype vers la gauche
         if (sender.direction == .Left) {
             if menuTouchee == menuGauche && menuGaucheOuvert {
@@ -146,35 +144,46 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     func tailleDeLObjet(sender: UIPinchGestureRecognizer){
         if (sender.state == .Began){
+            detruireMurTemporaire()
             //On fait ici ce qu'on veut qui se passe quand le pincement débute
-            /*for objetCourant in nodesSurTable {
-                let pos = table.convertPoint(objetCourant.noeud.position, fromNode: self)
-                objetCourant.noeud.removeFromParent()
-                table.addChild(objetCourant.noeud)
-                objetCourant.noeud.position = pos
-                objetCourant.noeud.zPosition = -14
-            }*/
         }
         if sender.state == .Changed {
             //Pendant la le pincement
             
             if nodesSelected.count > 0 {
-                //TODO, on doit aussi scale la boite englobante**
                 for objet in nodesSurTable {
                     if nodesSelected.contains(objet.noeud) {
-                        objet.noeud.size.width = objet.noeud.size.width * sender.scale
-                        objet.noeud.size.height = objet.noeud.size.height * sender.scale
-                        objet.scale *= sender.scale
-                        setPhysicsBody(objet.noeud, masque: 1)
+                        let largeurInitiale = objet.noeud.xScale
+                        let hauteurInitiale = objet.noeud.yScale
+                        objet.noeud.xScale *= sender.scale
+                        objet.noeud.yScale *= sender.scale
+                        if !surTable(objet.noeud.position, node: objet.noeud) {
+                            objet.noeud.xScale = largeurInitiale
+                            objet.noeud.yScale = hauteurInitiale
+                        }else{
+                            objet.scale *= sender.scale
+                        }
                     }
                 }
-                sender.scale = 1
+                sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
             }else{
                 //Ici on scale la vue au complet (zoom)
                 //TODO: Ajouter un max et un min au scale de la scène
-                //table.xScale *= sender.scale
-                //table.yScale *= sender.scale
-                sender.scale = 1
+                for objet in nodesSurTable {
+                    objet.positionSurTableAvantZoom = table.convertPoint(objet.noeud.position, fromNode: self)
+                }
+                
+                table.xScale *= sender.scale
+                table.yScale *= sender.scale
+                scaleTable *= sender.scale
+                
+                for objet in nodesSurTable {
+                    objet.noeud.xScale *= sender.scale
+                    objet.noeud.yScale *= sender.scale
+                    objet.noeud.position = self.convertPoint(objet.positionSurTableAvantZoom, fromNode: table)
+                }
+                
+                sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
             }
         }
         if sender.state == .Ended {
@@ -183,60 +192,41 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    ///Cette fonction s'assure de la rotation et rotation multiple
     func rotationDeLObjet(sender: UIRotationGestureRecognizer){
         if (sender.state == .Began){
+            detruireMurTemporaire()
             //Au début de la rotation, on trouve le centre (si sélection multiple)
             if nodesSelected.count > 1 {
                 centre = centreDesNodesSelectionnees() //Centre des objets en sélection
             }
         }
         if sender.state == .Changed {
-            //TODO: On doit pouvoir faire une rotation multiple à partir du centre de tous les objets
-            
-            //Pendant la rotation
-            theRotation = CGFloat(sender.rotation) + self.offset
-            theRotation = theRotation * -1
-            
-            //Si une seule node, on la rotate normalement
             if nodesSelected.count == 1 {
-                nodesSelected[0].zRotation = theRotation
+                nodesSelected[0].zRotation -= sender.rotation
+                sender.rotation = 0
             }else if nodesSelected.count > 1 {
-                //self.childNodeWithName("nodeCentre")?.zRotation = theRotation
                 for node in nodesSelected
                 {
-                    let dx = node.position.x - centre.x // Get distance X from center
-                    let dy = node.position.y - centre.y // Get distance Y from center
+                    let dx = node.position.x - centre.x // distance en x avec le centre
+                    let dy = node.position.y - centre.y // distance en y avec le centre
                     
-                    let current_angle = atan(dy / dx) // Current angle is the arctan of dy / dx
-                    
-                    let next_angle = current_angle + theRotation // Sum how much you want to rotate in radians
-                    
+                    let current_angle = atan(dy / dx)
+                    let next_angle = current_angle - sender.rotation
                     let rotationRadius = node.position.distance(centre)
                     
-                    // the new x is: center + radius*cos(x)
-                    // the new y is: center + radius*sin(y)
-                    // if dx < 0 you need to get the oposite value of the position
                     let new_x = dx >= 0 ? centre.x + rotationRadius * cos(next_angle) : centre.x - rotationRadius * cos(next_angle)
                     let new_y = dx >= 0 ? centre.y + rotationRadius * sin(next_angle) : centre.y - rotationRadius * sin(next_angle)
-                    
                     let new_point = CGPoint(x: new_x, y: new_y)
                     
-                    let action = SKAction.moveTo(new_point, duration: 0.2)
-                    
-                    node.runAction(action)
+                    node.position = new_point
+                    node.zRotation = node.zRotation - sender.rotation
                 }
+                sender.rotation = 0
             }
         }
         if sender.state == .Ended {
-            //Après la rotation
-            if nodesSelected.count == 1 {
-                self.offset = theRotation * -1
-                
-                for node in nodesSelected
-                {
-                    node.zRotation = theRotation
-                }
-            }
+            //Après la rotation, on update les propriétés car la rotation a changé
             updateTextProprieteObjet()
             
         }
@@ -307,7 +297,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 miseAJourFrameAnimationFeu()
                 deplacement = true
                 endroitPrecedent = location
-            }else if !construireMur && nodeAtPoint(location) == table && nodeTouchee == table && pan {
+            }else if nodeAtPoint(location) == table && nodeTouchee == table && pan {
                 for node in self.children {
                     if let noeud = node as? SKSpriteNode {
                         if noeud.name!.containsString("objet") {
@@ -322,12 +312,20 @@ class GameScene: SKScene, UITextFieldDelegate {
                 table.position.y += offSetPosition.y
                 posInitiale = location
                 deplacement = true
+            }else if construireMur && nodeAtPoint(location) == table && !pan {
+                let touch = touches.first
+                let position2 = touch!.locationInNode(self)
+                detruireMurTemporaire()
+                creerMurTemporaire(position2)
             }
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 
+        //On vérifie si un mur temporaire existe, si oui on le détruit
+        detruireMurTemporaire()
+        
         swipePossible(true) //On débloque les swipes après avoir terminé le déplacement
         nodeTouchee = SKSpriteNode() //On réinitialise l'objet touché dans touchesBegin
         
@@ -356,7 +354,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                             }
                         }
                         
-                        if construireMur && name == "table" {
+                        if construireMur && !pan {
                             let touch = touches.first
                             let position2 = touch!.locationInNode(self)
                             creerMur(position2)
@@ -389,6 +387,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 switch name {
                                 case "outilsave_select":
                                     savedSelected = nodesSelected
+                                    AudioServicesPlaySystemSound(sonSelectionOutil)
                                 case "outilDuplication":
                                     dupplication()
                                     flashSelectionOutil("outilDuplication")
@@ -451,6 +450,46 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    func creerMurTemporaire(position2: CGPoint){
+        if table.containsPoint(posInitiale!) && table.containsPoint(position2) {
+            let longeurMur = posInitiale?.distance(position2)
+            let angleMur = posInitiale?.angle(position2)
+            
+            let objet = SKSpriteNode(imageNamed: "mur")
+            objet.name = "temp"
+            
+            objet.size.width *= 0.5
+            objet.size.height *= 0.5
+            
+            objet.position = posInitiale!.centre(position2)
+            objet.zPosition = -14
+            
+            objet.size.width = longeurMur!
+            objet.zRotation = angleMur!
+            
+            setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
+            
+            objet.xScale *= scaleTable
+            objet.yScale *= scaleTable
+            
+            self.addChild(objet)
+            
+            let temp = monObjet(noeud: objet)
+            nodesSurTable.append(temp)
+        }
+    }
+    
+    func detruireMurTemporaire(){
+        if construireMur {
+            if nodesSurTable.count > 0 {
+                if nodesSurTable[nodesSurTable.count-1].noeud.name == "temp" {
+                    nodesSurTable[nodesSurTable.count-1].noeud.removeFromParent()
+                    nodesSurTable.removeLast()
+                }
+            }
+        }
+    }
+    
     func miseAJourFrameAnimationFeu(){
         ++uneFrameSurX
         if uneFrameSurX >= nodesSelected.count / 2 {
@@ -464,8 +503,9 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     ///Fonction qui resélectionne les noeurs de la sélection enregistrés (qui charge la sélection)
-    ///-Actionné par le bouton loadSelect
+    ///- Actionné par le bouton loadSelect
     func loadSelect(){
+        AudioServicesPlaySystemSound(sonSelectionOutil)
         nodesSelected = savedSelected
         if nodesSelected.count > 0
         {
@@ -473,11 +513,12 @@ class GameScene: SKScene, UITextFieldDelegate {
             {
                 selectNode(node)
             }
+            AudioServicesPlaySystemSound(sonSelection)
         }
     }
     
     ///Fonction qui efface les noeuds qui sont sélectionné
-    ///-Actionné par le bouton delete
+    ///- Actionné par le bouton delete
     func effacerNoeuds(){
         //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
         for objetCourant in nodesSurTable
@@ -513,8 +554,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     func surTable(location: CGPoint, node: SKNode) -> Bool
     {
         if let noeud = node as? SKSpriteNode {
-            let largeur = noeud.size.width / 2
-            let hauteur = noeud.size.height / 2
+            //TODO: Changer l'accumulatedFrame par un test de collition physique...
+            //On utilise l'accumulatedFrame pour prendre en compte la rotation et le scaling des objets
+            let largeur = (noeud.calculateAccumulatedFrame().maxX - noeud.calculateAccumulatedFrame().minX)/2
+            let hauteur = (noeud.calculateAccumulatedFrame().maxY - noeud.calculateAccumulatedFrame().minY)/2
+            
             let gauche = CGPoint(x:location.x - largeur,y:location.y)
             let droite = CGPoint(x:location.x + largeur,y:location.y)
             let haut = CGPoint(x:location.x,y:location.y + hauteur)
@@ -548,11 +592,21 @@ class GameScene: SKScene, UITextFieldDelegate {
             if nodesSelected.contains(node) {
                 unselectNode(node)
                 let nodeCopie = node.copy() as! SKSpriteNode
+                let tempX = nodeCopie.xScale
+                let tempY = nodeCopie.yScale
+                nodeCopie.xScale /= nodeCopie.xScale
+                nodeCopie.yScale /= nodeCopie.yScale
                 setPhysicsBody(nodeCopie, masque: 1) //Masque: 1 -> Objets sur la table
-                let nouvObjet = monObjet(noeud: nodeCopie, points: objetCourant.points)
-                nodesSurTable.append(nouvObjet)
-                self.addChild(nodeCopie)
-                selectNode(nodeCopie)
+                nodeCopie.xScale *= tempX
+                nodeCopie.yScale *= tempY
+                let nouvObjet = monObjet(noeud: nodeCopie)
+                if surTable(nodesSurTable[nodesSurTable.count-1].noeud.position, node: nodesSurTable[nodesSurTable.count-1].noeud){
+                    nodesSurTable.append(nouvObjet)
+                    nodesSurTable[nodesSurTable.count-1].scale = objetCourant.scale
+                    self.addChild(nodeCopie)
+                    selectNode(nodeCopie)
+                    AudioServicesPlaySystemSound(sonObjSurTable)
+                }
             }
         }
     }
@@ -574,6 +628,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 }
             }
         }
+        AudioServicesPlaySystemSound(sonSelection)
     }
     
     /**
@@ -589,11 +644,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         let objet = SKSpriteNode(imageNamed: typeObjet)
         objet.name = "objet" + typeObjet
         
-        //Ici je set le ratio des objets pour garder celui de la scène et non celui de la table
-        //let monRatio = self.frame.height / self.frame.width
-        
         objet.size.width *= 0.5
-        objet.size.height *= 0.5 //* monRatio
+        objet.size.height *= 0.5
         
         objet.position = endroitSurTable
 
@@ -601,7 +653,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Pour la construction d'un mur
         if longeurMur != nil && angleMur != nil {
-            if longeurMur! < 5 {
+            if longeurMur! < 20 {
                 return
             }
             objet.size.width = longeurMur!
@@ -610,12 +662,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         setPhysicsBody(objet, masque: 1) //Masque: 1 -> Objets sur la table
         
+        objet.xScale *= scaleTable
+        objet.yScale *= scaleTable
+        
         self.addChild(objet)
         
         let temp = monObjet(noeud: objet)
         nodesSurTable.append(temp)
         
-        AudioServicesPlaySystemSound(sonObjSurTable);
+        AudioServicesPlaySystemSound(sonObjSurTable)
     }
     
     func animationExplosion(node: SKNode) {
@@ -943,13 +998,10 @@ class GameScene: SKScene, UITextFieldDelegate {
                 for objet in nodesSurTable {
                     if objet.noeud == nodesSelected[0] {
                         if objet.scale != 0 && sFloat >= 0.2 {
-                            //objet.noeud.size.height /= objet.scale
-                            //objet.noeud.size.width /= objet.scale
-                            objet.noeud.size.height = (objet.noeud.size.height / objet.scale) * sFloat
-                            objet.noeud.size.width = (objet.noeud.size.width / objet.scale) * sFloat
-                            
+                            //TODO: Ajouter un test savoir si trop grand (comme dans méthode scale)
+                            objet.noeud.xScale = objet.noeud.xScale / objet.scale * sFloat
+                            objet.noeud.yScale = objet.noeud.yScale / objet.scale * sFloat
                             objet.scale = sFloat
-                            setPhysicsBody(objet.noeud, masque: 1)
                         }
                     }
                 }
