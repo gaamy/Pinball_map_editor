@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cQP-nR-dqi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cQP-nR-dqi">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -119,7 +119,7 @@
                                 <animations/>
                                 <state key="normal" title="Éditeur"/>
                                 <connections>
-                                    <segue destination="BV1-FR-VrT" kind="show" id="fep-yt-WjR"/>
+                                    <segue destination="4ag-3e-9Tp" kind="show" id="AKh-fP-6fg"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnX-kR-URy">
@@ -459,11 +459,131 @@
             </objects>
             <point key="canvasLocation" x="743" y="-178"/>
         </scene>
+        <!--View Controller Choix Editeur-->
+        <scene sceneID="cqP-rm-vQL">
+            <objects>
+                <viewController id="zB4-Zq-8tX" customClass="ViewControllerChoixEditeur" customModule="Projet3" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tn6-qN-Fha"/>
+                        <viewControllerLayoutGuide type="bottom" id="Nz0-jY-Jib"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1bW-nd-eTt">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="yJi-3h-SUu">
+                                <rect key="frame" x="20" y="67" width="560" height="458"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="zB4-Zq-8tX" id="zYi-fz-hpj"/>
+                                    <outlet property="delegate" destination="zB4-Zq-8tX" id="3Oe-nB-LEc"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modifier une carte" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rkG-ph-ZRl">
+                                <rect key="frame" x="203" y="20" width="194" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="194" id="wZb-y6-lmC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6L-7B-Dam">
+                                <rect key="frame" x="280" y="550" width="41" height="30"/>
+                                <state key="normal" title="Éditer"/>
+                                <connections>
+                                    <action selector="editerCarteChoisis:" destination="zB4-Zq-8tX" eventType="touchUpInside" id="SYV-4I-XQs"/>
+                                    <segue destination="BV1-FR-VrT" kind="show" id="GeZ-sD-2aT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8B-gn-dFm">
+                                <rect key="frame" x="20" y="28" width="46" height="30"/>
+                                <state key="normal" title="Retour"/>
+                                <connections>
+                                    <segue destination="4ag-3e-9Tp" kind="show" id="YWU-3e-Tws">
+                                        <nil key="action"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rkG-ph-ZRl" firstAttribute="top" secondItem="tn6-qN-Fha" secondAttribute="bottom" id="KTq-xp-eHZ"/>
+                            <constraint firstItem="yJi-3h-SUu" firstAttribute="centerX" secondItem="V6L-7B-Dam" secondAttribute="centerX" id="OAw-QZ-HNL"/>
+                            <constraint firstItem="yJi-3h-SUu" firstAttribute="top" secondItem="a8B-gn-dFm" secondAttribute="bottom" constant="9" id="U2v-qh-Hlo"/>
+                            <constraint firstItem="a8B-gn-dFm" firstAttribute="leading" secondItem="1bW-nd-eTt" secondAttribute="leadingMargin" id="VXn-Uk-GFO"/>
+                            <constraint firstItem="a8B-gn-dFm" firstAttribute="leading" secondItem="yJi-3h-SUu" secondAttribute="leading" id="fx7-cN-EVB"/>
+                            <constraint firstItem="a8B-gn-dFm" firstAttribute="top" secondItem="tn6-qN-Fha" secondAttribute="bottom" constant="8" symbolic="YES" id="mJx-Og-sTV"/>
+                            <constraint firstItem="V6L-7B-Dam" firstAttribute="top" secondItem="yJi-3h-SUu" secondAttribute="bottom" constant="25" id="ndh-MP-NLD"/>
+                            <constraint firstAttribute="bottom" secondItem="V6L-7B-Dam" secondAttribute="bottom" constant="20" symbolic="YES" id="ob0-RT-Xs0"/>
+                            <constraint firstItem="yJi-3h-SUu" firstAttribute="trailing" secondItem="1bW-nd-eTt" secondAttribute="trailingMargin" id="qdH-00-SZa"/>
+                            <constraint firstItem="yJi-3h-SUu" firstAttribute="centerX" secondItem="rkG-ph-ZRl" secondAttribute="centerX" id="r4p-2s-L6H"/>
+                            <constraint firstItem="yJi-3h-SUu" firstAttribute="top" secondItem="rkG-ph-ZRl" secondAttribute="bottom" constant="8" symbolic="YES" id="vjc-Qn-fwW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="yJi-3h-SUu" id="sTl-3Z-FcO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Iw-Lz-fEL" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-339" y="1483"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="0Pm-h3-nzt">
+            <objects>
+                <viewController id="4ag-3e-9Tp" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="f68-Sq-ODX"/>
+                        <viewControllerLayoutGuide type="bottom" id="kmf-YO-Z2k"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cU7-hm-7sG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiZ-OX-0zL">
+                                <rect key="frame" x="335" y="338" width="160" height="30"/>
+                                <state key="normal" title="Créer un nouvelle carte"/>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="show" id="d5H-Nn-mFQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8k-73-lc0">
+                                <rect key="frame" x="107" y="338" width="126" height="30"/>
+                                <state key="normal" title="Modifier une carte"/>
+                                <connections>
+                                    <segue destination="zB4-Zq-8tX" kind="show" id="AGb-bd-f1v">
+                                        <nil key="action"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EQg-DB-3OQ">
+                                <rect key="frame" x="20" y="20" width="46" height="30"/>
+                                <state key="normal" title="Retour"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="CiZ-OX-0zL" secondAttribute="trailing" constant="85" id="8YR-Pr-54u"/>
+                            <constraint firstItem="EQg-DB-3OQ" firstAttribute="leading" secondItem="cU7-hm-7sG" secondAttribute="leadingMargin" id="Geo-OS-MN3"/>
+                            <constraint firstItem="EQg-DB-3OQ" firstAttribute="top" secondItem="f68-Sq-ODX" secondAttribute="bottom" id="HZc-rE-zpE"/>
+                            <constraint firstItem="kmf-YO-Z2k" firstAttribute="top" secondItem="w8k-73-lc0" secondAttribute="bottom" constant="232" id="KMU-8L-SBc"/>
+                            <constraint firstItem="w8k-73-lc0" firstAttribute="leading" secondItem="cU7-hm-7sG" secondAttribute="leadingMargin" constant="87" id="hzh-JG-OGU"/>
+                            <constraint firstItem="CiZ-OX-0zL" firstAttribute="baseline" secondItem="w8k-73-lc0" secondAttribute="baseline" id="sYn-Xp-8sP"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Duz-1f-wh6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-347" y="687"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tJG-RN-NId"/>
+        <segue reference="Gsu-0d-go3"/>
+        <segue reference="d5H-Nn-mFQ"/>
+        <segue reference="YWU-3e-Tws"/>
     </inferredMetricsTieBreakers>
 </document>
