@@ -111,6 +111,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         //On set la physique de la table
         let rect = CGRect(origin:CGPoint(x:table.frame.origin.x-table.position.x, y:table.frame.origin.y-table.position.y), size:table.frame.size)
         table.physicsBody = SKPhysicsBody(edgeLoopFromRect:rect)
+        table.physicsBody!.usesPreciseCollisionDetection = true
         
         //Initialise les labels et les text fields des propriétés
         initLabels()
@@ -219,8 +220,16 @@ class GameScene: SKScene, UITextFieldDelegate {
                     let new_y = dx >= 0 ? centre.y + rotationRadius * sin(next_angle) : centre.y - rotationRadius * sin(next_angle)
                     let new_point = CGPoint(x: new_x, y: new_y)
                     
+                    let tempPos = node.position
+                    let tempRot = node.zRotation
                     node.position = new_point
                     node.zRotation = node.zRotation - sender.rotation
+                    
+                    if !surTable(node.position, node: node) {
+                        node.position = tempPos
+                        node.zRotation = tempRot
+                    }
+                    
                 }
                 sender.rotation = 0
             }
