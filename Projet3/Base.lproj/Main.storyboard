@@ -582,8 +582,8 @@
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Gsu-0d-go3"/>
-        <segue reference="d5H-Nn-mFQ"/>
+        <segue reference="GeZ-sD-2aT"/>
         <segue reference="YWU-3e-Tws"/>
+        <segue reference="Gsu-0d-go3"/>
     </inferredMetricsTieBreakers>
 </document>

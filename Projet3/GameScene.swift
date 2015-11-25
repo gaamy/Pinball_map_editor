@@ -596,6 +596,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet.size.height *= 0.5 //* monRatio
         
         objet.position = endroitSurTable
+
         objet.zPosition = -14
         
         //Pour la construction d'un mur
@@ -1117,6 +1118,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         ///Creation des autres objets
         for objet in carte.arbre.autresObjets{
             let positionXML = CGPoint(x: objet.positionX!, y: objet.positionY!)
+            
+           // objet.scale,
+            //objet.noeud.zRotation
             ///Todo: convertion vers coordones crlient leger
             let typeObjetXML = objet.type!
             creerObjet(table.convertPoint(positionXML, toNode: table),typeObjet: typeObjetXML)
@@ -1193,12 +1197,16 @@ class GameScene: SKScene, UITextFieldDelegate {
                 //carte.arbre.ajouterMur(objet.noeud.position.x, posY: objet.noeud.position.y, largeurMur: ??, angleRotation: ??)
                 print("TODO objetMur")
             case "objetportail":
-                carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echellePortail: 0/*objet.noeud.scale??*/, angleRotation: 0)
+                //carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y),
+                //    Portail: 0/*objet.noeud.scale??*/, angleRotation: 0)
                 print("TODO portail")
             default:
                 let nomObjet = nom.substringFromIndex(nom.startIndex.advancedBy(5))
                 
-                carte.arbre.ajouterAutreObjet(nomObjet, posX: Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echelleObjet: 0/*objet.noeud.scale??*/, angleRotation: 0)
+                //Traduire le nom de l'objet
+                let nomObjetXml = carte.dictionnaireObjetsLegerToXml[nomObjet]
+                
+                carte.arbre.ajouterAutreObjet(nomObjetXml!, posX: Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echelleObjet: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
             }
         }
     }

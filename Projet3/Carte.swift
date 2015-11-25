@@ -18,6 +18,13 @@ class Carte {
     //Proprietes de la table de jeux
     var proprietes = Proprietes()
     
+    //Dictionnaire utiliser pour traduire les noms du cote client leger
+    //La clée correspond au nom de l'objet sur le xml/ client lourd, et la valeur au nom du cote client leger
+    let dictionnaireObjetsXmlToLeger = ["cible":"cible", "butoirTriangulaireDroit":"butoirTriDroit","butoirTriangulaireGauche":"butoirTriGauche", "butoirCirculaire":"butoirCirc","generateurDeBilles":"generateur", "paletteGauche1":"paletteGauche1", "paletteGauche2":"paletteGauche2", "paletteDroite1":"paletteDroite1", "Droite2":"paletteDroite2", "trou":"trou", "ressort":"ressort", "accelerateur":"accelerateur", "mur":"mur","portail":"portail", "destructeur":"destructeur"]
+    
+    let dictionnaireObjetsLegerToXml = ["cible":"cible", "butoirTriDroit":"butoirTriangulaireDroit","butoirTriGauche":"butoirTriangulaireGauche", "butoirCirculaire":"butoirCirc","generateur":"generateurDeBilles", "paletteGauche1":"paletteGauche1", "paletteGauche2":"paletteGauche2", "paletteDroite1":"paletteDroite1", "paletteDroite2":"paletteDroite2", "trou":"trou", "ressort":"ressort", "accelerateur":"accelerateur", "mur":"mur","portail":"portail", "destructeur":"destructeur"]
+    
+
     ///Constructeur
     init(nom : String){
         nomFichier = nom
@@ -51,9 +58,7 @@ class Carte {
                     generateurPresent = true
                 case "ressort":
                     ressortPresent = true
-                default:
-                    //je dois m metre qq chose ici, mais je ne veux pas.
-                    print("")
+                default: break
             }
             
         }
@@ -73,7 +78,7 @@ class Carte {
 
         
         let sauvegardeCarte = AEXMLDocument()
-        let jeuxXml = sauvegardeCarte.addChild(name: "jeux")
+        let jeuxXml = sauvegardeCarte.addChild(name: "jeu")
         let arbreXml = jeuxXml.addChild(name: "arbre")
         let proprieteXml = jeuxXml.addChild(name: "propriete")
         
@@ -158,16 +163,16 @@ class Arbre {
     }
     
     ///Setter pour le mur
-    func ajouterMur(posX : Int, posY : Int, largeurMur : Int, angleRotation : Int){
+    func ajouterMur(posX : Int, posY : Int, largeurMur : Float, angleRotation : Float){
         mur.append(Mur(typeObj:"mur", x:posX, y:posY, largeur:largeurMur, angle: angleRotation))
     }
     
     ///Setter pour portail
-    func ajouterPortail(posX : Int, posY : Int, echellePortail : Int, angleRotation : Int){
+    func ajouterPortail(posX : Int, posY : Int, echellePortail : Float, angleRotation : Float){
         portail.append(AutreObjetDeScene(typeObj:"portail", x:posX, y:posY, echelleObj:echellePortail, angle: angleRotation))
     }
     
-    func ajouterAutreObjet(nom:String, posX : Int, posY : Int, echelleObjet : Int, angleRotation : Int){
+    func ajouterAutreObjet(nom:String, posX : Int, posY : Int, echelleObjet : Float, angleRotation : Float){
         autresObjets.append(AutreObjetDeScene(typeObj: nom, x: posX, y: posY, echelleObj: echelleObjet, angle: angleRotation))
     }
 }
@@ -190,15 +195,15 @@ class ObjetDeScene{
 
 ///Spécification de ObjetDeScene pour un mur
 class Mur : ObjetDeScene{
-    init(typeObj : String, x : Int, y : Int, largeur: Int, angle: Int){
+    init(typeObj : String, x : Int, y : Int, largeur: Float, angle: Float){
         
         super.init(type: typeObj,x: x,y: y)
         largeurMur = largeur
         angleRotation = angle
     }
     
-    var largeurMur :Int?
-    var angleRotation :Int?
+    var largeurMur :Float?
+    var angleRotation :Float?
     
 }
 
@@ -207,15 +212,15 @@ class Mur : ObjetDeScene{
 
 ///Spécification de ObjetDeScene pour tout les autres objets ObjetDeScene
 class AutreObjetDeScene : ObjetDeScene{
-    init(typeObj : String, x : Int, y : Int, echelleObj: Int, angle: Int){
+    init(typeObj : String, x : Int, y : Int, echelleObj: Float, angle: Float){
       
         super.init(type: typeObj,x: x,y: y)
         echelle = echelleObj
         angleRotation = angle
     }
     
-    var echelle : Int?
-    var angleRotation : Int?
+    var echelle : Float?
+    var angleRotation : Float?
 }
 
 
