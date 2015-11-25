@@ -376,6 +376,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 switch name {
                                 case "outilsave_select":
                                     savedSelected = nodesSelected
+                                    AudioServicesPlaySystemSound(sonSelectionOutil)
                                 case "outilDuplication":
                                     dupplication()
                                     flashSelectionOutil("outilDuplication")
@@ -451,8 +452,9 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     ///Fonction qui resélectionne les noeurs de la sélection enregistrés (qui charge la sélection)
-    ///-Actionné par le bouton loadSelect
+    ///- Actionné par le bouton loadSelect
     func loadSelect(){
+        AudioServicesPlaySystemSound(sonSelectionOutil)
         nodesSelected = savedSelected
         if nodesSelected.count > 0
         {
@@ -460,11 +462,12 @@ class GameScene: SKScene, UITextFieldDelegate {
             {
                 selectNode(node)
             }
+            AudioServicesPlaySystemSound(sonSelection)
         }
     }
     
     ///Fonction qui efface les noeuds qui sont sélectionné
-    ///-Actionné par le bouton delete
+    ///- Actionné par le bouton delete
     func effacerNoeuds(){
         //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
         for objetCourant in nodesSurTable
@@ -500,7 +503,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     func surTable(location: CGPoint, node: SKNode) -> Bool
     {
         if let noeud = node as? SKSpriteNode {
-            
+            //TODO: Changer l'accumulatedFrame par un test de collition physique...
             //On utilise l'accumulatedFrame pour prendre en compte la rotation et le scaling des objets
             let largeur = (noeud.calculateAccumulatedFrame().maxX - noeud.calculateAccumulatedFrame().minX)/2
             let hauteur = (noeud.calculateAccumulatedFrame().maxY - noeud.calculateAccumulatedFrame().minY)/2
@@ -546,10 +549,13 @@ class GameScene: SKScene, UITextFieldDelegate {
                 nodeCopie.xScale *= tempX
                 nodeCopie.yScale *= tempY
                 let nouvObjet = monObjet(noeud: nodeCopie, points: objetCourant.points)
-                nodesSurTable.append(nouvObjet)
-                nodesSurTable[nodesSurTable.count-1].scale = objetCourant.scale
-                self.addChild(nodeCopie)
-                selectNode(nodeCopie)
+                if surTable(nodesSurTable[nodesSurTable.count-1].noeud.position, node: nodesSurTable[nodesSurTable.count-1].noeud){
+                    nodesSurTable.append(nouvObjet)
+                    nodesSurTable[nodesSurTable.count-1].scale = objetCourant.scale
+                    self.addChild(nodeCopie)
+                    selectNode(nodeCopie)
+                    AudioServicesPlaySystemSound(sonObjSurTable)
+                }
             }
         }
     }
@@ -571,6 +577,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 }
             }
         }
+        AudioServicesPlaySystemSound(sonSelection)
     }
     
     /**
