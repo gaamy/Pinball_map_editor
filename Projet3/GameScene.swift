@@ -11,19 +11,13 @@ import AVFoundation
 
 class GameScene: SKScene, UITextFieldDelegate {
     //Variables pour les labels et text fields
-    var labelPosition:SKLabelNode?
     var textPositionX:UITextField?
     var textPositionY:UITextField?
-    var labelRotation:SKLabelNode?
     var textRotation:UITextField?
-    var labelScale:SKLabelNode?
     var textScale:UITextField?
-    var labelPoints:SKLabelNode?
     var textPoints:UITextField?
     
-    var labelBilleGratuite:SKLabelNode?
     var textBilleGratuite:UITextField?
-    var labelDiff:SKLabelNode?
     var textDiff:UITextField?
     
     //Variables globale à la classe
@@ -58,7 +52,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     var marqueurSelectionOutil = SKShapeNode()
     var uneFrameSurX = 0
     var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
-    var peutTourner = true
     var scaleTable:CGFloat = 1
     
     //Les variables de son
@@ -609,7 +602,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                 nodeCopie.xScale *= tempX
                 nodeCopie.yScale *= tempY
                 let nouvObjet = monObjet(noeud: nodeCopie)
-                if surTable(nodesSurTable[nodesSurTable.count-1].noeud.position, node: nodesSurTable[nodesSurTable.count-1].noeud){
+                //nouvObjet.noeud.position.x += nouvObjet.noeud.size.width/2
+                //nouvObjet.noeud.position.y += nouvObjet.noeud.size.height/2
+                if surTable(nouvObjet.noeud.position, node: node){
                     nodesSurTable.append(nouvObjet)
                     nodesSurTable[nodesSurTable.count-1].scale = objetCourant.scale
                     self.addChild(nodeCopie)
