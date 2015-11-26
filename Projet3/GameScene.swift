@@ -25,6 +25,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var textBilleGratuite:UITextField?
     var labelDiff:SKLabelNode?
     var textDiff:UITextField?
+    var textSauvegarde: UITextField?
     
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
@@ -1118,6 +1119,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         textDiff!.backgroundColor = UIColor.whiteColor()
         textDiff!.delegate = self
         
+        textSauvegarde = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-90, y: CGRectGetMidY(self.frame)+400, width: 50, height: 20))
+        self.view!.addSubview(textSauvegarde!)
+        textSauvegarde!.backgroundColor = UIColor.whiteColor()
+        textSauvegarde!.delegate = self
+        
         updateTextProprieteObjet()
     }
     
@@ -1171,13 +1177,19 @@ class GameScene: SKScene, UITextFieldDelegate {
         for objet in carte.arbre.autresObjets{
             let positionXML = CGPoint(x: objet.positionX!, y: objet.positionY!)
             
-           // objet.scale,
-            //objet.noeud.zRotation
+           
             ///Todo: convertion vers coordones crlient leger
-            let typeObjetXML = objet.type!
-            creerObjet(table.convertPoint(positionXML, toNode: table),typeObjet: typeObjetXML)
+            let typeObjetClientLeger = carte.dictionnaireObjetsXmlToLeger[objet.type!]
+            creerObjet(positionXML,typeObjet: typeObjetClientLeger!)
             
-            
+            let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
+            //echelle
+            nouvelObjet.scale = CGFloat(objet.echelle!)
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale
+            nouvelObjet.noeud.yScale *= nouvelObjet.scale
+            //objet.noeud.zRotation
+            nouvelObjet.noeud.zRotation = CGFloat(objet.angleRotation!)
+    
         }
         
     }
@@ -1263,10 +1275,4 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
-    ///Sauvegarde la carte acutelle en écrasant la carte sur le disque
-    func sauvegarderCarteActuelle(){
-        //supprimer la sauvegare anterieur
-        //faire une nouvelle sauvegarde
-        
-    }
 }
