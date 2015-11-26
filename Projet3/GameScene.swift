@@ -19,6 +19,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     var textBilleGratuite:UITextField?
     var textDiff:UITextField?
+    var textSauvegarde: UITextField?
     
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
@@ -68,8 +69,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* Setup your scene here */
         
         ///Chargement de la scene selon la Carte xml (si on a edite une carte existante)
-        if carte != nil{
-            chargerCarte(carte)
+        if self.carte != nil{
+            chargerCarte(self.carte)
+        }
+        //on initialize une nouvelle carte sinon
+        else {
+            self.carte = Carte(nom: "nouvelle_carte")
         }
         
         initLesSons()
@@ -652,6 +657,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         objet.size.height *= 0.5
         
         objet.position = endroitSurTable
+
         objet.zPosition = -14
         
         //Pour la construction d'un mur
@@ -856,6 +862,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 self.textPoints?.hidden = true
                 self.textBilleGratuite?.hidden = true
                 self.textDiff?.hidden = true
+                self.textSauvegarde?.hidden = true
                 
                 menuDroitOuvert = false
             }else {
@@ -868,6 +875,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                     self.textPoints?.hidden = false;
                     self.textBilleGratuite?.hidden = false;
                     self.textDiff?.hidden = false;
+                    self.textSauvegarde?.hidden = false;
                 })
                 
                 menuDroitOuvert = true
@@ -881,6 +889,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         textBilleGratuite!.text = String(ptsBilleGratuite)
         textDiff!.text = String(coteDifficulte)
+       
+        //nom de la carte
+        textSauvegarde!.text = (carte.getNom() as NSString).stringByDeletingPathExtension //note: on enleve l'extention ".xml" et on update le textView
+        
         
         if nodesSelected.count == 1 {
             textPositionX!.text = NSString(format: "%.0f", nodesSelected[0].position.x) as String
@@ -961,6 +973,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         textRotation!.resignFirstResponder()
         textBilleGratuite!.resignFirstResponder()
         textDiff!.resignFirstResponder()
+        textSauvegarde!.resignFirstResponder()
         
         let converter = NSNumberFormatter()
         converter.decimalSeparator = "."
@@ -1068,7 +1081,22 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         
-        return true
+        if(textDiff!.text! != ""){
+            if let s = converter.numberFromString(textDiff!.text!) {
+                let sInt = Int(s)
+                coteDifficulte = sInt
+            }else{
+                updateTextProprieteObjet()
+            }
+        }
+        
+        if(textSauvegarde!.text! != ""){
+            carte.setNom("\(textSauvegarde!.text!)")
+            
+        }
+
+        
+        return true // if this always returns true,  what's to point of returning it?
     }
     
     ///Initialise les sons
@@ -1127,6 +1155,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         textDiff!.backgroundColor = UIColor.whiteColor()
         textDiff!.delegate = self
         
+        textSauvegarde = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-250, y: CGRectGetMidY(self.frame)+260, width: 150, height: 20))
+        self.view!.addSubview(textSauvegarde!)
+        textSauvegarde!.backgroundColor = UIColor.whiteColor()
+        textSauvegarde!.delegate = self
+        
         updateTextProprieteObjet()
     }
     
@@ -1166,6 +1199,13 @@ class GameScene: SKScene, UITextFieldDelegate {
             ///Todo: convertion vers coordones crlient leger
             creerObjet(positionXML,typeObjet: portail.type!)
             
+            let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
+            //echelle
+            nouvelObjet.scale = CGFloat(portail.echelle!)
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale
+            nouvelObjet.noeud.yScale *= nouvelObjet.scale
+            //objet.noeud.zRotation
+            nouvelObjet.noeud.zRotation = CGFloat(portail.angleRotation!)
         }
         
         ///Creation des murs
@@ -1174,16 +1214,31 @@ class GameScene: SKScene, UITextFieldDelegate {
             ///Todo: convertion vers coordones crlient leger
             creerObjet(positionXML,typeObjet: mur.type!)
             
+            let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
+            //echelle
+            nouvelObjet.scale = CGFloat(mur.largeurMur!)
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale
+            //objet.noeud.zRotation
+            nouvelObjet.noeud.zRotation = CGFloat(mur.angleRotation!)
         }
         
         ///Creation des autres objets
         for objet in carte.arbre.autresObjets{
             let positionXML = CGPoint(x: objet.positionX!, y: objet.positionY!)
+            
+           
             ///Todo: convertion vers coordones crlient leger
-            let typeObjetXML = objet.type!
-            creerObjet(table.convertPoint(positionXML, toNode: table),typeObjet: typeObjetXML)
+            let typeObjetClientLeger = carte.dictionnaireObjetsXmlToLeger[objet.type!]
+            creerObjet(positionXML,typeObjet: typeObjetClientLeger!)
             
-            
+            let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
+            //echelle
+            nouvelObjet.scale = CGFloat(objet.echelle!)
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale
+            nouvelObjet.noeud.yScale *= nouvelObjet.scale
+            //objet.noeud.zRotation
+            nouvelObjet.noeud.zRotation = CGFloat(objet.angleRotation!)
+    
         }
         
     }
@@ -1193,11 +1248,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         Popups.SharedInstance.ShowAlert(self.viewController!,
             title: "Sauvegarder Carte",
-            message: "Sauvegarde d'une nouvelle carte. Choisissez un nom pour votre carte.",
+            message: "Etes vous sure de sauvegarder?",
             buttons: ["Sauvegarder" , "Annuler"]) { (buttonPressed) -> Void in
                 if buttonPressed == "Sauvegarder" {
                     
-                    let nomNouvelleSauvegarde = "nouvelleCarte3.xml"
+                    let nomNouvelleSauvegarde = "\(self.carte.getNom()).xml"
                     self.carte = Carte(nom: nomNouvelleSauvegarde)
                     
                     self.preparerCarteXML(self.carte)
@@ -1213,7 +1268,22 @@ class GameScene: SKScene, UITextFieldDelegate {
                     }
                         //utilisez un autre nom de fichier pour sauvegarder
                     else{
+                        //TODO: debug
                         print("utilisez un autre nom de fichier pour sauvegarder")
+                        
+                        Popups.SharedInstance.ShowAlert(self.viewController!,
+                            title: "Attention!",
+                            message: "Le nom \"\(nomNouvelleSauvegarde)\"que vous avez choisis pour votre carte existe deja. Voulez vous ecraser le fichier existant sur le disque? Sinon modifiez le nom de la carte",
+                            buttons: ["Écraser", "Annuler"]) { (buttonPressed) -> Void in
+                                if buttonPressed == "Annuler" {
+                                    //On fait rien sinon
+                                } else if buttonPressed == "Écraser"{
+                                    //TODO: Ecraser le
+                                
+                                
+                                }
+                        }
+                        
                     }
                     
                     
@@ -1255,20 +1325,18 @@ class GameScene: SKScene, UITextFieldDelegate {
                 //carte.arbre.ajouterMur(objet.noeud.position.x, posY: objet.noeud.position.y, largeurMur: ??, angleRotation: ??)
                 print("TODO objetMur")
             case "objetportail":
-                carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echellePortail: 0/*objet.noeud.scale??*/, angleRotation: 0)
+                //carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y),
+                //    Portail: 0/*objet.noeud.scale??*/, angleRotation: 0)
                 print("TODO portail")
             default:
                 let nomObjet = nom.substringFromIndex(nom.startIndex.advancedBy(5))
                 
-                carte.arbre.ajouterAutreObjet(nomObjet, posX: Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echelleObjet: 0/*objet.noeud.scale??*/, angleRotation: 0)
+                //Traduire le nom de l'objet
+                let nomObjetXml = carte.dictionnaireObjetsLegerToXml[nomObjet]
+                
+                carte.arbre.ajouterAutreObjet(nomObjetXml!, posX: Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echelleObjet: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
             }
         }
     }
     
-    ///Sauvegarde la carte acutelle en écrasant la carte sur le disque
-    func sauvegarderCarteActuelle(){
-        //supprimer la sauvegare anterieur
-        //faire une nouvelle sauvegarde
-        
-    }
 }

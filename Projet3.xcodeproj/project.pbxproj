@@ -28,7 +28,6 @@
 		2DFD73C91BB0D2F500744B61 /* placerObjetSurTable.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */; };
 		2DFD73CA1BB0D2F500744B61 /* SelectionOutil.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */; };
 		2DFD73CC1BB0D52900744B61 /* Selection.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DFD73CB1BB0D52900744B61 /* Selection.mp3 */; };
-		FC0D79F41BEFCC6500B11C47 /* XmlManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D79F31BEFCC6500B11C47 /* XmlManager.swift */; };
 		FC1DCC2E1BCF7BF600353F74 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1DCC2D1BCF7BF600353F74 /* ViewController.swift */; };
 		FC1DCC301BCF7BFF00353F74 /* loginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1DCC2F1BCF7BFF00353F74 /* loginScreenViewController.swift */; };
 		FC1DCC321BCF7C5900353F74 /* CustonSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1DCC311BCF7C5900353F74 /* CustonSegue.swift */; };
@@ -77,7 +76,6 @@
 		2DFD73C71BB0D2F500744B61 /* placerObjetSurTable.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = placerObjetSurTable.mp3; sourceTree = "<group>"; };
 		2DFD73C81BB0D2F500744B61 /* SelectionOutil.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SelectionOutil.mp3; sourceTree = "<group>"; };
 		2DFD73CB1BB0D52900744B61 /* Selection.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Selection.mp3; sourceTree = "<group>"; };
-		FC0D79F31BEFCC6500B11C47 /* XmlManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XmlManager.swift; sourceTree = "<group>"; };
 		FC1DCC2D1BCF7BF600353F74 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FC1DCC2F1BCF7BFF00353F74 /* loginScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginScreenViewController.swift; sourceTree = "<group>"; };
 		FC1DCC311BCF7C5900353F74 /* CustonSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustonSegue.swift; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				FC6290661C05083700CDBF52 /* AEXML.swift */,
 				FC6290671C05083700CDBF52 /* ParseurXML.swift */,
 				2D0D41151BA8E50F00B25A7B /* Supporting Files */,
-				FC0D79F31BEFCC6500B11C47 /* XmlManager.swift */,
 			);
 			path = Projet3;
 			sourceTree = "<group>";
@@ -300,7 +297,6 @@
 			files = (
 				FC1DCC301BCF7BFF00353F74 /* loginScreenViewController.swift in Sources */,
 				FC6290681C05083700CDBF52 /* Carte.swift in Sources */,
-				FC0D79F41BEFCC6500B11C47 /* XmlManager.swift in Sources */,
 				2DD9F48C1BFBEE2B0085AC39 /* Objet.swift in Sources */,
 				FC6290691C05083700CDBF52 /* ViewControllerChoixEditeur.swift in Sources */,
 				2D0D411C1BA8E50F00B25A7B /* GameScene.swift in Sources */,

@@ -493,7 +493,7 @@
                                 <state key="normal" title="Éditer"/>
                                 <connections>
                                     <action selector="editerCarteChoisis:" destination="zB4-Zq-8tX" eventType="touchUpInside" id="SYV-4I-XQs"/>
-                                    <segue destination="BV1-FR-VrT" kind="show" id="GeZ-sD-2aT"/>
+                                    <segue destination="BV1-FR-VrT" kind="show" identifier="editSegue" id="GeZ-sD-2aT"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8B-gn-dFm">
@@ -582,8 +582,8 @@
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Gsu-0d-go3"/>
-        <segue reference="d5H-Nn-mFQ"/>
+        <segue reference="GeZ-sD-2aT"/>
         <segue reference="YWU-3e-Tws"/>
+        <segue reference="Gsu-0d-go3"/>
     </inferredMetricsTieBreakers>
 </document>

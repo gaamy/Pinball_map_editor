@@ -123,6 +123,8 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         //TODO: ajouter Error handling: quand un atribut n'est pas trouve dans l'element, une erreur se declanche
         
         switch elementName {
+        case "xml": break
+            
         case "jeu":
             //TODO: enrregistrer le nom de la carte dans l'objet Carte
             //STUB: nomFichier
@@ -132,8 +134,7 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         case "arbre":
             carteActuelle.arbre = Arbre()
             
-        case "propriete":
-            print("")
+        case "propriete": break
             
         ///elements de l'Arbre
         case "table":
@@ -146,7 +147,7 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
             let positionY = attributeDict["positiony"] as String!
             let largeurMur = attributeDict["largeurMur"] as String!
             let angle = attributeDict["angleRotation"] as String!
-            carteActuelle.arbre.ajouterMur(Int(positionX)!, posY: Int(positionY)!, largeurMur: Int(largeurMur)!, angleRotation: Int(angle)!)
+            carteActuelle.arbre.ajouterMur(Int(positionX)!, posY: Int(positionY)!, largeurMur: Float(largeurMur)!, angleRotation: Float(angle)!)
             
             ///Pour l'instant, les portails sont stoqu comme nimporte quel qutre objet sans consiterer qui son pairs
         case "portail":
@@ -155,12 +156,11 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
             temp = attributeDict["positiony"] as String!
             let positionY = Int(temp!)!
             temp = attributeDict["echelle"] as String!
-            let echelle = Int(temp!)!
+            let echelle = Float(temp!)!
             temp = attributeDict["angleRotation"] as String!
-            let angle = Int(temp!)!
+            let angle = Float(temp!)!
             
             carteActuelle.arbre.ajouterPortail(positionX, posY: positionY, echellePortail: echelle, angleRotation: angle)
-        
         
         ///elements de Proprietes
         case "ButoirCirculair":
@@ -188,16 +188,15 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
             let difficulte = attributeDict["point"] as String!
             carteActuelle.proprietes.setDifficulte(Int(difficulte)!)
         
-            
         default:
             var temp = attributeDict["positionx"] as String!
             let positionX = Int(temp!)!
             temp = attributeDict["positiony"] as String!
             let positionY = Int(temp!)!
             temp = attributeDict["echelle"] as String!
-            let echelle = Int(temp!)!
+            let echelle = Float(temp!)!
             temp = attributeDict["angleRotation"] as String!
-            let angle = Int(temp!)!
+            let angle = Float(temp!)!
             
             carteActuelle.arbre.ajouterAutreObjet(elementName, posX: positionX, posY: positionY, echelleObjet: echelle, angleRotation: angle)
         }
