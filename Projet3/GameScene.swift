@@ -1223,9 +1223,10 @@ class GameScene: SKScene, UITextFieldDelegate {
             creerObjet(positionXML,typeObjet: mur.type!)
             
             let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
+            
             //echelle
             nouvelObjet.noeud.size.width = CGFloat(mur.largeurMur!)
-            
+            setPhysicsBody(nouvelObjet.noeud,masque: 1)
             nouvelObjet.noeud.xScale *= nouvelObjet.scale
             //objet.noeud.zRotation
             nouvelObjet.noeud.zRotation = CGFloat(mur.angleRotation!)
