@@ -1006,10 +1006,16 @@ class GameScene: SKScene, UITextFieldDelegate {
                 for objet in nodesSurTable {
                     if objet.noeud == nodesSelected[0] {
                         if objet.scale != 0 && sFloat >= 0.2 {
-                            //TODO: Ajouter un test savoir si trop grand (comme dans méthode scale)
+                            let largeurInitiale = objet.noeud.xScale
+                            let hauteurInitiale = objet.noeud.yScale
                             objet.noeud.xScale = objet.noeud.xScale / objet.scale * sFloat
                             objet.noeud.yScale = objet.noeud.yScale / objet.scale * sFloat
-                            objet.scale = sFloat
+                            if !surTable(objet.noeud.position, node: objet.noeud) {
+                                objet.noeud.xScale = largeurInitiale
+                                objet.noeud.yScale = hauteurInitiale
+                            }else{
+                                objet.scale = sFloat
+                            }
                         }
                     }
                 }
