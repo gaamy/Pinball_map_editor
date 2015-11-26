@@ -22,7 +22,7 @@ class Carte {
     //La clée correspond au nom de l'objet sur le xml/ client lourd, et la valeur au nom du cote client leger
     let dictionnaireObjetsXmlToLeger = ["cible":"cible", "butoirTriangulaireDroit":"butoirTriDroit","butoirTriangulaireGauche":"butoirTriGauche", "butoirCirculaire":"butoirCirc","generateurDeBilles":"generateur", "paletteGauche1":"paletteGauche1", "paletteGauche2":"paletteGauche2", "paletteDroite1":"paletteDroite1", "paletteDroite2":"paletteDroite2", "trou":"trou", "ressort":"ressort", "accelerateur":"accelerateur", "mur":"mur","portail":"portail", "destructeur":"destructeur"]
     
-    let dictionnaireObjetsLegerToXml = ["cible":"cible", "butoirTriDroit":"butoirTriangulaireDroit","butoirTriGauche":"butoirTriangulaireGauche", "butoirCirculaire":"butoirCirc","generateur":"generateurDeBilles", "paletteGauche1":"paletteGauche1", "paletteGauche2":"paletteGauche2", "paletteDroite1":"paletteDroite1", "paletteDroite2":"paletteDroite2", "trou":"trou", "ressort":"ressort", "accelerateur":"accelerateur", "mur":"mur","portail":"portail", "destructeur":"destructeur"]
+    let dictionnaireObjetsLegerToXml = ["cible":"cible", "butoirTriDroit":"butoirTriangulaireDroit","butoirTriGauche":"butoirTriangulaireGauche", "butoirCirc":"butoirCirculaire","generateur":"generateurDeBilles", "paletteGauche1":"paletteGauche1", "paletteGauche2":"paletteGauche2", "paletteDroite1":"paletteDroite1", "paletteDroite2":"paletteDroite2", "trou":"trou", "ressort":"ressort", "accelerateur":"accelerateur", "mur":"mur","portail":"portail", "destructeur":"destructeur"]
     
 
     ///Constructeur
@@ -41,6 +41,11 @@ class Carte {
     
     func getProprietes() -> Proprietes{
         return proprietes
+    }
+    
+    //setter
+    func setNom(nouveauNom:String){
+        self.nomFichier = nouveauNom
     }
     
     ///verifier si la care de jeux poseder au moin : generateur de bille, trou,table
