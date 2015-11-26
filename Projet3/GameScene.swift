@@ -373,14 +373,22 @@ class GameScene: SKScene, UITextFieldDelegate {
                             
                             ///sauvegarde de carte sous format xml
                         case "outilSauvegarde":
-                            //enrregistrement de la nouvelle carte
-                            if carte == nil{
+                            self.preparerCarteXML(self.carte)
+                            if carte.verifierValidite(){
+                                
                                 sauvegarderNouvelleCarte()
+                            }else {
+                                Popups.SharedInstance.ShowAlert(self.viewController!,
+                                    title: "Attention! Carte invalide.",
+                                    message: "Votre carte est actuellement incomplete. Pour qu'une carte sois complete celle-ci a besoin d'avoir au moin un \"ressort\", un \"generateur de billes\" et un \"trou\"",
+                                    buttons: ["Ok"]){ (buttonPressed) -> Void in
+                                        if buttonPressed == "Annuler" {
+                                            //On fait rien sinon
+                                        }
+                                    }
+                                            
                             }
-                            else{ //enregistrement d'une carte existante
-                                //sauvegarderCarteActuelle()
-                                sauvegarderNouvelleCarte()
-                            }
+
 
                         case "boutonmur":
                             construireMur = true
@@ -1216,7 +1224,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
             //echelle
-            nouvelObjet.scale = CGFloat(mur.largeurMur!)
+            nouvelObjet.noeud.size.width = CGFloat(mur.largeurMur!)
+            
             nouvelObjet.noeud.xScale *= nouvelObjet.scale
             //objet.noeud.zRotation
             nouvelObjet.noeud.zRotation = CGFloat(mur.angleRotation!)
@@ -1253,9 +1262,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                 if buttonPressed == "Sauvegarder" {
                     
                     let nomNouvelleSauvegarde = "\(self.carte.getNom()).xml"
-                    self.carte = Carte(nom: nomNouvelleSauvegarde)
+                    //self.carte = Carte(nom: nomNouvelleSauvegarde)
                     
-                    self.preparerCarteXML(self.carte)
+                   // self.preparerCarteXML(self.carte)
                     
                     let parseur = ParseurXML()
                     
@@ -1266,11 +1275,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                             parseur.sauvegarderStringXML(xmlString, nomFichier: nomNouvelleSauvegarde)
                         }
                     }
-                        //utilisez un autre nom de fichier pour sauvegarder
+                    //si le fichier existe deja, on avertis que celui-ci seras ecrasé
                     else{
-                        //TODO: debug
-                        print("utilisez un autre nom de fichier pour sauvegarder")
-                        
                         Popups.SharedInstance.ShowAlert(self.viewController!,
                             title: "Attention!",
                             message: "Le nom \"\(nomNouvelleSauvegarde)\"que vous avez choisis pour votre carte existe deja. Voulez vous ecraser le fichier existant sur le disque? Sinon modifiez le nom de la carte",
@@ -1278,9 +1284,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 if buttonPressed == "Annuler" {
                                     //On fait rien sinon
                                 } else if buttonPressed == "Écraser"{
-                                    //TODO: Ecraser le
-                                
-                                
+                                    if let xmlString = self.carte.toXmlString(){
+                                        parseur.sauvegarderStringXML(xmlString, nomFichier: nomNouvelleSauvegarde)
+                                    }
                                 }
                         }
                         
@@ -1314,6 +1320,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         carte.proprietes.setPointageCible(self.ptsCible)
         carte.proprietes.setPointagePourPasserNiveau(self.ptsPasserNiveau)
         
+        //Initialiser l'arbre
+        carte.arbre = Arbre()
+        
         ///Ajouter une table
         carte.arbre.ajouterTable(0, posY: 0)
         
@@ -1322,11 +1331,11 @@ class GameScene: SKScene, UITextFieldDelegate {
             let nom = objet.noeud.name!
             switch  nom {
             case "objetmur":
-                //carte.arbre.ajouterMur(objet.noeud.position.x, posY: objet.noeud.position.y, largeurMur: ??, angleRotation: ??)
+                carte.arbre.ajouterMur(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), largeurMur: Float(objet.noeud.size.width), angleRotation: Float(objet.noeud.zRotation))
                 print("TODO objetMur")
             case "objetportail":
-                //carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y),
-                //    Portail: 0/*objet.noeud.scale??*/, angleRotation: 0)
+                carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y),
+                     echellePortail: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
                 print("TODO portail")
             default:
                 let nomObjet = nom.substringFromIndex(nom.startIndex.advancedBy(5))

@@ -53,7 +53,7 @@ class Carte {
         var trouPresent = false
         var generateurPresent = false
         var ressortPresent = false
-        let tablePresente = self.arbre.table != nil
+
         
         for objet in self.arbre.autresObjets{
             switch objet.type!{
@@ -68,7 +68,7 @@ class Carte {
             
         }
         
-        if trouPresent && generateurPresent && ressortPresent && tablePresente{
+        if trouPresent && generateurPresent && ressortPresent{
             return true
         }
         return false
