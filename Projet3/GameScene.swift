@@ -69,15 +69,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        ///Chargement de la scene selon la Carte xml (si on a edite une carte existante)
-        if self.carte != nil{
-            chargerCarte(self.carte)
-        }
-        //on initialize une nouvelle carte sinon
-        else {
-            self.carte = Carte(nom: "nouvelle_carte")
-        }
-        
         initLesSons()
         updateVisibiliteCorbeille()
         
@@ -112,12 +103,27 @@ class GameScene: SKScene, UITextFieldDelegate {
         table.physicsBody = SKPhysicsBody(edgeLoopFromRect:rect)
         table.physicsBody!.usesPreciseCollisionDetection = true
         
-        //Initialise les labels et les text fields des propriétés
-        initLabels()
+        //parque c'est commme ca
+        table.xScale *= 3.3
+        table.yScale *= 3.3
+
+        
         
         playBackgroundMusic("MusiqueEspace")
         
         updateVisibiliteCorbeille()
+        
+        ///Chargement de la scene selon la Carte xml (si on a edite une carte existante)
+        if self.carte != nil{
+            chargerCarte(self.carte)
+        }
+            //on initialize une nouvelle carte sinon
+        else {
+            self.carte = Carte(nom: "nouvelle_carte")
+        }
+        
+        //Initialise les labels et les text fields des propriétés
+        initLabels()
     }
     
     ///Fonctopn qui gère les swypes gestures
@@ -488,8 +494,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             let objet = SKSpriteNode(imageNamed: "mur")
             objet.name = "temp"
             
-            objet.size.width *= 0.5
-            objet.size.height *= 0.5
+            objet.size.width *= 0.15
+            objet.size.height *= 0.15
             
             objet.position = posInitiale!.centre(position2)
             objet.zPosition = -14
@@ -715,9 +721,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         let objet = SKSpriteNode(imageNamed: typeObjet)
         objet.name = "objet" + typeObjet
         
-        objet.size.width *= 0.5
-        objet.size.height *= 0.5
-        
+        objet.size.width *= 0.15
+        objet.size.height *= 0.15
+       
         objet.position = endroitSurTable
 
         objet.zPosition = -14
@@ -1266,16 +1272,17 @@ class GameScene: SKScene, UITextFieldDelegate {
         //TODO: connecter les portails enssemble : (1,2) (3,4) .. etc
         var noPortail = true
         for portail in carte.arbre.portail{
+        
             let positionXML = CGPoint(x: portail.positionX!, y: portail.positionY!)
-            ///Todo: convertion vers coordones crlient leger
-            creerObjet(positionXML,typeObjet: portail.type!, premierPortail: noPortail)
+            let positionScene = table.convertPoint(positionXML, toNode: self)
+            creerObjet(positionScene,typeObjet: portail.type!, premierPortail: noPortail)
             noPortail = !noPortail
             
             let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
             //echelle
             nouvelObjet.scale = CGFloat(portail.echelle!)
-            nouvelObjet.noeud.xScale *= nouvelObjet.scale
-            nouvelObjet.noeud.yScale *= nouvelObjet.scale
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale/5
+            nouvelObjet.noeud.yScale *= nouvelObjet.scale/5
             //objet.noeud.zRotation
             nouvelObjet.noeud.zRotation = CGFloat(portail.angleRotation!)
         }
@@ -1283,15 +1290,14 @@ class GameScene: SKScene, UITextFieldDelegate {
         ///Creation des murs
         for mur in carte.arbre.mur{
             let positionXML = CGPoint(x: mur.positionX!, y: mur.positionY!)
-            ///Todo: convertion vers coordones crlient leger
-            creerObjet(positionXML,typeObjet: mur.type!)
+            let positionScene = table.convertPoint(positionXML, toNode: self)
+            creerObjet(positionScene,typeObjet: mur.type!)
             
             let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
-            
             //echelle
             nouvelObjet.noeud.size.width = CGFloat(mur.largeurMur!)
             setPhysicsBody(nouvelObjet.noeud,masque: 1)
-            nouvelObjet.noeud.xScale *= nouvelObjet.scale
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale/5
             //objet.noeud.zRotation
             nouvelObjet.noeud.zRotation = CGFloat(mur.angleRotation!)
         }
@@ -1299,17 +1305,20 @@ class GameScene: SKScene, UITextFieldDelegate {
         ///Creation des autres objets
         for objet in carte.arbre.autresObjets{
             let positionXML = CGPoint(x: objet.positionX!, y: objet.positionY!)
+            let positionScene = self.convertPoint(positionXML, fromNode: table)
             
-           
-            ///Todo: convertion vers coordones crlient leger
+            print("------XML : \(positionXML.x), \(positionXML.y)")
+            print("------Scene : \(positionScene.x), \(positionScene.y)")
+            
+
             let typeObjetClientLeger = carte.dictionnaireObjetsXmlToLeger[objet.type!]
-            creerObjet(positionXML,typeObjet: typeObjetClientLeger!)
+            creerObjet(positionScene,typeObjet: typeObjetClientLeger!)
             
             let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
             //echelle
             nouvelObjet.scale = CGFloat(objet.echelle!)
-            nouvelObjet.noeud.xScale *= nouvelObjet.scale
-            nouvelObjet.noeud.yScale *= nouvelObjet.scale
+            nouvelObjet.noeud.xScale *= nouvelObjet.scale/5
+            nouvelObjet.noeud.yScale *= nouvelObjet.scale/5
             //objet.noeud.zRotation
             nouvelObjet.noeud.zRotation = CGFloat(objet.angleRotation!)
     
@@ -1393,24 +1402,28 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         ///enregistrer les objets de la scene
         for objet in nodesSurTable{
+            
             let nom = objet.noeud.name!
+            //convertir les coordones de scene en coordones
+            let coordonnesTable = self.convertPoint(objet.noeud.position, toNode: table)
+            
             switch  nom {
             case "objetmur":
-                carte.arbre.ajouterMur(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), largeurMur: Float(objet.noeud.size.width), angleRotation: Float(objet.noeud.zRotation))
-                print("TODO objetMur")
+                carte.arbre.ajouterMur(Int(coordonnesTable.x), posY: Int(coordonnesTable.y), largeurMur: Float(objet.noeud.size.width), angleRotation: Float(objet.noeud.zRotation))
             case "objetportail":
-                carte.arbre.ajouterPortail(Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y),
-                     echellePortail: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
-                print("TODO portail")
+                carte.arbre.ajouterPortail(Int(coordonnesTable.x), posY: Int(coordonnesTable.y),
+                    echellePortail: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
             default:
                 let nomObjet = nom.substringFromIndex(nom.startIndex.advancedBy(5))
                 
                 //Traduire le nom de l'objet
                 let nomObjetXml = carte.dictionnaireObjetsLegerToXml[nomObjet]
                 
-                carte.arbre.ajouterAutreObjet(nomObjetXml!, posX: Int(objet.noeud.position.x), posY: Int(objet.noeud.position.y), echelleObjet: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
+                carte.arbre.ajouterAutreObjet(nomObjetXml!, posX: Int(coordonnesTable.x), posY: Int(coordonnesTable.y), echelleObjet: Float(objet.scale), angleRotation: Float(objet.noeud.zRotation))
             }
         }
+    
+    
     }
     
 }
