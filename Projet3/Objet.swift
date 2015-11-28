@@ -13,16 +13,19 @@ class monObjet {
     var noeud: SKSpriteNode
     var scale: CGFloat
     var positionSurTableAvantZoom: CGPoint
+    var premierPortail: Bool
     
     init(noeud: SKSpriteNode){
         self.noeud = noeud
         scale = 1
         positionSurTableAvantZoom = CGPoint()
+        premierPortail = false
     }
     
-    init(noeud: SKSpriteNode, points: Int){
+    init(noeud: SKSpriteNode, premierPortail: Bool){
         self.noeud = noeud
         scale = 1
         positionSurTableAvantZoom = CGPoint()
+        self.premierPortail = premierPortail
     }
 }

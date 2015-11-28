@@ -38,6 +38,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var savedSelected = [SKSpriteNode]()
     var nodesSurTable = [monObjet]()
     var construireMur = false
+    var construirePortail = false
     var murTemp = SKNode()
     var deplacement = false
     var nodeTouchee = SKSpriteNode()
@@ -270,6 +271,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                 if let monNode = touchedNode as? SKSpriteNode
                 {
                     nodeTouchee = monNode
+                    if construirePortail && nodeTouchee == table && !selection() {
+                        creerObjet(location, typeObjet: "portail", premierPortail: true)
+                    }
                 }
             }
             
@@ -285,14 +289,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-            //TODO: Utilisez la bounding box a la place.
-            //TODO: Régler le bug qui fait que quand je fais un gesture, ça déplace les objets!!!
             if selection() && nodesSelected.contains(nodeTouchee)
             {
                 for node in nodesSelected
                 {
                     let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
-                    //TODO: On doit utiliser soit la boite englobante ou soit les bordures des sprites
                     if surTable(nouvEndroit, node: node)
                     {
                         node.position = nouvEndroit
@@ -386,10 +387,10 @@ class GameScene: SKScene, UITextFieldDelegate {
                                             //On fait rien sinon
                                         }
                                     }
-                                            
                             }
-
-
+                        case "boutonportail":
+                            construirePortail = true
+                            AudioServicesPlaySystemSound(sonSelectionOutil)
                         case "boutonmur":
                             construireMur = true
                             AudioServicesPlaySystemSound(sonSelectionOutil)
@@ -422,8 +423,13 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 //C'est ici que les nouveaux objets sont créés
                                 if !cliqueSurBoutonObj(name) && name == "table" && nomObjet != "Spaceship" && !construireMur
                                 {
-                                    //let endroitSurTable = table.convertPoint(location, fromNode: self)
-                                    creerObjet(location,typeObjet: nomObjet)
+                                    if !construirePortail {
+                                        creerObjet(location,typeObjet: nomObjet)
+                                    }else if nodesSurTable.count > 0 {
+                                            if nodesSurTable[nodesSurTable.count-1].premierPortail {
+                                                creerObjet(location,typeObjet: nomObjet)
+                                            }
+                                    }
                                 }else if name == "outilload_select"
                                 {
                                     loadSelect()
@@ -438,6 +444,15 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         updateTextProprieteObjet()
+        
+        if nodesSurTable.count > 0 {
+            if nodesSurTable[nodesSurTable.count-1].premierPortail {
+                nodesSurTable[nodesSurTable.count-1].noeud.removeFromParent()
+                nodesSurTable.removeLast()
+                deselectionnerTout()
+                updateTextProprieteObjet()
+            }
+        }
     }
     
     func quitterModeEdition(){
@@ -535,7 +550,28 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Fonction qui efface les noeuds qui sont sélectionné
     ///- Actionné par le bouton delete
     func effacerNoeuds(){
-        //Si on delete des nodes qui sont dans la sélection sauvegardé, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
+        //Si on delete des nodes qui sont dans la sélection, on ne doit pas les resélectionné lors du chargement de la séleciton (ils n'existent plus).
+        for objetCourant in nodesSurTable
+        {
+            let monNoeud = objetCourant.noeud
+            if nodesSelected.contains(monNoeud) && monNoeud.name == "objetportail" {
+                let index = nodesSurTable.indexOf { $0 === objetCourant }
+                
+                var portail2 = SKSpriteNode()
+                if objetCourant.premierPortail {
+                    portail2 = nodesSurTable[index!+1].noeud
+                }else{
+                    portail2 = nodesSurTable[index!-1].noeud
+                }
+                if !nodesSelected.contains(portail2) && portail2.name == "objetportail" {
+                    savedSelected = savedSelected.filter {$0 != portail2}
+                    nodesSurTable = nodesSurTable.filter {$0.noeud != portail2}
+                    unselectNode(portail2)
+                    animationExplosion(portail2)
+                    portail2.removeFromParent()
+                }
+            }
+        }
         for objetCourant in nodesSurTable
         {
             let monNoeud = objetCourant.noeud
@@ -602,6 +638,24 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///-Actionné par le bouton dupplication
     func dupplication(){
         
+        for objetCourant in nodesSurTable
+        {
+            let monNoeud = objetCourant.noeud
+            if nodesSelected.contains(monNoeud) && monNoeud.name == "objetportail" {
+                let index = nodesSurTable.indexOf { $0 === objetCourant }
+                
+                var portail2 = SKSpriteNode()
+                if objetCourant.premierPortail {
+                    portail2 = nodesSurTable[index!+1].noeud
+                }else{
+                    portail2 = nodesSurTable[index!-1].noeud
+                }
+                if !nodesSelected.contains(portail2) && portail2.name == "objetportail" {
+                    selectNode(portail2)
+                }
+            }
+        }
+        
         for objetCourant in nodesSurTable {
             let node = objetCourant.noeud
             if nodesSelected.contains(node) {
@@ -657,7 +711,7 @@ class GameScene: SKScene, UITextFieldDelegate {
      Note importante:
      - Cette méthode utilise la variable de classe "nomObjet" pour fabriquer le bon objet
      */
-    func creerObjet(endroitSurTable: CGPoint, typeObjet: String, longeurMur: CGFloat?=nil, angleMur: CGFloat?=nil){
+    func creerObjet(endroitSurTable: CGPoint, typeObjet: String, longeurMur: CGFloat?=nil, angleMur: CGFloat?=nil, premierPortail: Bool?=false){
         let objet = SKSpriteNode(imageNamed: typeObjet)
         objet.name = "objet" + typeObjet
         
@@ -684,8 +738,13 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         self.addChild(objet)
         
-        let temp = monObjet(noeud: objet)
-        nodesSurTable.append(temp)
+        if premierPortail != nil {
+            let temp = monObjet(noeud: objet, premierPortail: premierPortail!)
+            nodesSurTable.append(temp)
+        }else{
+            let temp = monObjet(noeud: objet, premierPortail: false)
+            nodesSurTable.append(temp)
+        }
         
         AudioServicesPlaySystemSound(sonObjSurTable)
     }
@@ -734,6 +793,9 @@ class GameScene: SKScene, UITextFieldDelegate {
             selectionnerBouton(name)
             if name != "boutonmur" {
                 construireMur = false
+            }
+            if name != "boutonportail" {
+                construirePortail = false
             }
             nomObjet = name.substringFromIndex(name.startIndex.advancedBy(6))
             // jouer un son
@@ -1202,10 +1264,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         ///Cretion des portails
         //TODO: connecter les portails enssemble : (1,2) (3,4) .. etc
+        var noPortail = true
         for portail in carte.arbre.portail{
             let positionXML = CGPoint(x: portail.positionX!, y: portail.positionY!)
             ///Todo: convertion vers coordones crlient leger
-            creerObjet(positionXML,typeObjet: portail.type!)
+            creerObjet(positionXML,typeObjet: portail.type!, premierPortail: noPortail)
+            noPortail = !noPortail
             
             let nouvelObjet = nodesSurTable[nodesSurTable.count-1]
             //echelle
