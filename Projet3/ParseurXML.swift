@@ -126,10 +126,9 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         case "xml": break
             
         case "jeu":
-            //TODO: enrregistrer le nom de la carte dans l'objet Carte
-            //STUB: nomFichier
             let nomFichier = URLActuel.lastPathComponent!
-            carteActuelle = Carte(nom: nomFichier)
+            let nomSansExetention = nomFichier as NSString
+            carteActuelle = Carte(nom: nomSansExetention.stringByDeletingPathExtension)
             
         case "arbre":
             carteActuelle.arbre = Arbre()

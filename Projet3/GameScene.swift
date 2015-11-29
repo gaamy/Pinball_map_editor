@@ -1307,10 +1307,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             let positionXML = CGPoint(x: objet.positionX!, y: objet.positionY!)
             let positionScene = self.convertPoint(positionXML, fromNode: table)
             
-            print("------XML : \(positionXML.x), \(positionXML.y)")
-            print("------Scene : \(positionScene.x), \(positionScene.y)")
-            
-
             let typeObjetClientLeger = carte.dictionnaireObjetsXmlToLeger[objet.type!]
             creerObjet(positionScene,typeObjet: typeObjetClientLeger!)
             
