@@ -67,7 +67,6 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
     ///Sauvegarde une carte sous format string dans le dossier "sauvegardes" sous le nom de nomFichier
     func sauvegarderStringXML( stringData: NSString, nomFichier :String ) -> Bool{
         
-        //TODO:verifier si le fichier existe
         //TODO: gerer les cas de modification (a tester)
         
         ///Transforme le string XML en NSData

@@ -2,6 +2,8 @@
 //  ViewController.swift
 //  Prototype_Chat
 //
+// ce viewControler est le controleur du client de chat
+//
 //  Created by David Gourde on 2015-09-03.
 //  Copyright (c) 2015 David Gourde. All rights reserved.
 //
@@ -31,7 +33,8 @@ class ViewController: UIViewController, NSStreamDelegate, UITextFieldDelegate  {
         super.viewDidLoad()
         monTexte.delegate = self
         initNetworkCommunication(self.host as CFString, connectionPort:UInt32(self.port))
-        
+       
+    
         joinChat(self.userName)
         
     }
@@ -43,8 +46,8 @@ class ViewController: UIViewController, NSStreamDelegate, UITextFieldDelegate  {
 
 
     //-------Networking------//
-
-    //Client Socket stream
+    
+    
     var inputStream: NSInputStream!
     var outputStream: NSOutputStream!
     var connected : Bool = false
