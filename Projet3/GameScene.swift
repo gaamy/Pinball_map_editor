@@ -174,19 +174,30 @@ class GameScene: SKScene, UITextFieldDelegate {
                 sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
             }else{
                 //Ici on scale la vue au complet (zoom)
-                //TODO: Ajouter un max et un min au scale de la scène
-                for objet in nodesSurTable {
-                    objet.positionSurTableAvantZoom = table.convertPoint(objet.noeud.position, fromNode: self)
-                }
                 
-                table.xScale *= sender.scale
-                table.yScale *= sender.scale
-                scaleTable *= sender.scale
-                
-                for objet in nodesSurTable {
-                    objet.noeud.xScale *= sender.scale
-                    objet.noeud.yScale *= sender.scale
-                    objet.noeud.position = self.convertPoint(objet.positionSurTableAvantZoom, fromNode: table)
+                let nouveauScale = scaleTable * sender.scale
+                if nouveauScale >= 0.5 && nouveauScale <= 5 {
+                    let centreDeScene = CGPoint(x: self.size.width/2, y: self.size.height/2)
+                    let distanceX = centreDeScene.x - table.position.x
+                    let distanceY = centreDeScene.y - table.position.y
+                    let ancienScale = scaleTable
+                    
+                    for objet in nodesSurTable {
+                        objet.positionSurTableAvantZoom = table.convertPoint(objet.noeud.position, fromNode: self)
+                    }
+                    
+                    table.xScale *= sender.scale
+                    table.yScale *= sender.scale
+                    scaleTable = nouveauScale
+                    
+                    table.position.x = centreDeScene.x - (distanceX * (scaleTable/ancienScale))
+                    table.position.y = centreDeScene.y - (distanceY * (scaleTable/ancienScale))
+                    
+                    for objet in nodesSurTable {
+                        objet.noeud.xScale *= sender.scale
+                        objet.noeud.yScale *= sender.scale
+                        objet.noeud.position = self.convertPoint(objet.positionSurTableAvantZoom, fromNode: table)
+                    }
                 }
                 
                 sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
@@ -295,42 +306,46 @@ class GameScene: SKScene, UITextFieldDelegate {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-            if selection() && nodesSelected.contains(nodeTouchee)
-            {
-                for node in nodesSelected
+            if pan {
+                if (nodeAtPoint(location) == table || nodeAtPoint(location).name == "background") {
+                    for node in self.children {
+                        if let noeud = node as? SKSpriteNode {
+                            if noeud.name!.containsString("objet") {
+                                let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
+                                noeud.position.x += offSetPosition.x
+                                noeud.position.y += offSetPosition.y
+                            }
+                        }
+                    }
+                    let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
+                    table.position.x += offSetPosition.x
+                    table.position.y += offSetPosition.y
+                    posInitiale = location
+                    deplacement = true
+                }
+            }else{
+                if selection() && nodesSelected.contains(nodeTouchee)
                 {
-                    let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
-                    if surTable(nouvEndroit, node: node)
+                    for node in nodesSelected
                     {
-                        node.position = nouvEndroit
-                        if uneFrameSurX == 0 {
-                            feuFeuJolieFeu(node)
+                        let nouvEndroit = CGPoint(x:(node.position.x + location.x - endroitPrecedent.x),y:(node.position.y + location.y - endroitPrecedent.y))
+                        if surTable(nouvEndroit, node: node)
+                        {
+                            node.position = nouvEndroit
+                            if uneFrameSurX == 0 {
+                                feuFeuJolieFeu(node)
+                            }
                         }
                     }
+                    miseAJourFrameAnimationFeu()
+                    deplacement = true
+                    endroitPrecedent = location
+                }else if construireMur && nodeAtPoint(location) == table {
+                    let touch = touches.first
+                    let position2 = touch!.locationInNode(self)
+                    detruireMurTemporaire()
+                    creerMurTemporaire(position2)
                 }
-                miseAJourFrameAnimationFeu()
-                deplacement = true
-                endroitPrecedent = location
-            }else if nodeAtPoint(location) == table && nodeTouchee == table && pan {
-                for node in self.children {
-                    if let noeud = node as? SKSpriteNode {
-                        if noeud.name!.containsString("objet") {
-                            let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
-                            noeud.position.x += offSetPosition.x
-                            noeud.position.y += offSetPosition.y
-                        }
-                    }
-                }
-                let offSetPosition = CGPoint(x: location.x - posInitiale!.x,y:location.y - posInitiale!.y)
-                table.position.x += offSetPosition.x
-                table.position.y += offSetPosition.y
-                posInitiale = location
-                deplacement = true
-            }else if construireMur && nodeAtPoint(location) == table && !pan {
-                let touch = touches.first
-                let position2 = touch!.locationInNode(self)
-                detruireMurTemporaire()
-                creerMurTemporaire(position2)
             }
         }
     }
