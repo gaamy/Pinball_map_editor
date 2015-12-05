@@ -8,14 +8,14 @@
 
 import UIKit
 
-class CustonSegue: UIStoryboardSegue {
+class SegueShowMenu: UIStoryboardSegue {
     
     override func perform() {
         //Assign the source and destination views to local variables
         let firstVCView = self.sourceViewController.view as UIView!
         let secondVCView = self.destinationViewController.view as UIView!
         
-        //get the creen width and height
+        //get the screen width and height
         let screenWidth = UIScreen.mainScreen().bounds.size.width
         let screenHeight = UIScreen.mainScreen().bounds.size.height
         

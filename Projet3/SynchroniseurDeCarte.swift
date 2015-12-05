@@ -37,7 +37,7 @@ class SynchroniseurDeCarte{
         
         //let data = stringData.dataUsingEncoding(NSUTF8StringEncoding)
 
-        socket.emit("envoyerCarte", carte)
+        socket.emit("addMap", carte)
     }
     
     

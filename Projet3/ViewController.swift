@@ -183,10 +183,6 @@ class ViewController: UIViewController, NSStreamDelegate, UITextFieldDelegate  {
     @output: messages -> updates the message text view
     */
     func updateChatView(message:String){
-        
-        //we need to get rid of the begining of the message that contains the size of the package
-        // Exemple: !!12!salut  -> salut
-        
         var unwraped = message
         do {
              unwraped = try message.unwrapServerMessage()
