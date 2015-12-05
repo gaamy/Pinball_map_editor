@@ -4,11 +4,14 @@
 //
 //  Created by Gabriel Amyot on 2015-09-13.
 //  Copyright (c) 2015 David Gourde. All rights reserved.
+
+
+//ce viewController represente le login pour le chat
 //
 
 import UIKit
 import Foundation
-import Darwin.C
+//import Darwin.C
 
 
 class loginScreenViewController: UIViewController {
@@ -29,7 +32,6 @@ class loginScreenViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
- 
     //server information
     @IBOutlet weak var host: UITextField!
     @IBOutlet weak var port: UITextField!
@@ -56,11 +58,6 @@ class loginScreenViewController: UIViewController {
             usernameReminder1.hidden = false
             
         }else if(true){
-            
-            //check if the connection is possible
-            //connect
-            //disconect
-            
             usernameReminder1.hidden = true
             warningMessage.hidden = true
             showChatView()
@@ -68,7 +65,6 @@ class loginScreenViewController: UIViewController {
     }
     
     
-
     /*
     * prepareForSegue()
     * this function are responsable for the data transfer 
@@ -83,7 +79,6 @@ class loginScreenViewController: UIViewController {
             chatViewController.userName = self.userName.text!
         }
     }
-    
 
     
     //go to the chat view
@@ -98,19 +93,6 @@ class loginScreenViewController: UIViewController {
         
     }
     
-    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
-        if let id = identifier{
-            if id == "idFirstSegueUnwind" {
-                let unwindSegue = CustonSegueUnwind(identifier: id, source: fromViewController, destination: toViewController, performHandler: { () -> Void in
-                    
-                })
-                return unwindSegue
-            }
-        }
-        
-        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
-    }
     
-
     
 }

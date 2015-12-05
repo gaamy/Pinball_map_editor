@@ -141,8 +141,6 @@ extension String {
 
 
 /*
-
-
     /**stream()
      handle the NSStream events.
      It's here where the incomming TCP messages are handled
