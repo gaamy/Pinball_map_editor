@@ -193,8 +193,9 @@
 		2D0D41141BA8E50F00B25A7B /* Projet3 */ = {
 			isa = PBXGroup;
 			children = (
-				FC283C1E1C132834001F9055 /* MenuPrincipalViewControler.swift */,
 				FC59D31F1C0E484000783782 /* LoginViewControler.swift */,
+				FC283C1E1C132834001F9055 /* MenuPrincipalViewControler.swift */,
+				FCF26CB31C0BF36100DE3F6F /* ChatViewController.swift */,
 				FC1DCC2D1BCF7BF600353F74 /* ViewController.swift */,
 				FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */,
 				2D0D41171BA8E50F00B25A7B /* AppDelegate.swift */,
@@ -211,7 +212,6 @@
 				FC6290671C05083700CDBF52 /* ParseurXML.swift */,
 				2D0D41151BA8E50F00B25A7B /* Supporting Files */,
 				FCF26CB11C0BDE2800DE3F6F /* SynchroniseurDeCarte.swift */,
-				FCF26CB31C0BF36100DE3F6F /* ChatViewController.swift */,
 				FCF26CB51C0CEF9A00DE3F6F /* SocketSession.swift */,
 				FC173C9B1C1293CE0049606C /* socket.io-Obj-c */,
 			);

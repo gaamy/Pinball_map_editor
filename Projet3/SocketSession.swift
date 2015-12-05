@@ -34,7 +34,7 @@ class SocketSession : NSObject, SocketIODelegate{
         
         
         //attendre 0.2 secondes avant de lancer l'authentification
-        let seconds = 0.2
+        let seconds = 1.0
         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
@@ -58,7 +58,7 @@ class SocketSession : NSObject, SocketIODelegate{
     //handle la connection
     func socketIODidConnect(socket: SocketIO) {
         connected = true
-        print("connected!!!!!!!!!!!!!!")
+        print("socketIODidConnect!!!!!!!!!!!!!")
         
     }
     
@@ -78,13 +78,13 @@ class SocketSession : NSObject, SocketIODelegate{
             case "connect":
                 connected = true
                 print("connected!!!!!!!!!!!!!!")
-            
+            /*
             case "userConnected":
                 if args[0] == "\(utilisateur)"{
                     authenticate = true
                     print("\(args[0]) is authenticated!*************")
                 }
-            
+            */
             case "reponse connection":
                 if args[0] == "true#\(utilisateur)"{
                     authenticate = true

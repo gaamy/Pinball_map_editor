@@ -18,23 +18,12 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
     @IBOutlet weak var senderButton: UIButton!
     
     //Networking elements
-    var socket: WebSocket!
-    var serverURL:NSURL!
-    var host = ""
-    var port = 0
-    var userName = ""
-    var connected : Bool = false
+    var socket: SocketSession!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         monTexte.delegate = self
         
-        serverURL = NSURL(fileURLWithPath: "\(self.host): \(self.port)")
-        socket = WebSocket(url: serverURL)
-        
-        //let data = "Hello, ".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
-        
-       // joinChat(self.userName)
         
     }
     
@@ -45,8 +34,6 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
     ///@output: messages -> updates the message text view
     func updateChatView(message:String){
         
-        //we need to get rid of the begining of the message that contains the size of the package
-        // Exemple: !!12!salut  -> salut
         
         var unwraped = message
         do {
