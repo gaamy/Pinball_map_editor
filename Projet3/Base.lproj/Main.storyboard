@@ -42,19 +42,19 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UserName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGz-DH-wzH">
                                 <rect key="frame" x="94" y="214" width="82" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgy-pM-Sig">
                                 <rect key="frame" x="102" y="275" width="74" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99A-DG-wEK">
                                 <rect key="frame" x="102" y="332" width="74" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -63,7 +63,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jSX-sf-LPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-965" y="-900"/>
+            <point key="canvasLocation" x="-1101" y="-973"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="d2T-Oa-Hhm">
@@ -91,7 +91,6 @@
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="authentification:" destination="cQP-nR-dqi" eventType="touchUpInside" id="qz4-pR-G8h"/>
-                                    <segue destination="RXA-gt-KDt" kind="custom" identifier="SegueShowMenu" customClass="SegueShowMenu" customModule="Projet3" customModuleProvider="target" id="zjA-hK-SRd"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aJL-Zo-Say">
@@ -300,11 +299,12 @@
                         <outlet property="motDePasse" destination="t2E-Di-3mP" id="m1W-dB-ReW"/>
                         <outlet property="nomUtilisateur" destination="Z7G-LV-bJd" id="djG-2E-vao"/>
                         <outlet property="port" destination="sEB-oI-6ae" id="NA9-Nv-rXN"/>
+                        <segue destination="RXA-gt-KDt" kind="custom" customClass="SegueShowMenu" customModule="Projet3" customModuleProvider="target" id="bf3-Pu-fUH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgY-Lx-nHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1102" y="-114"/>
+            <point key="canvasLocation" x="-1022" y="-141"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="qHg-TV-0nY">
@@ -340,7 +340,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bkv-zt-cFx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="964" y="-1115"/>
+            <point key="canvasLocation" x="-174" y="-973"/>
         </scene>
         <!--Menu Principal View Controler-->
         <scene sceneID="KKs-KM-CRj">
@@ -408,7 +408,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xTa-eY-acM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-230" y="-60"/>
+            <point key="canvasLocation" x="-174" y="-149"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
@@ -430,7 +430,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="743" y="708"/>
+            <point key="canvasLocation" x="875" y="730"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="fFA-vh-r74">
@@ -516,7 +516,7 @@
                 <exit id="SjY-hc-vmd" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WW3-Sw-4Mi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="731" y="-60"/>
+            <point key="canvasLocation" x="875" y="-149"/>
         </scene>
         <!--View Controller Choix Editeur-->
         <scene sceneID="cqP-rm-vQL">
@@ -544,7 +544,7 @@
                                     <constraint firstAttribute="width" constant="194" id="wZb-y6-lmC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6L-7B-Dam">
@@ -586,7 +586,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Iw-Lz-fEL" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-339" y="1483"/>
+            <point key="canvasLocation" x="-174" y="1503"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="0Pm-h3-nzt">
@@ -634,15 +634,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Duz-1f-wh6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-347" y="687"/>
+            <point key="canvasLocation" x="-1094" y="730"/>
         </scene>
     </scenes>
     <resources>
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="GeZ-sD-2aT"/>
+        <segue reference="bf3-Pu-fUH"/>
         <segue reference="AKh-fP-6fg"/>
-        <segue reference="WiL-oe-1Wp"/>
+        <segue reference="GeZ-sD-2aT"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -61,8 +61,8 @@ class LoginViewController : UIViewController{
                 performShowMenuSegue()
                 
             }else{
-                //attendre Reponse 5.0 sec
-                let seconds = 5.0
+                //attendre Reponse 3.0 sec
+                let seconds = 3.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                 let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
                 

@@ -13,6 +13,7 @@ class MenuPrincipalViewControler : UIViewController{
     var socket : SocketSession!
     
     @IBOutlet weak var boutonClavardage: UIButton!
+    
     @IBAction func deconnection(sender: UIButton) {
         if socket != nil{
             socket.disconnect()
@@ -23,14 +24,15 @@ class MenuPrincipalViewControler : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if socket.isAuthenticate(){
-            boutonClavardage.enabled = true
-        }else{
-            boutonClavardage.enabled = false
-            //to
+        if socket != nil{
+            if socket.isAuthenticate(){
+                boutonClavardage.enabled = true
+            }else{
+                boutonClavardage.enabled = false
+            
+            }
         }
     }
-    
     
     
     override func didReceiveMemoryWarning() {
