@@ -39,11 +39,9 @@ class SocketSession : NSObject, SocketIODelegate{
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            //socket.
-           
-            self.socket.sendEvent("authentification", withData: "\(nomUtilisateur)#\(motDePasse)")
-            
-            
+            if self.connected{
+                self.socket.sendEvent("authentification", withData: "\(nomUtilisateur)#\(motDePasse)")
+            }
         })
         
         
@@ -57,12 +55,18 @@ class SocketSession : NSObject, SocketIODelegate{
         
        
     }
+    //handle la connection
+    func socketIODidConnect(socket: SocketIO) {
+        connected = true
+        print("connected!!!!!!!!!!!!!!")
+        
+    }
+    
     
     // event delegate
-    
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
        // NSLog("didReceiveEvent >>> data: %@", packet.data)
-        print("----------------this is a event ! : \(packet.data)")
+        //print("----------------this is a event ! : \(packet.data)")
         
         let dict = convertStringToDictionary(packet.data)
 
@@ -70,15 +74,36 @@ class SocketSession : NSObject, SocketIODelegate{
         let args  = dict!["args"]! as! [String]
 
         
-        
         switch(event){
-            case "reponse connection":
-                if args[0] == "true#\(utilisateur)"{
-                authenticate = true
-                    
+            case "connect":
+                connected = true
+                print("connected!!!!!!!!!!!!!!")
+            
+            case "userConnected":
+                if args[0] == "\(utilisateur)"{
+                    authenticate = true
+                    print("\(args[0]) is authenticated!*************")
                 }
             
-            default: break
+            case "reponse connection":
+                if args[0] == "true#\(utilisateur)"{
+                    authenticate = true
+                    print("authenticate!!!!!!!!!!!!!!")
+                }
+            
+            case "userDisconnected":
+                authenticate = false
+                print("\(args[0]) disconnected!!!!!!!!!!!!!!")
+            
+            case  "error":
+                print("Erreur avec socket.io: arguments: \(args)")
+            
+            case "message":
+                print("Message: \(args)")
+            
+            default:
+                print("--Evenement inconu: \(event)")
+                print("--Arguments: \(args)")
             
         
         }
@@ -99,15 +124,7 @@ class SocketSession : NSObject, SocketIODelegate{
             print("socket ERROR")
             print(data)
         }
-        
-        socket.on("connect") {data, ack in
-            print("socket connected")
-            print(data)
-            print(ack)
-            self.connected = true
-            self.socket.sendEvent("authentification", withData: "gaamy#test")
-            
-        }
+  
         
         self.socket.onAny {
             print("Got event: \($0.event), with items: \($0.items!)")
@@ -116,65 +133,33 @@ class SocketSession : NSObject, SocketIODelegate{
     }
     */
     
+    //Convertis un fichier jSon en dictionaire
     func convertStringToDictionary(text: String) -> [String:AnyObject]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
                 let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
                 return json
             } catch {
-                print("Something went wrong")
+                print("Erreur: Conversion jSon -> string ")
             }
         }
         return nil
-    }
-
-    
-    
-    func connectionAccepte(message : String){
-        self.connected = true
-        print(message)
-        
-    }
-    
-    func rejoindreClavardage(user: String) {
-        //let response: String = "\(user)"
-        //let data: NSData = response.dataUsingEncoding(NSUTF8StringEncoding)!
-        //socket.emit("joinChat",data)
-        //outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length)
     }
     
     ///Quite le chat
     func disconnect(){
         self.socket.sendEvent("exit", withData: "\(self.utilisateur)")
-        self.socket.
         connected = false
         authenticate = false
     }
     
-    /**
-     * Envoy le message au serveur
-     * Une entete est ajoutee au message
-     * Entete: !!sizeOfTcpMessage!
-     */
-    @IBAction func envoyerMessageChat(sender: AnyObject) {
-        //TODO: verifier que la connection a ete etablie avant d'envoyer le message
-        //if monTexte.text! != ""{
-         //   let size : Int = 7 + monTexte.text!.characters.count
-          //  let response: String = "!!\(size)!\(monTexte.text!)\n"
-           // monTexte.text = ""
-            //let data: NSData = response.dataUsingEncoding(NSUTF8StringEncoding)!
-            //socket.emit("envoyerMessage",UnsafePointer<UInt8>(data.bytes))
-            //self.outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length)
-        //}
-    }
-    
-    
-    func creeNouvelUtilisateur(){
-    
-    }
-    
-    
+ 
     func isAuthenticate() -> Bool  {
         return self.authenticate
+    }
+    
+    func connectionAccepte(message : String){
+        self.connected = true
+        
     }
 }
