@@ -57,15 +57,16 @@ class SocketSession : NSObject, SocketIODelegate{
     // message delegate
     func socketIO(socket: SocketIO, didReceiveMessage packet: SocketIOPacket) {
         NSLog("didReceiveMessage >>> data: %@", packet.data)
-        print("this is a message ! : \(packet.data)")
+        print("---------this is a message ! : \(packet.data)")
         
+        //packet.data
     }
     
     // event delegate
     
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
         NSLog("didReceiveEvent >>> data: %@", packet.data)
-        print("this is a event ! : \(packet.data)")
+        print("----------------this is a event ! : \(packet.data)")
         
         
         
