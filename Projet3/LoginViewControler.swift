@@ -5,6 +5,7 @@
 //  Created by Gabriel Amyot on 2015-12-01.
 //  Copyright © 2015 David Gourde. All rights reserved.
 //
+
 import UIKit
 import Foundation
 
@@ -53,7 +54,6 @@ class LoginViewController : UIViewController{
             socket = SocketSession(host: hostString, port: Int(portString)!)
             
             socket.debuterSession(nomUtilisateur.text!, motDePasse: motDePasse.text!)
-            
             
             if socket.isAuthenticate(){
                 activityIndicator.stopAnimating()

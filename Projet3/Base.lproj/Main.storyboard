@@ -91,6 +91,7 @@
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="authentification:" destination="cQP-nR-dqi" eventType="touchUpInside" id="qz4-pR-G8h"/>
+                                    <segue destination="RXA-gt-KDt" kind="custom" identifier="SegueShowMenu" customClass="SegueShowMenu" customModule="Projet3" customModuleProvider="target" id="zjA-hK-SRd"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aJL-Zo-Say">
@@ -306,7 +307,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgY-Lx-nHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1045" y="-178"/>
+            <point key="canvasLocation" x="-1102" y="-114"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="qHg-TV-0nY">
@@ -407,7 +408,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xTa-eY-acM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-246" y="-178"/>
+            <point key="canvasLocation" x="-230" y="-60"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
@@ -837,9 +838,9 @@
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tJG-RN-NId"/>
-        <segue reference="BV4-m6-VRx"/>
         <segue reference="GeZ-sD-2aT"/>
-        <segue reference="YWU-3e-Tws"/>
+        <segue reference="AKh-fP-6fg"/>
+        <segue reference="zjA-hK-SRd"/>
+        <segue reference="BV4-m6-VRx"/>
     </inferredMetricsTieBreakers>
 </document>

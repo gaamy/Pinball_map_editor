@@ -47,28 +47,41 @@ class SocketSession : NSObject, SocketIODelegate{
         })
         
         
-     //  self.socket.sendEvent("authentification", withData: "\(nomUtilisateur)#\(motDePasse)")
-        
-        
-        
     }
     
 
     // message delegate
     func socketIO(socket: SocketIO, didReceiveMessage packet: SocketIOPacket) {
-        NSLog("didReceiveMessage >>> data: %@", packet.data)
+        //NSLog("didReceiveMessage >>> data: %@", packet.data)
         print("---------this is a message ! : \(packet.data)")
         
-        //packet.data
+       
     }
     
     // event delegate
     
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
-        NSLog("didReceiveEvent >>> data: %@", packet.data)
+       // NSLog("didReceiveEvent >>> data: %@", packet.data)
         print("----------------this is a event ! : \(packet.data)")
         
+        let dict = convertStringToDictionary(packet.data)
+
+        let event = dict!["name"]! as! String
+        let args  = dict!["args"]! as! [String]
+
         
+        
+        switch(event){
+            case "reponse connection":
+                if args[0] == "true#\(utilisateur)"{
+                authenticate = true
+                    
+                }
+            
+            default: break
+            
+        
+        }
         
         
     }
@@ -103,6 +116,19 @@ class SocketSession : NSObject, SocketIODelegate{
     }
     */
     
+    func convertStringToDictionary(text: String) -> [String:AnyObject]? {
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
+                return json
+            } catch {
+                print("Something went wrong")
+            }
+        }
+        return nil
+    }
+
+    
     
     func connectionAccepte(message : String){
         self.connected = true
@@ -120,7 +146,9 @@ class SocketSession : NSObject, SocketIODelegate{
     ///Quite le chat
     func disconnect(){
         self.socket.sendEvent("exit", withData: "\(self.utilisateur)")
+        self.socket.
         connected = false
+        authenticate = false
     }
     
     /**
