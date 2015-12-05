@@ -10,13 +10,15 @@ import Foundation
 
 
 class SocketSession : NSObject, SocketIODelegate{
-    
+
     
     var socket : SocketIO!
     var utilisateur = ""
     var motDePasse = ""
     var connected = false
     var authenticate = false
+    var erreur = false
+    var typeErreur = ""
     
     
     init(host: String, port:Int){
@@ -47,50 +49,47 @@ class SocketSession : NSObject, SocketIODelegate{
         
     }
     
-
-    // message delegate
+    
+    ///socketIO
+    ///message delegate
     func socketIO(socket: SocketIO, didReceiveMessage packet: SocketIOPacket) {
         //NSLog("didReceiveMessage >>> data: %@", packet.data)
         print("---------this is a message ! : \(packet.data)")
-        
        
     }
-    //handle la connection
+    ///socketIO
+    ///handle la connection delegate
     func socketIODidConnect(socket: SocketIO) {
         connected = true
         print("socketIODidConnect!!!!!!!!!!!!!")
         
     }
     
-    
-    // event delegate
+    ///socketIO
+    ///event delegate
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
-       // NSLog("didReceiveEvent >>> data: %@", packet.data)
-        //print("----------------this is a event ! : \(packet.data)")
-        
         let dict = convertStringToDictionary(packet.data)
-
         let event = dict!["name"]! as! String
         let args  = dict!["args"]! as! [String]
 
-        
         switch(event){
-            case "connect":
-                connected = true
-                print("connected!!!!!!!!!!!!!!")
-            /*
-            case "userConnected":
-                if args[0] == "\(utilisateur)"{
-                    authenticate = true
-                    print("\(args[0]) is authenticated!*************")
-                }
-            */
             case "reponse connection":
-                if args[0] == "true#\(utilisateur)"{
-                    authenticate = true
-                    print("authenticate!!!!!!!!!!!!!!")
+                switch (args[0]){
+                    case "true#\(utilisateur)":
+                        authenticate = true
+                        erreur = false
+                        print("authenticate!!!!!!!!!!!!!!")
+                    case "false#Mot de pass invalide":
+                        erreur = true
+                        typeErreur = "Mot de pass invalide"
+                        print(typeErreur)
+                    case "false#Nom d'utilisateur invalide":
+                        erreur = true
+                        typeErreur = "Nom d'utilisateur invalide"
+                        print(typeErreur)
+                    default:
+                        print("reponse connection not handle :\(args[0])")
                 }
-            
             case "userDisconnected":
                 authenticate = false
                 print("\(args[0]) disconnected!!!!!!!!!!!!!!")
@@ -100,6 +99,13 @@ class SocketSession : NSObject, SocketIODelegate{
             
             case "message":
                 print("Message: \(args)")
+            
+            case "reponse register":
+                if args[0] == "true#Le compte a été ajouté avec succès"{
+                    confirmerInscription()
+                }else if args[0] == "false#Nom d'utilisateur deja present, veuillez voisir un autre nom d'utilisateur"{
+                    
+                }
             
             default:
                 print("--Evenement inconu: \(event)")
@@ -111,27 +117,7 @@ class SocketSession : NSObject, SocketIODelegate{
         
     }
     
-    /*
 
-    func ajouterHandlers(){
-        self.socket.on("reponse connection") {[weak self] data, ack in
-            self?.connectionAccepte(data[0] as! String)
-            
-            return
-        }
-        
-        self.socket.on("error") {data in
-            print("socket ERROR")
-            print(data)
-        }
-  
-        
-        self.socket.onAny {
-            print("Got event: \($0.event), with items: \($0.items!)")
-        }
-        
-    }
-    */
     
     //Convertis un fichier jSon en dictionaire
     func convertStringToDictionary(text: String) -> [String:AnyObject]? {
@@ -152,6 +138,7 @@ class SocketSession : NSObject, SocketIODelegate{
         connected = false
         authenticate = false
     }
+    
     
  
     func isAuthenticate() -> Bool  {

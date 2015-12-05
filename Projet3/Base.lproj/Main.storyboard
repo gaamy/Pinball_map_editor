@@ -378,24 +378,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fw-u9-skh">
-                                <rect key="frame" x="264" y="417" width="100" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fw-u9-skh">
+                                <rect key="frame" x="250" y="228" width="100" height="30"/>
                                 <animations/>
                                 <state key="normal" title="Éditeur"/>
                                 <connections>
                                     <segue destination="4ag-3e-9Tp" kind="show" id="AKh-fP-6fg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ur-33-wEc">
-                                <rect key="frame" x="264" y="268" width="100" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnX-kR-URy">
+                                <rect key="frame" x="252" y="411" width="96" height="30"/>
                                 <animations/>
-                                <state key="normal" title="Statistiques"/>
+                                <state key="normal" title="Deconnection"/>
                                 <connections>
-                                    <segue destination="Rcq-OA-aGg" kind="show" id="xBT-6k-gQ7"/>
+                                    <action selector="deconnection:" destination="RXA-gt-KDt" eventType="touchUpInside" id="dPZ-uB-P3E"/>
+                                    <segue destination="cQP-nR-dqi" kind="show" id="eEK-gp-fjk"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlf-jL-Oqx">
-                                <rect key="frame" x="264" y="337" width="100" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlf-jL-Oqx">
+                                <rect key="frame" x="250" y="349" width="100" height="30"/>
                                 <animations/>
                                 <state key="normal" title="Clavardage"/>
                             </button>
@@ -404,21 +405,38 @@
                                 <animations/>
                                 <state key="normal" title="Button"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnX-kR-URy">
-                                <rect key="frame" x="20" y="20" width="96" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ur-33-wEc">
+                                <rect key="frame" x="250" y="285" width="100" height="30"/>
                                 <animations/>
-                                <state key="normal" title="Deconnection"/>
+                                <state key="normal" title="Statistiques"/>
                                 <connections>
-                                    <action selector="deconnection:" destination="RXA-gt-KDt" eventType="touchUpInside" id="dPZ-uB-P3E"/>
-                                    <segue destination="cQP-nR-dqi" kind="show" id="eEK-gp-fjk"/>
+                                    <segue destination="Rcq-OA-aGg" kind="show" id="xBT-6k-gQ7"/>
                                 </connections>
                             </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="7ur-33-wEc" firstAttribute="centerX" secondItem="07I-F4-wYb" secondAttribute="centerX" id="1Ef-kK-Cyy"/>
+                            <constraint firstItem="qlf-jL-Oqx" firstAttribute="centerX" secondItem="07I-F4-wYb" secondAttribute="centerX" id="3BH-Zd-GkD"/>
                             <constraint firstItem="qlf-jL-Oqx" firstAttribute="centerX" secondItem="7ur-33-wEc" secondAttribute="centerX" id="8Eb-4b-sng"/>
+                            <constraint firstItem="7ur-33-wEc" firstAttribute="top" secondItem="6Fw-u9-skh" secondAttribute="bottom" constant="31" id="Aqr-6Z-Fo4"/>
+                            <constraint firstItem="7ur-33-wEc" firstAttribute="leading" secondItem="6Fw-u9-skh" secondAttribute="leading" id="Cex-WC-ruj"/>
+                            <constraint firstItem="7ur-33-wEc" firstAttribute="centerY" secondItem="07I-F4-wYb" secondAttribute="centerY" id="DGH-ld-oDs"/>
+                            <constraint firstItem="7ur-33-wEc" firstAttribute="top" secondItem="6Fw-u9-skh" secondAttribute="bottom" constant="27" id="E8N-di-sgf"/>
                             <constraint firstItem="6Fw-u9-skh" firstAttribute="centerX" secondItem="7ur-33-wEc" secondAttribute="centerX" id="IBG-OV-RBn"/>
+                            <constraint firstItem="qlf-jL-Oqx" firstAttribute="leading" secondItem="6Fw-u9-skh" secondAttribute="leading" id="MIM-Br-Hbm"/>
+                            <constraint firstItem="dnX-kR-URy" firstAttribute="centerX" secondItem="7ur-33-wEc" secondAttribute="centerX" id="P2R-sU-qu7"/>
+                            <constraint firstItem="dnX-kR-URy" firstAttribute="centerX" secondItem="07I-F4-wYb" secondAttribute="centerX" id="Xfw-X8-XkV"/>
+                            <constraint firstItem="dnX-kR-URy" firstAttribute="top" secondItem="qlf-jL-Oqx" secondAttribute="bottom" constant="32" id="ZO9-PO-5QX"/>
+                            <constraint firstItem="qlf-jL-Oqx" firstAttribute="width" secondItem="6Fw-u9-skh" secondAttribute="width" id="aD5-Tp-4RI"/>
+                            <constraint firstItem="qlf-jL-Oqx" firstAttribute="top" secondItem="7ur-33-wEc" secondAttribute="bottom" constant="34" id="fdI-53-ycy"/>
+                            <constraint firstItem="7ur-33-wEc" firstAttribute="width" secondItem="6Fw-u9-skh" secondAttribute="width" id="i04-Nx-UBx"/>
+                            <constraint firstItem="6Fw-u9-skh" firstAttribute="centerX" secondItem="07I-F4-wYb" secondAttribute="centerX" id="t8H-Ts-zaE"/>
+                            <constraint firstItem="6Fw-u9-skh" firstAttribute="centerX" secondItem="7ur-33-wEc" secondAttribute="centerX" id="v3x-U5-ENU"/>
+                            <constraint firstItem="dnX-kR-URy" firstAttribute="leading" secondItem="6Fw-u9-skh" secondAttribute="leading" id="wud-bX-874"/>
+                            <constraint firstItem="qlf-jL-Oqx" firstAttribute="centerX" secondItem="7ur-33-wEc" secondAttribute="centerX" id="wur-4P-1EN"/>
+                            <constraint firstItem="dnX-kR-URy" firstAttribute="width" secondItem="6Fw-u9-skh" secondAttribute="width" id="x39-Y2-a4N"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -434,7 +452,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xTa-eY-acM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="44" y="-109"/>
+            <point key="canvasLocation" x="12" y="-99"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
@@ -647,6 +665,9 @@
                                 <rect key="frame" x="20" y="16" width="46" height="38"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" title="←"/>
+                                <connections>
+                                    <segue destination="RXA-gt-KDt" kind="show" id="Pha-Co-vtY"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -669,9 +690,9 @@
         <image name="Message...." width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tJG-RN-NId"/>
-        <segue reference="eEK-gp-fjk"/>
+        <segue reference="Pha-Co-vtY"/>
         <segue reference="AKh-fP-6fg"/>
-        <segue reference="GeZ-sD-2aT"/>
+        <segue reference="d5H-Nn-mFQ"/>
+        <segue reference="eEK-gp-fjk"/>
     </inferredMetricsTieBreakers>
 </document>

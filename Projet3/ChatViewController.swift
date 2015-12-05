@@ -50,7 +50,6 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
         
     }
     
-    
     /// detecte la touche "entre" et envoie le message le focus reviens automatiquement
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == self.monTexte {
@@ -62,15 +61,12 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
         return true
     }
     
-
-    
     ////---networking functions---///
-
     ///Premiere communication avec le serveur
     ///Sert a etablir la connection
     func joinChat(user: String) {
-        let response: String = "\(user)"
-        let data: NSData = response.dataUsingEncoding(NSUTF8StringEncoding)!
+        //let response: String = "\(user)"
+        
         //socket.emit("joinChat",data)
         //outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length)
     }
@@ -78,7 +74,7 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
     ///Quite le chat
     func quitChat(){
         ///socket.emit("exitChat")
-        connected = false
+        //connected = false
     }
     
     /**
@@ -92,7 +88,7 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
             let size : Int = 7 + monTexte.text!.characters.count
             let response: String = "!!\(size)!\(monTexte.text!)\n"
             monTexte.text = ""
-            let data: NSData = response.dataUsingEncoding(NSUTF8StringEncoding)!
+            
             //socket.emit("envoyerMessage",UnsafePointer<UInt8>(data.bytes))
             //self.outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length)
         }
