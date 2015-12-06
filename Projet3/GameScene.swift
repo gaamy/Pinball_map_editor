@@ -56,6 +56,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     var uneFrameSurX = 0
     var centre = CGPoint() //Variable qui détient le centre de la rotation multiple
     var scaleTable:CGFloat = 1
+    var fleche = SKNode()
+    
+    var tutorielEnCours = false
+    var etapeTutoriel = 0
     
     //Les variables de son
     var sonCorbeille: SystemSoundID = 0
@@ -109,7 +113,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         table.xScale *= 3.3
         table.yScale *= 3.3
 
-        
+        fleche = SKSpriteNode(imageNamed: "fleche")
+        fleche.xScale = 0.5
+        fleche.yScale = 0.5
         
         playBackgroundMusic("MusiqueEspace")
         
@@ -203,6 +209,11 @@ class GameScene: SKScene, UITextFieldDelegate {
                 }
                 
                 sender.scale = 1 //On reset le scale du sender pour pas faire exponentiel
+            }
+            
+            if tutorielEnCours && etapeTutoriel == 2 {
+                //Flêche pointe l'objet sélectionné
+                self.fleche.position = CGPointMake(self.nodesSurTable[self.nodesSurTable.count-1].noeud.position.x + 100, self.nodesSurTable[self.nodesSurTable.count-1].noeud.position.y)
             }
         }
         if sender.state == .Ended {
@@ -396,7 +407,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                         switch name {
                         case "outilmenu":
                             quitterModeEdition()
-                            
+                        case "outilTuto":
+                            modeTutoriel()
                             ///sauvegarde de carte sous format xml
                         case "outilSauvegarde":
                             self.preparerCarteXML(self.carte)
@@ -581,6 +593,10 @@ class GameScene: SKScene, UITextFieldDelegate {
                         self.animationExplosion(monNoeud)
                         monNoeud.removeFromParent()
                     }
+                    
+                    if self.tutorielEnCours && self.etapeTutoriel == 4 {
+                        self.tutoEtape5()
+                    }
                 } else if buttonPressed == "Annuler" {
                     //On fait rien sinon
                 }
@@ -600,6 +616,163 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
             AudioServicesPlaySystemSound(sonSelection)
         }
+    }
+    
+    ///Ce mode affiche un tutoriel à l'écran
+    func modeTutoriel(){
+        //On indique que le tutoriel a bien débuté
+        if tutorielEnCours {
+            //Message pour ajouter objet
+            Popups.SharedInstance.ShowAlert(self.viewController!,
+                title: "Annuler le tutoriel",
+                message: "Êtes-vous certains de vouloir quitter le tutoriel?",
+                buttons: ["Oui", "Non"]) { (buttonPressed) -> Void in
+                    if buttonPressed == "Oui" {
+                        self.tutoFin()
+                    }
+            }
+            return
+        }else{
+            tutorielEnCours = true
+        }
+        
+        //Création d'objets
+        tutoEtape1()
+        
+        //Les étapes s'appellent entre eux
+    }
+    
+    func tutoEtape1(){
+        etapeTutoriel = 1 //Nous débutons la première étape
+        
+        //Message pour ajouter objet
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Ajout d'objets",
+            message: "Cliquez sur un bouton d'objet puis cliquez sur la table pour créer un objet.\n\nNOTE: Les portails doivent être créés en paires en glissant le doigt et les murs doivent être créés en glissant le doigt.\n\nNOTE2: Vous pouvez quitter le tutoriel en tout temps en touchant à nouveau l'icone Tutoriel.",
+            buttons: ["Ok"]) { (buttonPressed) -> Void in
+        }
+        
+        //Fleche pointe bouton création objet
+        fleche.position = CGPointMake(menuGauche.position.x + 200, menuDroit.position.y + 100)
+        fleche.zPosition = 20
+        fleche.zRotation =  CGFloat(180).degreeEnRadian
+        self.addChild(fleche)
+    }
+    
+    func tutoEtape2(){
+        etapeTutoriel = 2
+        
+        //Message de félicitation
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Bravo",
+            message: "Vous avez correctement ajouté un objet sur la table.",
+            buttons: ["Ok"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Ok" {
+                    //Flêche pointe l'objet sélectionné
+                    self.fleche.position = CGPointMake(self.nodesSurTable[self.nodesSurTable.count-1].noeud.position.x + 100, self.nodesSurTable[self.nodesSurTable.count-1].noeud.position.y)
+                    
+                    //Faire une sélection
+                    Popups.SharedInstance.ShowAlert(self.viewController!,
+                        title: "Sélection",
+                        message: "Sélectionnez un objet en le touchant.\n\nNote: Pour mieux voir les objets, vous pouvez effectuer un zoom vers l'avant en pinçant l'écran avec deux doigts.",
+                        buttons: ["Ok "]) { (buttonPressed) -> Void in
+                    }
+                }
+        }
+    }
+    
+    func tutoEtape3(){
+        etapeTutoriel = 3
+        
+        //Message de félicitation
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Bravo",
+            message: "Vous avez correctement sélectionné un objet.",
+            buttons: ["Ok"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Ok" {
+                    
+                    //Changer une propriété
+                    Popups.SharedInstance.ShowAlert(self.viewController!,
+                        title: "Propriétés",
+                        message: "Modifier la propriété d'échelle de l'objet directement par le menu.\n\nNOTE: Il n'est possible de les modifier que lorsqu'exactement UN objet est sélectionné.",
+                        buttons: ["Ok "]) { (buttonPressed) -> Void in
+                            if buttonPressed == "Ok " {
+                                //Flêche pointe les propriétés de l'objet en sélection
+                                self.fleche.position = CGPointMake(self.menuDroit.position.x - 200, self.menuDroit.position.y + 250)
+                                self.fleche.zRotation =  CGFloat(0).degreeEnRadian
+                            }
+                    }
+                }
+        }
+    }
+    
+    func tutoEtape4(){
+        etapeTutoriel = 4
+        
+        //Message de félicitation
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Bravo",
+            message: "Vous avez correctement modifié une propriété.",
+            buttons: ["Ok"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Ok" {
+                    //Flêche pointe les outils
+                    self.fleche.position = CGPointMake(self.menuGauche.position.x + 200, self.menuDroit.position.y - 200)
+                    self.fleche.zRotation =  CGFloat(180).degreeEnRadian
+                    
+                    //Réinitialiser la partie
+                    Popups.SharedInstance.ShowAlert(self.viewController!,
+                        title: "Outils",
+                        message: "Utitisez l'outil Réinitialisé pour réinitialiser la carte.\n\nNOTE: Vous pouvez remarquer dans cette section plusieurs outils très intéressants:\n1. La corbeille efface les objets sélectionnés\n2. La dupplication copie les objets en sélection.\n3. Le déplacement s'active/désactive pour bouger la vue.\n4. Sauvegarder sauvegarde la sélection en cours.\n5. Charger charge la sélection sauvegardé.\n6. Identiques sélectionne tous les objets identiques.",
+                        buttons: ["Ok "]) { (buttonPressed) -> Void in
+                            if buttonPressed == "Ok " {
+                                
+                            }
+                    }
+                }
+        }
+    }
+    
+    func tutoEtape5(){
+        etapeTutoriel = 5
+        
+        //Message de félicitation
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Bravo",
+            message: "Vous avez correctement réinitialisé la carte.",
+            buttons: ["Ok"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Ok" {
+                    
+                    //Réinitialiser la partie
+                    Popups.SharedInstance.ShowAlert(self.viewController!,
+                        title: "Enregistrer",
+                        message: "Vers le bas du menu droit, il est possible de revoir le tutoriel, d'enregistrer une zone de jeu et de quitter vers le menu.",
+                        buttons: ["Ok "]) { (buttonPressed) -> Void in
+                            if buttonPressed == "Ok " {
+                                //Flêche pointe les outils
+                                self.fleche.position = CGPointMake(self.menuDroit.position.x - 200, self.menuDroit.position.y - 200)
+                                self.fleche.zRotation =  CGFloat(0).degreeEnRadian
+                                
+                                let delai = SKAction.waitForDuration(5)
+                                self.runAction(delai, completion: {
+                                    self.tutoFin() //Fin du tutoriel
+                                })
+                            }
+                    }
+                }
+        }
+    }
+    
+    func tutoFin(){
+        //Message de félicitation
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Bravo",
+            message: "Vous avez complété le tutoriel.",
+            buttons: ["Ok"]) { (buttonPressed) -> Void in
+        }
+        
+        etapeTutoriel = 0
+        fleche.removeFromParent() //On enlève la flêche
+        tutorielEnCours = false //Le tutoriel vient de terminer
     }
     
     ///Fonction qui efface les noeuds qui sont sélectionné
@@ -802,6 +975,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
         
         AudioServicesPlaySystemSound(sonObjSurTable)
+        
+        if tutorielEnCours && etapeTutoriel == 1 {
+            tutoEtape2()
+        }
     }
     
     func animationExplosion(node: SKNode) {
@@ -963,6 +1140,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         newObjectSelection!.alpha = 0.5
         nodesSelected.append(newObjectSelection!)
         updateVisibiliteCorbeille()
+        
+        if tutorielEnCours && etapeTutoriel == 2 {
+            tutoEtape3()
+        }
     }
     
     ///Fonction qui désélectionne un objet
@@ -1199,8 +1380,11 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
 
+        if tutorielEnCours && etapeTutoriel == 3 {
+            tutoEtape4()
+        }
         
-        return true // if this always returns true,  what's to point of returning it?
+        return true
     }
     
     ///Initialise les sons
