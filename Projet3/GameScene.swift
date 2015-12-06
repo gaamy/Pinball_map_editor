@@ -378,8 +378,10 @@ class GameScene: SKScene, UITextFieldDelegate {
                             pan = !pan
                             if pan {
                                 selectionnerOutil("outilPan")
+                                AudioServicesPlaySystemSound(sonSelectionOutil)
                             }else{
                                 deselectionnerOutil("outilPan")
+                                AudioServicesPlaySystemSound(sonSelectionOutil)
                             }
                         }
                         

@@ -685,7 +685,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Projet3.Projet3;
 				PRODUCT_NAME = Projet3;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Developer/poly/Projet3_client_leger/LISEZ-MOI/Projet3/Projet3-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Projet3/Projet3-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -702,7 +702,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Projet3.Projet3;
 				PRODUCT_NAME = Projet3;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Developer/poly/Projet3_client_leger/LISEZ-MOI/Projet3/Projet3-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Projet3/Projet3-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
