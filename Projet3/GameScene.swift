@@ -21,7 +21,6 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     var textBilleGratuite:UITextField?
     var textDiff:UITextField?
-    var textSauvegarde: UITextField?
     
     //Variables globale à la classe
     var ptsBilleGratuite = 1000
@@ -494,6 +493,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                     //On fait rien sinon
                 }
         }
+        
     }
     
     func creerMur(position2: CGPoint){
@@ -959,7 +959,6 @@ class GameScene: SKScene, UITextFieldDelegate {
                 self.textPointsCible?.hidden = true
                 self.textBilleGratuite?.hidden = true
                 self.textDiff?.hidden = true
-                self.textSauvegarde?.hidden = true
                 
                 menuDroitOuvert = false
             }else {
@@ -974,7 +973,6 @@ class GameScene: SKScene, UITextFieldDelegate {
                     self.textPointsCible?.hidden = false;
                     self.textBilleGratuite?.hidden = false;
                     self.textDiff?.hidden = false;
-                    self.textSauvegarde?.hidden = false;
                 })
                 
                 menuDroitOuvert = true
@@ -993,7 +991,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         textPointsCible!.text = String(self.ptsCible)
        
         //nom de la carte
-        textSauvegarde!.text = (carte.getNom() as NSString).stringByDeletingPathExtension //note: on enleve l'extention ".xml" et on update le textView
+        //textSauvegarde!.text = (carte.getNom() as NSString).stringByDeletingPathExtension //note: on enleve l'extention ".xml" et on update le textView
         
         
         if nodesSelected.count == 1 {
@@ -1044,7 +1042,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         textRotation!.resignFirstResponder()
         textBilleGratuite!.resignFirstResponder()
         textDiff!.resignFirstResponder()
-        textSauvegarde!.resignFirstResponder()
         
         let converter = NSNumberFormatter()
         converter.decimalSeparator = "."
@@ -1156,11 +1153,6 @@ class GameScene: SKScene, UITextFieldDelegate {
                 updateTextProprieteObjet()
             }
         }
-        
-        if(textSauvegarde!.text! != ""){
-            carte.setNom("\(textSauvegarde!.text!)")
-            
-        }
 
         
         return true // if this always returns true,  what's to point of returning it?
@@ -1229,11 +1221,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         self.view!.addSubview(textDiff!)
         textDiff!.backgroundColor = UIColor.whiteColor()
         textDiff!.delegate = self
-        
-        textSauvegarde = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-250, y: CGRectGetMidY(self.frame)+270, width: 150, height: 20))
-        self.view!.addSubview(textSauvegarde!)
-        textSauvegarde!.backgroundColor = UIColor.whiteColor()
-        textSauvegarde!.delegate = self
         
         updateTextProprieteObjet()
     }
@@ -1324,12 +1311,22 @@ class GameScene: SKScene, UITextFieldDelegate {
     ///Cree un objet de type Carte et la sauvegarde sous format xml
     func sauvegarderNouvelleCarte(){
         
-        Popups.SharedInstance.ShowAlert(self.viewController!,
+        PopupsText.SharedInstance.ShowAlert(self.viewController!,
             title: "Sauvegarder Carte",
-            message: "Etes vous sure de sauvegarder?",
-            buttons: ["Sauvegarder" , "Annuler"]) { (buttonPressed) -> Void in
+            message: "Choisissez un nom pour la zone de jeu",
+            buttons: ["Sauvegarder" , "Annuler"], texteInitial: (self.carte.getNom() as NSString).stringByDeletingPathExtension) { (buttonPressed) -> Void in
                 if buttonPressed == "Sauvegarder" {
+                    if PopupsText.SharedInstance.getTextField() == "" {
+                        Popups.SharedInstance.ShowAlert(self.viewController!,
+                            title: "Échec",
+                            message: "Le nom n'est pas valide. Échec de la sauvegarde.",
+                            buttons: ["Ok"]) { (buttonPressed) -> Void in
+                                
+                        }
+                        return
+                    }
                     
+                    self.carte.setNom("\(PopupsText.SharedInstance.getTextField())")
                     let nomNouvelleSauvegarde = "\(self.carte.getNom()).xml"
                     //self.carte = Carte(nom: nomNouvelleSauvegarde)
                     
@@ -1342,6 +1339,12 @@ class GameScene: SKScene, UITextFieldDelegate {
                         
                         if let xmlString = self.carte.toXmlString(){
                             parseur.sauvegarderStringXML(xmlString, nomFichier: nomNouvelleSauvegarde)
+                            Popups.SharedInstance.ShowAlert(self.viewController!,
+                                title: "Réusite",
+                                message: "La zone de jeu a bien été sauvegardé.",
+                                buttons: ["Ok"]) { (buttonPressed) -> Void in
+                                    
+                            }
                         }
                     }
                     //si le fichier existe deja, on avertis que celui-ci seras ecrasé
