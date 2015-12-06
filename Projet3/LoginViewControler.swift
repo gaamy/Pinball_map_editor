@@ -82,7 +82,22 @@ class LoginViewController : UIViewController{
                         self.performShowMenuSegue()
                     }
                     else{
-                        //popup authentification timeout, probleme d<autentification
+                        
+                        var erreur = " Erreur de connection"
+                        if SocketSession.sharedInstance.erreur{
+                            erreur = SocketSession.sharedInstance.typeErreur
+                        }
+                        
+                        Popups.SharedInstance.ShowAlert(self,
+                            title: "Erreur d'authentification",
+                            message: erreur,
+                            buttons: ["D'accord"]) { (buttonPressed) -> Void in
+                                if buttonPressed == "D'accord" {
+                                    self.motDePasse.text = ""
+                                
+                                }
+                        }
+
                         
                     }
                     

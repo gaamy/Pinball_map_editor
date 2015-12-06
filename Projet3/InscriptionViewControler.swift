@@ -63,8 +63,8 @@ class InscriptionViewControler: UIViewController{
             SocketSession.sharedInstance.inscription(nom,nouveauMotDePasse: motPasse)
         
 
-            //attendre 1 sec
-            let seconds = 1.0
+            //attendre 2 sec
+            let seconds = 2.0
             let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                 let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(dispatchTime, dispatch_get_main_queue(), {

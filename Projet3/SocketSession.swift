@@ -21,6 +21,7 @@ class SocketSession : NSObject, SocketIODelegate{
     var erreur = false
     var typeErreur = ""
     var inscriptionValide = false
+    var statistiques = ""
     
     //views
     var chat: ChatViewController!
@@ -105,19 +106,7 @@ class SocketSession : NSObject, SocketIODelegate{
                         print("authenticate!!!!!!!!!!!!!!")
                     case "false":
                         erreur = true
-                        
-                        if reponse[1] == "Mot de pass invalide"{
-                            typeErreur = "Mot de pass invalide"
-                            print(typeErreur)
-                            
-                        //message envoyer quand le nom d'utilisateur est incorect ou que le client est deja connecte au server
-                        }else if reponse[1] == "Nom d'utilisateur invalide"{
-                            typeErreur = "Nom d'utilisateur invalide"
-                            print(typeErreur)
-                            self.disconnect()
-                        }
-                    
-                    
+                        typeErreur = reponse[1]
                     
                     default:
                         let args  = dict!["args"]! as! [String]
@@ -146,7 +135,6 @@ class SocketSession : NSObject, SocketIODelegate{
                 print("Message: \(args)")
             
             
-            
             case "reponse register":
                 let args  = dict!["args"]! as! [String]
                 if args[0] == "true#Le compte a été ajouté avec succès"{
@@ -154,6 +142,10 @@ class SocketSession : NSObject, SocketIODelegate{
                 }else if args[0] == "false#Nom d'utilisateur deja present, veuillez voisir un autre nom d'utilisateur"{
                     self.inscriptionValide = false
                 }
+            
+            case "afficherStatistique":
+                let args  = dict!["args"]! as! [String]
+                statistiques = args[0]
             
             default:
                 if let args  = dict!["args"]! as? [String]{
@@ -179,8 +171,7 @@ class SocketSession : NSObject, SocketIODelegate{
     func envoyerMessageChat(message:String){
         self.socket.sendEvent("general message", withData: message)
         
-       // self.socket.sendEvent("roomChatSend", withData: message)
-        
+    
     }
     
     
@@ -195,7 +186,6 @@ class SocketSession : NSObject, SocketIODelegate{
     func deconnecterChatView(){
         self.chat = nil
     }
-    
     
     
     //Convertis un fichier jSon en dictionaire
@@ -221,6 +211,11 @@ class SocketSession : NSObject, SocketIODelegate{
     ///nouvelle inscription
     func inscription(nouvelUtilisateur: String, nouveauMotDePasse: String){
         self.socket.sendEvent("register", withData: "\(nouvelUtilisateur)#\(nouveauMotDePasse)")
+    }
+    
+    ///charger statistiques du joueur en cours
+    func chargerStatistiques(){
+        self.socket.sendEvent("afficherStatistique",withData: self.utilisateur)
     }
     
     ///reset les configurations d'inscription

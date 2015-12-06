@@ -6,31 +6,25 @@
 //  Copyright © 2015 David Gourde. All rights reserved.
 //
 
+
+/*nottes
+
+liste des fichiers local
+
+aller chercher la date et lheure dans le xml
+
+pour chaque fichier
+    emit("upDateMap","nomFichier#date#heure")
+    si le serveur ne toruves pas la map  ou pas a jour on.("uploadMap", nomMap)
+        emit("downloadMap","nomMap#XMLString")
+    si la map existe mais n'est pas a jour sur le local, .on("editMap","nomMap#XMLString")
+        remplacer le fichier local
+*/
+
 import Foundation
 
 class SynchroniseurDeCarte{
     let socket = SocketSession.sharedInstance
-    
-    func addHandlers() {
-        //Attrape tout les evenement qui ne sont pas atrapés par les autres handles
-        /*
-        self.socket.onAny {
-            print("Got event: \($0.event), with items: \($0.items)")
-        }
-        
-        self.socket.on("startGame") {
-            [weak self] data, ack in self!.handleStart()
-            return
-        }
-        
-        self.socket.on("win") {[weak self] data, ack in
-            if let name = data[0] as? String, typeDict = data[1] as? NSDictionary {
-                //!.handleWin(name, typeDict: typeDict)
-            }
-        }
-        */
-    }
-
     
     func envoyerCarte(carte : NSData){
         ///envoy un carte sous forme de data

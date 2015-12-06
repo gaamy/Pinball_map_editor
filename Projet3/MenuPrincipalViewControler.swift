@@ -12,6 +12,7 @@ class MenuPrincipalViewControler : UIViewController{
     
     @IBOutlet weak var boutonClavardage: UIButton!
     
+    @IBOutlet weak var boutonStatistiques: UIButton!
     @IBAction func deconnection(sender: UIButton) {
         
         SocketSession.sharedInstance.disconnect()
@@ -23,8 +24,11 @@ class MenuPrincipalViewControler : UIViewController{
 
         if SocketSession.sharedInstance.isAuthenticate(){
             boutonClavardage.enabled = true
+            boutonStatistiques.enabled = true
+            
         }else{
             boutonClavardage.enabled = false
+            boutonStatistiques.enabled = false
             
         }
       
