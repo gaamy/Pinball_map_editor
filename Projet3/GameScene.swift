@@ -15,7 +15,9 @@ class GameScene: SKScene, UITextFieldDelegate {
     var textPositionY:UITextField?
     var textRotation:UITextField?
     var textScale:UITextField?
-    var textPoints:UITextField?
+    var textPointsTri:UITextField?
+    var textPointsCirc:UITextField?
+    var textPointsCible:UITextField?
     
     var textBilleGratuite:UITextField?
     var textDiff:UITextField?
@@ -952,7 +954,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                 textPositionY?.hidden = true
                 self.textRotation?.hidden = true
                 self.textScale?.hidden = true
-                self.textPoints?.hidden = true
+                self.textPointsTri?.hidden = true
+                self.textPointsCirc?.hidden = true
+                self.textPointsCible?.hidden = true
                 self.textBilleGratuite?.hidden = true
                 self.textDiff?.hidden = true
                 self.textSauvegarde?.hidden = true
@@ -965,7 +969,9 @@ class GameScene: SKScene, UITextFieldDelegate {
                     self.textPositionY?.hidden = false;
                     self.textRotation?.hidden = false;
                     self.textScale?.hidden = false;
-                    self.textPoints?.hidden = false;
+                    self.textPointsTri?.hidden = false;
+                    self.textPointsCirc?.hidden = false;
+                    self.textPointsCible?.hidden = false;
                     self.textBilleGratuite?.hidden = false;
                     self.textDiff?.hidden = false;
                     self.textSauvegarde?.hidden = false;
@@ -982,6 +988,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         textBilleGratuite!.text = String(ptsBilleGratuite)
         textDiff!.text = String(coteDifficulte)
+        textPointsTri!.text = String(self.ptsButoirTri)
+        textPointsCirc!.text = String(self.ptsButoirCirc)
+        textPointsCible!.text = String(self.ptsCible)
        
         //nom de la carte
         textSauvegarde!.text = (carte.getNom() as NSString).stringByDeletingPathExtension //note: on enleve l'extention ".xml" et on update le textView
@@ -995,33 +1004,6 @@ class GameScene: SKScene, UITextFieldDelegate {
                 if objet.noeud == nodesSelected[0] {
                     textScale!.text = NSString(format: "%.01f", objet.scale) as String
                 }
-            }
-            
-            
-            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" || nodesSelected[0].name == "objetbutoirCirc" {
-                
-                for monNoeud in nodesSurTable {
-                    if monNoeud.noeud == nodesSelected[0] {
-                        switch nodesSelected[0].name! {
-                        case "objetcible":
-                            textPoints!.text = String(self.ptsCible)
-                            break
-                        case "objetbutoirTriDroit":
-                            textPoints!.text = String(self.ptsButoirTri)
-                            break
-                        case "objetbutoirTriGauche":
-                            textPoints!.text = String(self.ptsButoirTri)
-                            break
-                        case "objetbutoirCirc":
-                            textPoints!.text = String(self.ptsButoirCirc)
-                            break
-                        default: break
-                        }
-                    }
-                }
-                
-                self.textPoints?.enabled = true
-                textPoints!.backgroundColor = UIColor.whiteColor()
             }
             
             self.textPositionX?.enabled = true
@@ -1040,7 +1022,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             textPositionY!.text = ""
             textRotation!.text = ""
             textScale!.text = ""
-            textPoints!.text = ""
             
             self.textPositionX?.enabled = false
             textPositionX!.backgroundColor = UIColor.grayColor()
@@ -1053,14 +1034,11 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             self.textScale?.enabled = false
             textScale!.backgroundColor = UIColor.grayColor()
-            
-            self.textPoints?.enabled = false
-            textPoints!.backgroundColor = UIColor.grayColor()
         }
     }
     
     ///Reçoit un "enter" d'un text field (n'importe quel)
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
         textPositionX!.resignFirstResponder()
         textPositionY!.resignFirstResponder()
         textRotation!.resignFirstResponder()
@@ -1125,35 +1103,31 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
         }
         
-        if(textPoints!.text! != "" && nodesSelected.count == 1){
-            if nodesSelected[0].name == "objetcible" || nodesSelected[0].name == "objetbutoirTriDroit" || nodesSelected[0].name == "objetbutoirTriGauche" || nodesSelected[0].name == "objetbutoirCirc" {
-                if let s = converter.numberFromString(textPoints!.text!) {
-                    let sInt = Int(s)
-                    
-                    for monNoeud in nodesSurTable {
-                        if monNoeud.noeud == nodesSelected[0] {
-                            switch nodesSelected[0].name! {
-                            case "objetcible":
-                                self.ptsCible = sInt
-                                break
-                            case "objetbutoirTriDroit":
-                                self.ptsButoirTri = sInt
-                                break
-                            case "objetbutoirTriGauche":
-                                self.ptsButoirTri = sInt
-                                break
-                            case "objetbutoirCirc":
-                                self.ptsButoirCirc = sInt
-                                break
-                            default: break
-                            }
-                        }
-                    }
-                }else{
-                    updateTextProprieteObjet()
-                }
+        if(textPointsTri!.text! != ""){
+            if let s = converter.numberFromString(textPointsTri!.text!) {
+                let sInt = Int(s)
+                ptsButoirTri = sInt
+            }else{
+                updateTextProprieteObjet()
             }
-            
+        }
+        
+        if(textPointsCirc!.text! != ""){
+            if let s = converter.numberFromString(textPointsCirc!.text!) {
+                let sInt = Int(s)
+                ptsButoirCirc = sInt
+            }else{
+                updateTextProprieteObjet()
+            }
+        }
+        
+        if(textPointsCible!.text! != ""){
+            if let s = converter.numberFromString(textPointsCible!.text!) {
+                let sInt = Int(s)
+                ptsCible = sInt
+            }else{
+                updateTextProprieteObjet()
+            }
         }
         
         if(textBilleGratuite!.text! != ""){
@@ -1209,46 +1183,54 @@ class GameScene: SKScene, UITextFieldDelegate {
         
     }
     
-    ///Fonction qui initialise les labels et text fields pour les propriétés
+    ///Fonction qui initialise les text fields pour les propriétés
     func initLabels(){
-        
-        
-        textPositionX = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
+        textPositionX = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMinY(self.frame)+47, width: 50, height: 20))
         self.view!.addSubview(textPositionX!)
         textPositionX!.backgroundColor = UIColor.grayColor()
         textPositionX!.delegate = self
         
-        textPositionY = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-200, width: 50, height: 20))
+        textPositionY = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMinY(self.frame)+47, width: 50, height: 20))
         self.view!.addSubview(textPositionY!)
         textPositionY!.backgroundColor = UIColor.grayColor()
         textPositionY!.delegate = self
         
-        textRotation = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-120, width: 50, height: 20))
-        self.view!.addSubview(textRotation!)
-        textRotation!.backgroundColor = UIColor.grayColor()
-        textRotation!.delegate = self
-        
-        textScale = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-160, width: 50, height: 20))
+        textScale = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMinY(self.frame)+87, width: 50, height: 20))
         self.view!.addSubview(textScale!)
         textScale!.backgroundColor = UIColor.grayColor()
         textScale!.delegate = self
         
-        textPoints = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMidY(self.frame)-80, width: 50, height: 20))
-        self.view!.addSubview(textPoints!)
-        textPoints!.backgroundColor = UIColor.grayColor()
-        textPoints!.delegate = self
+        textRotation = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-130, y: CGRectGetMinY(self.frame)+123, width: 50, height: 20))
+        self.view!.addSubview(textRotation!)
+        textRotation!.backgroundColor = UIColor.grayColor()
+        textRotation!.delegate = self
         
-        textBilleGratuite = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)-0, width: 50, height: 20))
+        textPointsTri = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMinY(self.frame)+188, width: 50, height: 20))
+        self.view!.addSubview(textPointsTri!)
+        textPointsTri!.backgroundColor = UIColor.whiteColor()
+        textPointsTri!.delegate = self
+        
+        textPointsCirc = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMinY(self.frame)+227, width: 50, height: 20))
+        self.view!.addSubview(textPointsCirc!)
+        textPointsCirc!.backgroundColor = UIColor.whiteColor()
+        textPointsCirc!.delegate = self
+        
+        textPointsCible = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMinY(self.frame)+266, width: 50, height: 20))
+        self.view!.addSubview(textPointsCible!)
+        textPointsCible!.backgroundColor = UIColor.whiteColor()
+        textPointsCible!.delegate = self
+        
+        textBilleGratuite = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMinY(self.frame)+305, width: 50, height: 20))
         self.view!.addSubview(textBilleGratuite!)
         textBilleGratuite!.backgroundColor = UIColor.whiteColor()
         textBilleGratuite!.delegate = self
         
-        textDiff = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMidY(self.frame)+40, width: 50, height: 20))
+        textDiff = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-70, y: CGRectGetMinY(self.frame)+344, width: 50, height: 20))
         self.view!.addSubview(textDiff!)
         textDiff!.backgroundColor = UIColor.whiteColor()
         textDiff!.delegate = self
         
-        textSauvegarde = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-250, y: CGRectGetMidY(self.frame)+260, width: 150, height: 20))
+        textSauvegarde = UITextField(frame: CGRect(x: CGRectGetMaxX(self.frame)-250, y: CGRectGetMidY(self.frame)+270, width: 150, height: 20))
         self.view!.addSubview(textSauvegarde!)
         textSauvegarde!.backgroundColor = UIColor.whiteColor()
         textSauvegarde!.delegate = self
