@@ -41,9 +41,16 @@ class InscriptionViewControler: UIViewController{
         erreurMotDePasseVide.hidden = true
         erreurNom.hidden = true
         
-        let nom = nomUtilisateur.text!
-        let motPasse = motDePasse.text!
+        var nom = ""
+        if let monNom = nomUtilisateur.text {
+            nom = monNom
+        }
         
+        var motPasse = ""
+        if let passe = motDePasse.text {
+            motPasse = passe
+        }
+
         if motPasse != confirmationMotDePasse.text!{
             erreurMotDePasseDifferent.hidden = false
         }else if nom == ""{
