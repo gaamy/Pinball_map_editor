@@ -10,28 +10,24 @@ import Foundation
 
 class MenuPrincipalViewControler : UIViewController{
     
-    var socket : SocketSession!
-    
     @IBOutlet weak var boutonClavardage: UIButton!
     
     @IBAction func deconnection(sender: UIButton) {
-        if socket != nil{
-            socket.disconnect()
-            socket = nil
-        }
+        
+        SocketSession.sharedInstance.disconnect()
+        
         
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        if socket != nil{
-            if socket.isAuthenticate(){
-                boutonClavardage.enabled = true
-            }else{
-                boutonClavardage.enabled = false
+
+        if SocketSession.sharedInstance.isAuthenticate(){
+            boutonClavardage.enabled = true
+        }else{
+            boutonClavardage.enabled = false
             
-            }
         }
+      
     }
     
     
@@ -41,9 +37,18 @@ class MenuPrincipalViewControler : UIViewController{
     }
     
     
+    /*
+    
     ///prepare a envoyer la le socket a la prochaine vue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "ShowChat") {
+        /*if (segue.identifier == "ShowChat") {
+            //Checking identifier is crucial as there might be multiple
+            // segues attached to same view
+            let chatView = segue.destinationViewController as! ChatViewController;
+            chatView.socket = self.socket
+            //self.socket.connecterChatView(chatView)
+        }
+        else */if (segue.identifier == "ShowInscription") {
             //Checking identifier is crucial as there might be multiple
             // segues attached to same view
             let chatView = segue.destinationViewController as! ChatViewController;
@@ -51,4 +56,6 @@ class MenuPrincipalViewControler : UIViewController{
             //self.socket.connecterChatView(chatView)
         }
     }
+*/
+
 }

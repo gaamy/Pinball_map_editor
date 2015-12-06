@@ -9,27 +9,23 @@
 import Foundation
 import UIKit
 
-class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelegate{
+class ChatViewController : UIViewController, UITextFieldDelegate{
 
     //UIelements
     @IBOutlet weak var boutonEnvoyerMessage: UIButton!
     @IBOutlet weak var messages: UITextView!
     @IBOutlet weak var monTexte: UITextField!
-   
-    //Networking elements
-    var socket: SocketSession!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         monTexte.delegate = self
-        if socket != nil {
-            socket.connecterChatView(self)
-        }
+        ///Aberation:TODO:correct that after project deadline
+        SocketSession.sharedInstance.connecterChatView(self)
+        
+        
     }
     
 
-    
     ////---UiFunctions---///
     
     ///updateChatView()
@@ -70,13 +66,13 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
             let response: String = "\(monTexte.text!)\n"
             monTexte.text = ""
             
-            if socket != nil{
-                 socket.envoyerMessageChat(response)
-            }
+          
+            SocketSession.sharedInstance.envoyerMessageChat(response)
+           
             
         }
     }
-    
+    /*
     
     ///prepare a envoyer la le socket a la prochaine vue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
@@ -89,7 +85,7 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
         }
     }
 
-    
+    */
 
     ///détache ce chat view du socket 
     @IBAction func quiterChat(){

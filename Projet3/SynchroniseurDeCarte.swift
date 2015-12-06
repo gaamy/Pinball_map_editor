@@ -9,7 +9,7 @@
 import Foundation
 
 class SynchroniseurDeCarte{
-    let socket = SocketSession(host: "localhost", port: 8000)
+    let socket = SocketSession.sharedInstance
     
     func addHandlers() {
         //Attrape tout les evenement qui ne sont pas atrapés par les autres handles

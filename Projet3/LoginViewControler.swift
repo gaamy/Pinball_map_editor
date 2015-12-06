@@ -21,7 +21,7 @@ class LoginViewController : UIViewController{
     
     @IBOutlet weak var loginButton: UIButton!
     
-    var socket : SocketSession!
+    var socket = SocketSession.sharedInstance
     
     @IBAction func authentification(sender: UIButton) {
         // checking for invalid entrys
@@ -51,7 +51,9 @@ class LoginViewController : UIViewController{
             let portString = port.text!
             let hostString = host.text!
             
-            socket = SocketSession(host: hostString, port: Int(portString)!)
+            socket = SocketSession.sharedInstance
+            
+            socket.initialiserConnection(hostString, port: Int(portString)!)
             
             socket.debuterSession(nomUtilisateur.text!, motDePasse: motDePasse.text!)
             
@@ -98,7 +100,7 @@ class LoginViewController : UIViewController{
         self.performSegueWithIdentifier("ShowMenu", sender: self)
     }
     
-    
+    /*
     ///prepare a envoyer la le socket a la prochaine vue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "ShowMenu") {
@@ -108,13 +110,14 @@ class LoginViewController : UIViewController{
             menuPrincipal.socket = self.socket
         }
     }
+    */
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if socket != nil{
-            socket.disconnect()
-        }
+        //if socket != nil{
+            //socket.disconnect()
+       // }
         
     }
     

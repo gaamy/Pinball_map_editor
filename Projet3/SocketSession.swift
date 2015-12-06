@@ -11,6 +11,7 @@ import Foundation
 
 class SocketSession : NSObject, SocketIODelegate{
 
+    static let sharedInstance = SocketSession()
     
     var socket : SocketIO!
     var utilisateur = ""
@@ -19,17 +20,31 @@ class SocketSession : NSObject, SocketIODelegate{
     var authenticate = false
     var erreur = false
     var typeErreur = ""
+    var inscriptionValide = false
     
     //views
     var chat: ChatViewController!
     
-    
+    private override init(){
+        super.init()
+    }
+    /*
     init(host: String, port:Int){
         super.init()
         socket = SocketIO(delegate:  self)
         //socket.connectToHost("localhost", onPort: 8000)
         socket.connectToHost("\(host)", onPort: port)
     }
+    */
+
+    
+    func initialiserConnection(host: String, port:Int){
+        
+        socket = SocketIO(delegate:  self)
+        //socket.connectToHost("localhost", onPort: 8000)
+        socket.connectToHost("\(host)", onPort: port)
+    }
+    
     
     ///Connection au serveur
     func debuterSession(nomUtilisateur:String, motDePasse:String) {
@@ -71,6 +86,8 @@ class SocketSession : NSObject, SocketIODelegate{
                 ected")
     }
     */
+    
+    
     ///socketIO
     ///event delegate
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
@@ -122,9 +139,9 @@ class SocketSession : NSObject, SocketIODelegate{
             
             case "reponse register":
                 if args[0] == "true#Le compte a été ajouté avec succès"{
-                    //confirmerInscription()
+                    self.inscriptionValide = true
                 }else if args[0] == "false#Nom d'utilisateur deja present, veuillez voisir un autre nom d'utilisateur"{
-                    
+                    self.inscriptionValide = false
                 }
             
             default:
@@ -136,6 +153,8 @@ class SocketSession : NSObject, SocketIODelegate{
         
         
     }
+    
+    
     
     //SocketIO
     //envoyerMessage au chat
@@ -181,7 +200,19 @@ class SocketSession : NSObject, SocketIODelegate{
         authenticate = false
     }
     
+    ///nouvelle inscription
+    func inscription(nouvelUtilisateur: String, nouveauMotDePasse: String){
+        self.socket.sendEvent("register", withData: "\(nouvelUtilisateur)#\(nouveauMotDePasse)")
+    }
     
+    ///reset les configurations d'inscription
+    func resetInscription(){
+        self.inscriptionValide = false
+    }
+    
+    func isInscriptionValide() -> Bool{
+        return self.inscriptionValide
+    }
  
     func isAuthenticate() -> Bool  {
         return self.authenticate

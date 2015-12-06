@@ -43,6 +43,7 @@
 		FC6290691C05083700CDBF52 /* ViewControllerChoixEditeur.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */; };
 		FC62906A1C05083700CDBF52 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290661C05083700CDBF52 /* AEXML.swift */; };
 		FC62906B1C05083700CDBF52 /* ParseurXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6290671C05083700CDBF52 /* ParseurXML.swift */; };
+		FCD4891D1C148F4E0079099C /* InscriptionViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD4891C1C148F4E0079099C /* InscriptionViewControler.swift */; };
 		FCF26CB21C0BDE2800DE3F6F /* SynchroniseurDeCarte.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF26CB11C0BDE2800DE3F6F /* SynchroniseurDeCarte.swift */; };
 		FCF26CB41C0BF36100DE3F6F /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF26CB31C0BF36100DE3F6F /* ChatViewController.swift */; };
 		FCF26CB61C0CEF9A00DE3F6F /* SocketSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF26CB51C0CEF9A00DE3F6F /* SocketSession.swift */; };
@@ -104,6 +105,7 @@
 		FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerChoixEditeur.swift; sourceTree = "<group>"; };
 		FC6290661C05083700CDBF52 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXML.swift; sourceTree = "<group>"; };
 		FC6290671C05083700CDBF52 /* ParseurXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseurXML.swift; sourceTree = "<group>"; };
+		FCD4891C1C148F4E0079099C /* InscriptionViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InscriptionViewControler.swift; sourceTree = "<group>"; };
 		FCF26CB11C0BDE2800DE3F6F /* SynchroniseurDeCarte.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchroniseurDeCarte.swift; sourceTree = "<group>"; };
 		FCF26CB31C0BF36100DE3F6F /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		FCF26CB51C0CEF9A00DE3F6F /* SocketSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketSession.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				FC59D31F1C0E484000783782 /* LoginViewControler.swift */,
 				FC283C1E1C132834001F9055 /* MenuPrincipalViewControler.swift */,
 				FCF26CB31C0BF36100DE3F6F /* ChatViewController.swift */,
+				FCD4891C1C148F4E0079099C /* InscriptionViewControler.swift */,
 				FC6290651C05083700CDBF52 /* ViewControllerChoixEditeur.swift */,
 				2D0D411F1BA8E50F00B25A7B /* Main.storyboard */,
 				2D0D41171BA8E50F00B25A7B /* AppDelegate.swift */,
@@ -429,6 +432,7 @@
 				2D0D41181BA8E50F00B25A7B /* AppDelegate.swift in Sources */,
 				FC173CA31C1293F40049606C /* SocketIOJSONSerialization.m in Sources */,
 				2D6D37891BF93DC1004385FB /* Popups.swift in Sources */,
+				FCD4891D1C148F4E0079099C /* InscriptionViewControler.swift in Sources */,
 				FC62906B1C05083700CDBF52 /* ParseurXML.swift in Sources */,
 				FCF26CB41C0BF36100DE3F6F /* ChatViewController.swift in Sources */,
 			);
