@@ -28,14 +28,7 @@ class SocketSession : NSObject, SocketIODelegate{
     private override init(){
         super.init()
     }
-    /*
-    init(host: String, port:Int){
-        super.init()
-        socket = SocketIO(delegate:  self)
-        //socket.connectToHost("localhost", onPort: 8000)
-        socket.connectToHost("\(host)", onPort: port)
-    }
-    */
+
 
     
     func initialiserConnection(host: String, port:Int){
@@ -93,39 +86,55 @@ class SocketSession : NSObject, SocketIODelegate{
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
         let dict = convertStringToDictionary(packet.data)
         let event = dict!["name"]! as! String
-        let args  = dict!["args"]! as! [String]
-
+        
+        
+        
+        
+        
         switch(event){
             case "reponse connection":
-                switch (args[0]){
-                    case "true#\(utilisateur)":
+                let args  = dict!["args"]! as! [String]
+                let reponseComplete = args[0]
+
+                let reponse = reponseComplete.characters.split{$0 == "#"}.map(String.init)
+                
+                switch (reponse[0]){
+                    case "true":
                         authenticate = true
                         erreur = false
                         print("authenticate!!!!!!!!!!!!!!")
-                    case "false#Mot de pass invalide":
+                    case "false":
                         erreur = true
-                        typeErreur = "Mot de pass invalide"
-                        print(typeErreur)
-                    //message envoyer quand le nom d'utilisateur est incorect ou que le client est deja connecte au server
-                    case "false#Nom d'utilisateur invalide":
-                        erreur = true
-                        typeErreur = "Nom d'utilisateur invalide"
-                        print(typeErreur)
-                        self.disconnect()
+                        
+                        if reponse[1] == "Mot de pass invalide"{
+                            typeErreur = "Mot de pass invalide"
+                            print(typeErreur)
+                            
+                        //message envoyer quand le nom d'utilisateur est incorect ou que le client est deja connecte au server
+                        }else if reponse[1] == "Nom d'utilisateur invalide"{
+                            typeErreur = "Nom d'utilisateur invalide"
+                            print(typeErreur)
+                            self.disconnect()
+                        }
+                    
+                    
                     
                     default:
+                        let args  = dict!["args"]! as! [String]
                         print("reponse connection not handle :\(args[0])")
                 }
             case "userDisconnected":
                 authenticate = false
-                print("\(args[0]) disconnected!!!!!!!!!!!!!!")
+                print(" disconnected!!!!!!!!!!!!!!")
             
             
             case  "error":
+                let args  = dict!["args"]! as! [String]
                 print("Erreur avec socket.io: arguments: \(args)")
            
             //gestidu chat
             case "txt":
+                let args  = dict!["args"]! as! [String]
                 print("General chat message: \(args[0])")
             chat.updateChatView(args[0])
             
@@ -133,11 +142,13 @@ class SocketSession : NSObject, SocketIODelegate{
                 //print("roomChatReceive message recu")
             
             case "message":
+                let args  = dict!["args"]! as! [String]
                 print("Message: \(args)")
             
             
             
             case "reponse register":
+                let args  = dict!["args"]! as! [String]
                 if args[0] == "true#Le compte a été ajouté avec succès"{
                     self.inscriptionValide = true
                 }else if args[0] == "false#Nom d'utilisateur deja present, veuillez voisir un autre nom d'utilisateur"{
@@ -145,8 +156,15 @@ class SocketSession : NSObject, SocketIODelegate{
                 }
             
             default:
-                print("--Evenement inconu: \(event)")
-                print("--Arguments: \(args)")
+                if let args  = dict!["args"]! as? [String]{
+                    print("--Evenement inconu: \(event)")
+                     print("--Arguments: \(args)")
+                }
+                else{
+                    print("--Evenement FUCKENT: \(event)")
+                }
+               // print("--Evenement inconu: \(event)")
+               // print("--Arguments: \(args)")
             
         
         }

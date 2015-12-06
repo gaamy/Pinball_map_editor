@@ -19,10 +19,17 @@ class LoginViewController : UIViewController{
     @IBOutlet weak var messageDerreur: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    
     @IBOutlet weak var loginButton: UIButton!
     
     var socket = SocketSession.sharedInstance
     
+    @IBAction func nouvelUtilisateur(sender: UIButton) {
+        if host.text! != "" && port.text! != "" {
+            SocketSession.sharedInstance.initialiserConnection(host.text!, port: Int(port.text!)!)
+            self.performSegueWithIdentifier("ShowCreationUtilisateur", sender: self)
+        }
+    }
     @IBAction func authentification(sender: UIButton) {
         // checking for invalid entrys
         if (host.text == nil || host.text!.isEqual("")){

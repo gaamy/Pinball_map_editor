@@ -115,7 +115,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="zts-9e-Jip">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="zts-9e-Jip">
                                 <rect key="frame" x="310" y="465" width="20" height="20"/>
                             </activityIndicatorView>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mot de passe different" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Evl-ZA-BN3">
@@ -189,6 +189,7 @@
                             <constraint firstItem="h0R-Zd-GjI" firstAttribute="top" secondItem="nga-oF-uu7" secondAttribute="bottom" constant="28" id="52z-wb-eha"/>
                             <constraint firstItem="99A-DG-wEK" firstAttribute="top" secondItem="hgy-pM-Sig" secondAttribute="bottom" constant="8" symbolic="YES" id="564-9o-alv"/>
                             <constraint firstItem="FGz-DH-wzH" firstAttribute="top" secondItem="VRR-Ap-dWm" secondAttribute="bottom" constant="32" id="8cx-f1-Xoz"/>
+                            <constraint firstItem="zts-9e-Jip" firstAttribute="leading" secondItem="Thj-wm-Zty" secondAttribute="leading" constant="310" id="8od-Sp-LOu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Z85-kF-xW3" secondAttribute="trailing" constant="91" id="AGv-KH-nIq"/>
                             <constraint firstItem="VRR-Ap-dWm" firstAttribute="leading" secondItem="FGz-DH-wzH" secondAttribute="leading" id="AQS-Ld-Nh2"/>
                             <constraint firstItem="Pql-Pb-jRN" firstAttribute="leading" secondItem="fsh-ub-4UL" secondAttribute="leading" id="BOI-gR-Rtj"/>
@@ -326,7 +327,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="localhost" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LyH-9I-NR8">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="132.207.243.33" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LyH-9I-NR8">
                                 <rect key="frame" x="182" y="219" width="134" height="30"/>
                                 <animations/>
                                 <constraints>
@@ -445,7 +446,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="D0I-bP-Lm1" kind="show" identifier="ShowInscription" id="g2o-fM-2B6"/>
+                                    <action selector="nouvelUtilisateur:" destination="cQP-nR-dqi" eventType="touchUpInside" id="l54-h2-YOq"/>
                                 </connections>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgU-8I-nr1" userLabel="messageDerreur">
@@ -569,6 +570,7 @@
                         <outlet property="nomUtilisateur" destination="Z7G-LV-bJd" id="djG-2E-vao"/>
                         <outlet property="port" destination="sEB-oI-6ae" id="NA9-Nv-rXN"/>
                         <segue destination="RXA-gt-KDt" kind="show" identifier="ShowMenu" id="bf3-Pu-fUH"/>
+                        <segue destination="D0I-bP-Lm1" kind="show" identifier="ShowCreationUtilisateur" id="y5C-40-3S9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgY-Lx-nHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
