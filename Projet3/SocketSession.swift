@@ -102,7 +102,7 @@ class SocketSession : NSObject, SocketIODelegate{
             
             case "reponse register":
                 if args[0] == "true#Le compte a été ajouté avec succès"{
-                    confirmerInscription()
+                    //confirmerInscription()
                 }else if args[0] == "false#Nom d'utilisateur deja present, veuillez voisir un autre nom d'utilisateur"{
                     
                 }
