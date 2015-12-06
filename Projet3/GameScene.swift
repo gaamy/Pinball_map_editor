@@ -770,6 +770,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             buttons: ["Ok"]) { (buttonPressed) -> Void in
         }
         
+        etapeTutoriel = 0
         fleche.removeFromParent() //On enlève la flêche
         tutorielEnCours = false //Le tutoriel vient de terminer
     }
