@@ -17,6 +17,9 @@
 		2D0D41321BA8E50F00B25A7B /* Projet3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D41311BA8E50F00B25A7B /* Projet3Tests.swift */; };
 		2D0F7C9C1BF11EB400020C40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F7C9E1BF11EB400020C40 /* Localizable.strings */; };
 		2D0F7CA21BF12DFE00020C40 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F7CA41BF12DFE00020C40 /* GameScene.sks */; };
+		2D66939C1C13DF30005A8AB6 /* PopupsText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66939B1C13DF30005A8AB6 /* PopupsText.swift */; };
+		2D66939E1C140316005A8AB6 /* resetMagic.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D66939D1C140316005A8AB6 /* resetMagic.sks */; };
+		2D6693A01C1406E4005A8AB6 /* disparaitParMagie.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2D66939F1C1406E4005A8AB6 /* disparaitParMagie.mp3 */; };
 		2D6D37751BF7FF89004385FB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6D37741BF7FF89004385FB /* Extensions.swift */; };
 		2D6D37791BF82114004385FB /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D37771BF82114004385FB /* spark.png */; };
 		2D6D377B1BF82186004385FB /* deleteNodeEffect.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */; };
@@ -72,6 +75,9 @@
 		2D0F7C9F1BF11EB700020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D0F7CA11BF127D400020C40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		2D0F7CA51BF12E0200020C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Base; path = Base.lproj/GameScene.sks; sourceTree = "<group>"; };
+		2D66939B1C13DF30005A8AB6 /* PopupsText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupsText.swift; sourceTree = "<group>"; };
+		2D66939D1C140316005A8AB6 /* resetMagic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = resetMagic.sks; sourceTree = "<group>"; };
+		2D66939F1C1406E4005A8AB6 /* disparaitParMagie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = disparaitParMagie.mp3; sourceTree = "<group>"; };
 		2D6D37741BF7FF89004385FB /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2D6D37771BF82114004385FB /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = deleteNodeEffect.sks; sourceTree = "<group>"; };
@@ -183,7 +189,10 @@
 				2D6D37861BF8273B004385FB /* feu.sks */,
 				2D6D37881BF93DC1004385FB /* Popups.swift */,
 				2DD9F4871BFBDCB70085AC39 /* JouerMusique.swift */,
+				2D66939F1C1406E4005A8AB6 /* disparaitParMagie.mp3 */,
 				2DD9F48B1BFBEE2B0085AC39 /* Objet.swift */,
+				2D66939B1C13DF30005A8AB6 /* PopupsText.swift */,
+				2D66939D1C140316005A8AB6 /* resetMagic.sks */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -322,6 +331,7 @@
 			files = (
 				2D6D377B1BF82186004385FB /* deleteNodeEffect.sks in Resources */,
 				2D6D37791BF82114004385FB /* spark.png in Resources */,
+				2D66939E1C140316005A8AB6 /* resetMagic.sks in Resources */,
 				2DFD73C91BB0D2F500744B61 /* placerObjetSurTable.mp3 in Resources */,
 				2DFD73CC1BB0D52900744B61 /* Selection.mp3 in Resources */,
 				2D0D41261BA8E50F00B25A7B /* LaunchScreen.xib in Resources */,
@@ -329,6 +339,7 @@
 				2D6D37871BF8273B004385FB /* feu.sks in Resources */,
 				2D0F7C9C1BF11EB400020C40 /* Localizable.strings in Resources */,
 				2DFD73CA1BB0D2F500744B61 /* SelectionOutil.mp3 in Resources */,
+				2D6693A01C1406E4005A8AB6 /* disparaitParMagie.mp3 in Resources */,
 				2DD9F48A1BFBE14C0085AC39 /* MusiqueEspace.mp3 in Resources */,
 				2D6D377D1BF8244F004385FB /* corbeille.mp3 in Resources */,
 				2D0F7CA21BF12DFE00020C40 /* GameScene.sks in Resources */,
@@ -403,6 +414,7 @@
 				2DD9F48C1BFBEE2B0085AC39 /* Objet.swift in Sources */,
 				FC283C1F1C132834001F9055 /* MenuPrincipalViewControler.swift in Sources */,
 				FC173CA51C1293F40049606C /* SocketIO.m in Sources */,
+				2D66939C1C13DF30005A8AB6 /* PopupsText.swift in Sources */,
 				FC59D3201C0E484000783782 /* LoginViewControler.swift in Sources */,
 				FC6290691C05083700CDBF52 /* ViewControllerChoixEditeur.swift in Sources */,
 				2D0D411C1BA8E50F00B25A7B /* GameScene.swift in Sources */,
