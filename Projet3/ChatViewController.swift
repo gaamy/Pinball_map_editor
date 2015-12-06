@@ -28,7 +28,7 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
         }
     }
     
-    
+
     
     ////---UiFunctions---///
     
