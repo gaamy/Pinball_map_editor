@@ -62,6 +62,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var sonObjSurTable: SystemSoundID = 0
     var sonSelectionOutil: SystemSoundID = 0
     var sonSelection: SystemSoundID = 0
+    var sonReset: SystemSoundID = 0
     
     //Variable qui represente la carte de jeux (pour XML)
     var carte : Carte!
@@ -412,6 +413,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                                         }
                                     }
                             }
+                        case "outilReset" :
+                            resetLaMap()
                         case "boutonportail":
                             construirePortail = true
                             AudioServicesPlaySystemSound(sonSelectionOutil)
@@ -555,6 +558,33 @@ class GameScene: SKScene, UITextFieldDelegate {
     func swipePossible(valeur: Bool){
         leftSwipe.enabled = valeur
         rightSwipe.enabled = valeur
+    }
+    
+    func resetLaMap(){
+        AudioServicesPlaySystemSound(sonSelectionOutil)
+        Popups.SharedInstance.ShowAlert(self.viewController!,
+            title: "Réinitialiser la zone",
+            message: "Êtes-vous certains de vouloir réinitialiser la zone de jeu?",
+            buttons: ["Réinitialiser" , "Annuler"]) { (buttonPressed) -> Void in
+                if buttonPressed == "Réinitialiser" {
+                    self.animationMagie()
+                    AudioServicesPlaySystemSound(self.sonReset)
+                    for objetCourant in self.nodesSurTable
+                    {
+                        let monNoeud = objetCourant.noeud
+                        if self.nodesSelected.contains(monNoeud) {
+                            self.savedSelected = self.savedSelected.filter {$0 != monNoeud}
+                            self.nodesSurTable = self.nodesSurTable.filter {$0.noeud != monNoeud}
+                            
+                        }
+                        self.unselectNode(monNoeud)
+                        self.animationExplosion(monNoeud)
+                        monNoeud.removeFromParent()
+                    }
+                } else if buttonPressed == "Annuler" {
+                    //On fait rien sinon
+                }
+        }
     }
     
     ///Fonction qui resélectionne les noeurs de la sélection enregistrés (qui charge la sélection)
@@ -781,6 +811,21 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             //On doit delete la mémoire relié aux particules après l'animation
             let delai = SKAction.waitForDuration(1)
+            self.runAction(delai, completion: {
+                fireParticles.removeFromParent()
+            })
+        }
+    }
+    
+    func animationMagie() {
+        if let fireParticles = SKEmitterNode(fileNamed: "resetMagic") {
+            fireParticles.position = table.position
+            fireParticles.particlePositionRange = CGVectorMake(table.frame.width,table.frame.height);
+            addChild(fireParticles)
+            //disparaitParMagie
+            
+            //On doit delete la mémoire relié aux particules après l'animation
+            let delai = SKAction.waitForDuration(2)
             self.runAction(delai, completion: {
                 fireParticles.removeFromParent()
             })
@@ -1168,6 +1213,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         AudioServicesCreateSystemSoundID(sonSelectionOutilURL!, &sonSelectionOutil)
         let sonSelectionURL = NSBundle.mainBundle().URLForResource("Selection", withExtension: "mp3")
         AudioServicesCreateSystemSoundID(sonSelectionURL!, &sonSelection)
+        let sonResetURL = NSBundle.mainBundle().URLForResource("disparaitParMagie", withExtension: "mp3")
+        AudioServicesCreateSystemSoundID(sonResetURL!, &sonReset)
     }
     
     override func update(currentTime: CFTimeInterval) {
