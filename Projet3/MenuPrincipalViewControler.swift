@@ -48,6 +48,7 @@ class MenuPrincipalViewControler : UIViewController{
             // segues attached to same view
             let chatView = segue.destinationViewController as! ChatViewController;
             chatView.socket = self.socket
+            //self.socket.connecterChatView(chatView)
         }
     }
 }

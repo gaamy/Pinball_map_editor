@@ -719,7 +719,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="quiterChat" destination="Zzg-og-H5X" eventType="touchUpInside" id="tBc-ok-kaM"/>
-                                    <segue destination="RXA-gt-KDt" kind="show" id="LYU-v1-7Mf"/>
+                                    <segue destination="RXA-gt-KDt" kind="show" identifier="ShowMenu" id="LYU-v1-7Mf"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="message" minimumFontSize="17" background="Message...." clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GPc-WH-9Jc">

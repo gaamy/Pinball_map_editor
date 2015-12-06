@@ -77,6 +77,19 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
         }
     }
     
+    
+    ///prepare a envoyer la le socket a la prochaine vue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "ShowMenu") {
+            //Checking identifier is crucial as there might be multiple
+            // segues attached to same view
+            let menuView = segue.destinationViewController as! MenuPrincipalViewControler;
+            menuView.socket = self.socket
+            
+        }
+    }
+
+    
 
     ///détache ce chat view du socket 
     @IBAction func quiterChat(){

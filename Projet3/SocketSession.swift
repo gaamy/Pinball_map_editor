@@ -89,10 +89,13 @@ class SocketSession : NSObject, SocketIODelegate{
                         erreur = true
                         typeErreur = "Mot de pass invalide"
                         print(typeErreur)
+                    //message envoyer quand le nom d'utilisateur est incorect ou que le client est deja connecte au server
                     case "false#Nom d'utilisateur invalide":
                         erreur = true
                         typeErreur = "Nom d'utilisateur invalide"
                         print(typeErreur)
+                        self.disconnect()
+                    
                     default:
                         print("reponse connection not handle :\(args[0])")
                 }
