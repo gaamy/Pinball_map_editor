@@ -9,7 +9,7 @@
 import Foundation
 
 class SynchroniseurDeCarte{
-    let socket = SocketIOClient(socketURL: "localhost:8900")
+    let socket = SocketSession(host: "localhost", port: 8000)
     
     func addHandlers() {
         //Attrape tout les evenement qui ne sont pas atrapés par les autres handles
@@ -37,7 +37,7 @@ class SynchroniseurDeCarte{
         
         //let data = stringData.dataUsingEncoding(NSUTF8StringEncoding)
 
-        socket.emit("addMap", carte)
+        //socket.emit("addMap", carte)
     }
     
     

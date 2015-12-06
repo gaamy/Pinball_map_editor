@@ -1,14 +1,14 @@
 //
-//  CustonSegue.swift
-//  Prototype_Chat
+//  SegueShowChat.swift
+//  Projet3
 //
-//  Created by Gabriel Amyot on 2015-09-13.
-//  Copyright (c) 2015 David Gourde. All rights reserved.
+//  Created by Gabriel Amyot on 2015-12-05.
+//  Copyright © 2015 David Gourde. All rights reserved.
 //
 
 import UIKit
 
-class SegueShowMenu: UIStoryboardSegue {
+class CustomSegue: UIStoryboardSegue {
     
     override func perform() {
         //Assign the source and destination views to local variables
@@ -40,7 +40,7 @@ class SegueShowMenu: UIStoryboardSegue {
                     completion: nil
                 )
         }
-       
+        
     }
-   
+    
 }

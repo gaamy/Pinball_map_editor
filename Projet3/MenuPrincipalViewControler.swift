@@ -41,14 +41,9 @@ class MenuPrincipalViewControler : UIViewController{
     }
     
     
-    //go to the chat view
-    func performShowMenuSegue(){
-        self.performSegueWithIdentifier("SegueShowMenu", sender: self)
-    }
-    
     ///prepare a envoyer la le socket a la prochaine vue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "SegueShowMenu") {
+        if (segue.identifier == "ShowChat") {
             //Checking identifier is crucial as there might be multiple
             // segues attached to same view
             let chatView = segue.destinationViewController as! ChatViewController;

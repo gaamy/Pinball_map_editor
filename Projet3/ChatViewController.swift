@@ -12,20 +12,23 @@ import UIKit
 class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelegate{
 
     //UIelements
-    @IBOutlet weak var lblMessage: UILabel!
-    @IBOutlet weak var monTexte: UITextField!
+    @IBOutlet weak var boutonEnvoyerMessage: UIButton!
     @IBOutlet weak var messages: UITextView!
-    @IBOutlet weak var senderButton: UIButton!
-    
+    @IBOutlet weak var monTexte: UITextField!
+   
     //Networking elements
     var socket: SocketSession!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         monTexte.delegate = self
-        
-        
+        if socket != nil {
+            socket.connecterChatView(self)
+        }
     }
+    
+    
     
     ////---UiFunctions---///
     
@@ -34,14 +37,8 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
     ///@output: messages -> updates the message text view
     func updateChatView(message:String){
         
-        
-        var unwraped = message
-        do {
-            unwraped = try message.unwrapServerMessage()
-        } catch {
-            print(error)
-        }
-        
+        let unwraped = message
+
         let date = NSDate()
         let formatter = NSDateFormatter()
         formatter.timeStyle = .MediumStyle
@@ -50,16 +47,43 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
         
     }
     
+    
     /// detecte la touche "entre" et envoie le message le focus reviens automatiquement
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == self.monTexte {
             textField.resignFirstResponder()
-            envoyer(senderButton)
+            envoyer(boutonEnvoyerMessage)
             monTexte.becomeFirstResponder()
             return false
         }
         return true
     }
+    
+  
+    /**
+     * Envoy le message au serveur
+     * Une entete est ajoutee au message
+     * Entete: !!sizeOfTcpMessage!
+     */
+    @IBAction func envoyer(sender: AnyObject) {
+        if monTexte.text! != ""{
+            let response: String = "\(monTexte.text!)\n"
+            monTexte.text = ""
+            
+            if socket != nil{
+                 socket.envoyerMessageChat(response)
+            }
+            
+        }
+    }
+    
+
+    ///détache ce chat view du socket 
+    @IBAction func quiterChat(){
+        //cecy crash a la deusiemme fois quon ferme le chat
+        //socket.deconnecterChatView()
+    }
+  
     
     ////---networking functions---///
     ///Premiere communication avec le serveur
@@ -67,123 +91,15 @@ class ChatViewController : UIViewController, NSStreamDelegate, UITextFieldDelega
     func joinChat(user: String) {
         //let response: String = "\(user)"
         
-        //socket.emit("joinChat",data)
-        //outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length)
+        
+    
+        
     }
+
     
-    ///Quite le chat
-    func quitChat(){
-        ///socket.emit("exitChat")
-        //connected = false
-    }
-    
-    /**
-     * Envoy le message au serveur
-     * Une entete est ajoutee au message
-     * Entete: !!sizeOfTcpMessage!
-     */
-    @IBAction func envoyer(sender: AnyObject) {
-        //TODO: verifier que la connection a ete etablie avant d'envoyer le message
-        if monTexte.text! != ""{
-            let size : Int = 7 + monTexte.text!.characters.count
-            let response: String = "!!\(size)!\(monTexte.text!)\n"
-            monTexte.text = ""
-            
-            //socket.emit("envoyerMessage",UnsafePointer<UInt8>(data.bytes))
-            //self.outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length)
-        }
-    }
-    
-    
-    
-    ///socket handlers
-    func addHandlers() {
-        // Our socket handlers go here
-    }
     
 }
 
-
-/**
- * Regex qui detecte et enleve les en-tetes serveur exemple: !!21!
- *
- */
-/*
-extension String {
-    func unwrapServerMessage() throws -> String{
-        
-        let regex = try! NSRegularExpression(pattern: "!![0-9]+!", options: [.CaseInsensitive])
-        let range = NSMakeRange(0, self.characters.count)
-        let unwrapedMessage = regex.stringByReplacingMatchesInString(self, options: NSMatchingOptions(rawValue: 0), range: range, withTemplate: "")
-        
-        return unwrapedMessage
-    }
-    
-}
-*/
-
-
-/*
-    /**stream()
-     handle the NSStream events.
-     It's here where the incomming TCP messages are handled
-     */
-    func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
-        
-        switch (eventCode){
-        case NSStreamEvent.ErrorOccurred:
-            NSLog("ErrorOccurred")
-            showFirstViewController()
-            break
-        case NSStreamEvent.EndEncountered:
-            NSLog("EndEncountered")
-            break
-        case NSStreamEvent.None:
-            NSLog("None")
-            break
-        case NSStreamEvent.HasBytesAvailable:
-            NSLog("HasBytesAvaible")
-            var buffer = [UInt8](count: 4096, repeatedValue: 0)
-            if ( aStream == inputStream){
-                
-                while (inputStream.hasBytesAvailable){
-                    let len = inputStream.read(&buffer, maxLength: buffer.count)
-                    if(len > 0){
-                        let output = NSString(bytes: &buffer, length: buffer.count, encoding: NSUTF8StringEncoding)
-                        if (output != ""){
-                            print(output!)
-                            let stringOutput = output as! String
-                            updateChatView(stringOutput)
-                            NSLog("server said: %@", output!)
-                            
-                        }
-                    }
-                }
-            }
-            break
-        case NSStreamEvent():
-            NSLog("allZeros")
-            break
-        case NSStreamEvent.OpenCompleted:
-            NSLog("OpenCompleted")
-            if !connected{
-                updateChatView("Connected to chat\n")
-                connected = true
-            }
-            break
-        case NSStreamEvent.HasSpaceAvailable:
-            NSLog("HasSpaceAvailable")
-            break
-        default:
-            NSLog("unknown.")
-        }
-        
-    }
-
-
-    */
-    
-    
 
     
 

@@ -14,11 +14,14 @@ class SocketSession : NSObject, SocketIODelegate{
     
     var socket : SocketIO!
     var utilisateur = ""
-    var motDePasse = ""
+    //var motDePasse = ""
     var connected = false
     var authenticate = false
     var erreur = false
     var typeErreur = ""
+    
+    //views
+    var chat: ChatViewController!
     
     
     init(host: String, port:Int){
@@ -26,16 +29,14 @@ class SocketSession : NSObject, SocketIODelegate{
         socket = SocketIO(delegate:  self)
         //socket.connectToHost("localhost", onPort: 8000)
         socket.connectToHost("\(host)", onPort: port)
-        
     }
     
     ///Connection au serveur
     func debuterSession(nomUtilisateur:String, motDePasse:String) {
         self.utilisateur = nomUtilisateur
-        self.motDePasse = motDePasse
+      //  self.motDePasse = motDePasse
         
-        
-        //attendre 0.2 secondes avant de lancer l'authentification
+        //attendre 1.0 secondes avant de lancer l'authentification
         let seconds = 1.0
         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -45,10 +46,7 @@ class SocketSession : NSObject, SocketIODelegate{
                 self.socket.sendEvent("authentification", withData: "\(nomUtilisateur)#\(motDePasse)")
             }
         })
-        
-        
     }
-    
     
     ///socketIO
     ///message delegate
@@ -57,6 +55,7 @@ class SocketSession : NSObject, SocketIODelegate{
         print("---------this is a message ! : \(packet.data)")
        
     }
+    
     ///socketIO
     ///handle la connection delegate
     func socketIODidConnect(socket: SocketIO) {
@@ -64,7 +63,14 @@ class SocketSession : NSObject, SocketIODelegate{
         print("socketIODidConnect!!!!!!!!!!!!!")
         
     }
-    
+    /*
+    ///SocketIO
+    //Handle disconection
+    override func socketIODidDisconnect(socket: SocketIO, disconnectedWithError error: NSErrorPointer) {
+            print("dicon
+                ected")
+    }
+    */
     ///socketIO
     ///event delegate
     func socketIO(socket: SocketIO, didReceiveEvent packet: SocketIOPacket) {
@@ -94,11 +100,22 @@ class SocketSession : NSObject, SocketIODelegate{
                 authenticate = false
                 print("\(args[0]) disconnected!!!!!!!!!!!!!!")
             
+            
             case  "error":
                 print("Erreur avec socket.io: arguments: \(args)")
+           
+            //gestidu chat
+            case "txt":
+                print("General chat message: \(args[0])")
+            chat.updateChatView(args[0])
+            
+            //case "roomChatReceive":
+                //print("roomChatReceive message recu")
             
             case "message":
                 print("Message: \(args)")
+            
+            
             
             case "reponse register":
                 if args[0] == "true#Le compte a été ajouté avec succès"{
@@ -117,7 +134,29 @@ class SocketSession : NSObject, SocketIODelegate{
         
     }
     
-
+    //SocketIO
+    //envoyerMessage au chat
+    func envoyerMessageChat(message:String){
+        self.socket.sendEvent("general message", withData: message)
+        
+       // self.socket.sendEvent("roomChatSend", withData: message)
+        
+    }
+    
+    
+    ///Cette méthode associe le view controller du chat a la variable chat du socket
+    ///Le but de cette methode est davoir acces au ChatViewController et d'actualiser la valeur de messages quand un npouveau message est recu
+    ///Cette approche nest pas optimal ( le modele qui modifie la vue) (this is disgusting holy shit!)
+    func connecterChatView(chat:ChatViewController){
+        self.chat = chat
+    
+    }
+    
+    func deconnecterChatView(){
+        self.chat = nil
+    }
+    
+    
     
     //Convertis un fichier jSon en dictionaire
     func convertStringToDictionary(text: String) -> [String:AnyObject]? {

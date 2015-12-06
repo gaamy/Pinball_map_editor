@@ -95,12 +95,13 @@ class LoginViewController : UIViewController{
     
     //go to the chat view
     func performShowMenuSegue(){
-        self.performSegueWithIdentifier("SegueShowMenu", sender: self)
+        self.performSegueWithIdentifier("ShowMenu", sender: self)
     }
+    
     
     ///prepare a envoyer la le socket a la prochaine vue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "SegueShowMenu") {
+        if (segue.identifier == "ShowMenu") {
             //Checking identifier is crucial as there might be multiple
             // segues attached to same view
             let menuPrincipal = segue.destinationViewController as! MenuPrincipalViewControler;
