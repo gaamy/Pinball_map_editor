@@ -1,66 +1,201 @@
 
-/* Class = "UILabel"; text = "Port"; ObjectID = "2Pu-cg-5oq"; */
-"2Pu-cg-5oq.text" = "Port";
+/* Class = "UIButton"; normalTitle = "Retour"; ObjectID = "08T-jB-zYu"; */
+"08T-jB-zYu.normalTitle" = "Back";
 
-/* Class = "UILabel"; text = "Nom "; ObjectID = "66L-Li-38d"; */
-"66L-Li-38d.text" = "Name ";
+/* Class = "UIButton"; normalTitle = "Créer une nouvelle zone"; ObjectID = "0ck-Rq-sJt"; */
+"0ck-Rq-sJt.normalTitle" = "Create new zone";
 
 /* Class = "UIButton"; normalTitle = "Éditeur"; ObjectID = "6Fw-u9-skh"; */
 "6Fw-u9-skh.normalTitle" = "Editor";
 
+/* Class = "UILabel"; text = "Hébergeur"; ObjectID = "6QW-yI-NLq"; */
+"6QW-yI-NLq.text" = "Host";
+
 /* Class = "UIButton"; normalTitle = "Statistiques"; ObjectID = "7ur-33-wEc"; */
 "7ur-33-wEc.normalTitle" = "Statistics";
+
+/* Class = "UILabel"; text = "Client Léger"; ObjectID = "7y3-DA-10X"; */
+"7y3-DA-10X.text" = "Light Client";
+
+/* Class = "UILabel"; text = "Confirmez le mot de passe"; ObjectID = "99A-DG-wEK"; */
+"99A-DG-wEK.text" = "Confirm password";
+
+/* Class = "UILabel"; text = "Confirmez le mot de passe"; ObjectID = "AY5-ys-Ie9"; */
+"AY5-ys-Ie9.text" = "Confirm password";
+
+/* Class = "UILabel"; text = "Parties rapide joués"; ObjectID = "Afh-t0-jCP"; */
+"Afh-t0-jCP.text" = "Fast games played";
+
+/* Class = "UILabel"; text = "Mot de passe"; ObjectID = "Ak9-iV-i9c"; */
+"Ak9-iV-i9c.text" = "Password";
+
+/* Class = "UILabel"; text = "Port"; ObjectID = "Bcn-fw-sSi"; */
+"Bcn-fw-sSi.text" = "Port";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "C0t-cy-KW0"; */
 "C0t-cy-KW0.normalTitle" = "Button";
 
+/* Class = "UIButton"; normalTitle = "Client Léger"; ObjectID = "DtI-LN-22e"; */
+"DtI-LN-22e.normalTitle" = "Light client";
+
+/* Class = "UILabel"; text = "Gaamy"; ObjectID = "Dul-Bn-j56"; */
+"Dul-Bn-j56.text" = "Gaamy";
+
+/* Class = "UILabel"; text = "Mot de passe different"; ObjectID = "Evl-ZA-BN3"; */
+"Evl-ZA-BN3.text" = "Different password";
+
+/* Class = "UILabel"; text = "Nom d'utilisateur"; ObjectID = "FGz-DH-wzH"; */
+"FGz-DH-wzH.text" = "Username";
+
 /* Class = "UITextField"; placeholder = "message"; ObjectID = "GPc-WH-9Jc"; */
 "GPc-WH-9Jc.placeholder" = "message";
 
-/* Class = "UILabel"; text = "username"; ObjectID = "LGM-41-VTW"; */
-"LGM-41-VTW.text" = "username";
+/* Class = "UILabel"; text = "0"; ObjectID = "HV2-gT-lxt"; */
+"HV2-gT-lxt.text" = "0";
 
-/* Class = "UIButton"; normalTitle = "←"; ObjectID = "RfW-fo-WEc"; */
-"RfW-fo-WEc.normalTitle" = "←";
+/* Class = "UILabel"; text = "Nom "; ObjectID = "JR2-sa-kMp"; */
+"JR2-sa-kMp.text" = "Name ";
+
+/* Class = "UILabel"; text = "Nom d'utilisateur"; ObjectID = "LGM-41-VTW"; */
+"LGM-41-VTW.text" = "Username";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "LoN-g8-vRe"; */
+"LoN-g8-vRe.text" = "0";
+
+/* Class = "UITextField"; text = "132.207.243.33"; ObjectID = "LyH-9I-NR8"; */
+"LyH-9I-NR8.text" = "132.207.243.33";
+
+/* Class = "UILabel"; text = "Campagnes Joués"; ObjectID = "MCf-CO-7gF"; */
+"MCf-CO-7gF.text" = "Campain played";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "OBe-RS-K0J"; */
+"OBe-RS-K0J.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Connecter"; ObjectID = "OKr-si-mHw"; */
+"OKr-si-mHw.normalTitle" = "Connect";
+
+/* Class = "UILabel"; text = "Case vide"; ObjectID = "Pql-Pb-jRN"; */
+"Pql-Pb-jRN.text" = "Empty case";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "R5L-7w-FK8"; */
+"R5L-7w-FK8.text" = "0";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "TuO-op-DuW"; */
+"TuO-op-DuW.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Éditer"; ObjectID = "V6L-7B-Dam"; */
+"V6L-7B-Dam.normalTitle" = "Edit";
+
+/* Class = "UIButton"; normalTitle = "Annuler"; ObjectID = "VRR-Ap-dWm"; */
+"VRR-Ap-dWm.normalTitle" = "Cancel";
 
 /* Class = "UILabel"; text = "Satisiques du joueur"; ObjectID = "Vhg-mI-30j"; */
-"Vhg-mI-30j.text" = "Player's statistics";
+"Vhg-mI-30j.text" = "Player statistics";
 
-/* Class = "UIButton"; normalTitle = "Authentification"; ObjectID = "bFD-HV-TW1"; */
-"bFD-HV-TW1.normalTitle" = "Authentification";
+/* Class = "UILabel"; text = "Mot de passe"; ObjectID = "Vwl-sd-mjn"; */
+"Vwl-sd-mjn.text" = "Password";
 
-/* Class = "UILabel"; text = "password"; ObjectID = "bHs-ud-iER"; */
-"bHs-ud-iER.text" = "password";
+/* Class = "UIButton"; normalTitle = "Cree un nouveau compte"; ObjectID = "X5q-CB-AhN"; */
+"X5q-CB-AhN.normalTitle" = "Create a new account";
 
-/* Class = "UILabel"; text = "Host"; ObjectID = "bZY-rc-pjM"; */
-"bZY-rc-pjM.text" = "Host";
+/* Class = "UILabel"; text = "0"; ObjectID = "XeB-oh-nF9"; */
+"XeB-oh-nF9.text" = "0";
 
-/* Class = "UIButton"; normalTitle = "Connecter"; ObjectID = "csj-bZ-7wr"; */
-"csj-bZ-7wr.normalTitle" = "Connect";
+/* Class = "UILabel"; text = "Tappez votre nom ici ➤"; ObjectID = "YUg-Mp-DDO"; */
+"YUg-Mp-DDO.text" = "Type your name here ➤";
 
-/* Class = "UIButton"; normalTitle = "Back to login"; ObjectID = "dnX-kR-URy"; */
-"dnX-kR-URy.normalTitle" = "Back to login";
+/* Class = "UILabel"; text = "Nom d'utilisateur"; ObjectID = "Ydu-MK-BkX"; */
+"Ydu-MK-BkX.text" = "Username";
 
-/* Class = "UIButton"; normalTitle = "←"; ObjectID = "emo-7R-Nln"; */
-"emo-7R-Nln.normalTitle" = "←";
+/* Class = "UITextField"; text = "gaamy"; ObjectID = "Z7G-LV-bJd"; */
+"Z7G-LV-bJd.text" = "gaamy";
+
+/* Class = "UILabel"; text = "Création d'un compte d'utilisateur"; ObjectID = "Z85-kF-xW3"; */
+"Z85-kF-xW3.text" = "User accound creation";
+
+/* Class = "UIButton"; normalTitle = "Retour"; ObjectID = "a8B-gn-dFm"; */
+"a8B-gn-dFm.normalTitle" = "Back";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "bFD-HV-TW1"; */
+"bFD-HV-TW1.normalTitle" = "Login";
+
+/* Class = "UILabel"; text = "Mot de passe"; ObjectID = "bHs-ud-iER"; */
+"bHs-ud-iER.text" = "Password";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "ble-d1-3hZ"; */
+"ble-d1-3hZ.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Deconnection"; ObjectID = "dnX-kR-URy"; */
+"dnX-kR-URy.normalTitle" = "Deconnecting";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "e8q-tJ-lQv"; */
+"e8q-tJ-lQv.text" = "0";
+
+/* Class = "UILabel"; text = "Confirmez le mot de passe"; ObjectID = "el1-E3-9M0"; */
+"el1-E3-9M0.text" = "Confirm password";
+
+/* Class = "UIButton"; normalTitle = "Retour"; ObjectID = "emo-7R-Nln"; */
+"emo-7R-Nln.normalTitle" = "Back";
 
 /* Class = "UIButton"; normalTitle = "Utiliser anonymement"; ObjectID = "es0-Wn-cou"; */
-"es0-Wn-cou.normalTitle" = "Anonymous usage";
+"es0-Wn-cou.normalTitle" = "Use anonymously";
 
-/* Class = "UILabel"; text = "Chat Client Prototype"; ObjectID = "pc3-Df-obB"; */
-"pc3-Df-obB.text" = "Chat";
+/* Class = "UILabel"; text = "0"; ObjectID = "fcG-RX-gpO"; */
+"fcG-RX-gpO.text" = "0";
 
-/* Class = "UIButton"; normalTitle = "Chat"; ObjectID = "qlf-jL-Oqx"; */
+/* Class = "UILabel"; text = "Case vide"; ObjectID = "fsh-ub-4UL"; */
+"fsh-ub-4UL.text" = "Empty case";
+
+/* Class = "UIButton"; normalTitle = "Retour"; ObjectID = "fwF-OO-xiv"; */
+"fwF-OO-xiv.normalTitle" = "Back";
+
+/* Class = "UILabel"; text = "Nom d'utilisateur"; ObjectID = "gkm-CR-cbH"; */
+"gkm-CR-cbH.text" = "Username";
+
+/* Class = "UILabel"; text = "Nombre de défaites"; ObjectID = "hCa-II-eb8"; */
+"hCa-II-eb8.text" = "Number of defeats";
+
+/* Class = "UILabel"; text = "Parties Gagnés"; ObjectID = "hWI-Vx-qdk"; */
+"hWI-Vx-qdk.text" = "Games won";
+
+/* Class = "UIButton"; normalTitle = "S'inscritre"; ObjectID = "hak-oU-9q4"; */
+"hak-oU-9q4.normalTitle" = "Suscribe";
+
+/* Class = "UILabel"; text = "Mot de passe"; ObjectID = "hgy-pM-Sig"; */
+"hgy-pM-Sig.text" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Retour"; ObjectID = "jlj-oi-XNL"; */
+"jlj-oi-XNL.normalTitle" = "Back";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "oFl-fx-Het"; */
+"oFl-fx-Het.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Clavardage"; ObjectID = "qlf-jL-Oqx"; */
 "qlf-jL-Oqx.normalTitle" = "Chat";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "qlr-I6-zRY"; */
+"qlr-I6-zRY.text" = "0";
+
+/* Class = "UILabel"; text = "Modifier une carte"; ObjectID = "rkG-ph-ZRl"; */
+"rkG-ph-ZRl.text" = "Modify a map";
 
 /* Class = "UIButton"; normalTitle = "Envoyer"; ObjectID = "sBj-ry-oCX"; */
 "sBj-ry-oCX.normalTitle" = "Send";
 
-/* Class = "UILabel"; text = "Tappez votre nom ici ➤"; ObjectID = "sNV-PU-7Hk"; */
-"sNV-PU-7Hk.text" = "Type your name here ➤";
+/* Class = "UITextField"; text = "8000"; ObjectID = "sEB-oI-6ae"; */
+"sEB-oI-6ae.text" = "8000";
 
-/* Class = "UILabel"; text = "Your username?"; ObjectID = "vy9-Du-Yew"; */
-"vy9-Du-Yew.text" = "Your username?";
+/* Class = "UILabel"; text = "Parties Joués"; ObjectID = "slo-zm-1NQ"; */
+"slo-zm-1NQ.text" = "Games played";
 
-/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "wAX-vd-9mQ"; */
-"wAX-vd-9mQ.normalTitle" = "Back";
+/* Class = "UITextField"; text = "test"; ObjectID = "t2E-Di-3mP"; */
+"t2E-Di-3mP.text" = "test";
+
+/* Class = "UILabel"; text = "Niveau du joueur"; ObjectID = "vkT-LS-Hsj"; */
+"vkT-LS-Hsj.text" = "Player level";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "vlj-aj-FvV"; */
+"vlj-aj-FvV.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "←"; ObjectID = "wAX-vd-9mQ"; */
+"wAX-vd-9mQ.normalTitle" = "←";
