@@ -85,7 +85,7 @@ class SynchroniseurDeCarte{
         parseur.parseXMLFile(nomCarte)
         let carte = parseur.carteActuelle
         let carteString = carte.toXmlString() as String
-        SocketSession.sharedInstance.envoyerCarte(nomCarte,carteXML: carteString)
+        SocketSession.sharedInstance.envoyerCarte("\(carte.nomFichier).xml",carteXML: carteString)
     }
     
     
