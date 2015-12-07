@@ -11,12 +11,17 @@ import Foundation
 ///Carte de jeux
 class Carte {
     
+    //date de sauvegarde
+    var date : String
+    var time : String
+    
     // Nom sous lequel la carte est erregistre
     var nomFichier : String
     //Arbre contenant les objets de la table de jeux
     var arbre = Arbre()
     //Proprietes de la table de jeux
     var proprietes = Proprietes()
+    
     
     //Dictionnaire utiliser pour traduire les noms du cote client leger
     //La clée correspond au nom de l'objet sur le xml/ client lourd, et la valeur au nom du cote client leger
@@ -26,8 +31,10 @@ class Carte {
     
 
     ///Constructeur
-    init(nom : String){
+    init(nom : String, date: String, time: String){
         nomFichier = nom
+        self.date = date
+        self.time = time
     }
     
     ///Getters
@@ -80,10 +87,15 @@ class Carte {
             print("Carte invalide, elle ne peux etre sauvegarde ")
             return nil
         }
-
+        
         
         let sauvegardeCarte = AEXMLDocument()
-        let jeuxXml = sauvegardeCarte.addChild(name: "jeu")
+        
+        //jeux
+        let attributsJeux = ["Date" : "\(self.date)", "Time" : "\(self.time)"]
+        let jeuxXml = sauvegardeCarte.addChild(name: "jeu", attributes: attributsJeux)
+        
+        
         let arbreXml = jeuxXml.addChild(name: "arbre")
         let proprieteXml = jeuxXml.addChild(name: "propriete")
         

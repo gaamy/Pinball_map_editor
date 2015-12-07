@@ -14,9 +14,9 @@ class MenuPrincipalViewControler : UIViewController{
     
     @IBOutlet weak var boutonStatistiques: UIButton!
     @IBAction func deconnection(sender: UIButton) {
-        
-        SocketSession.sharedInstance.disconnect()
-        
+        if SocketSession.sharedInstance.isAuthenticate(){
+            SocketSession.sharedInstance.disconnect()
+        }
         
     }
     override func viewDidLoad() {

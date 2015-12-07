@@ -127,7 +127,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
             //on initialize une nouvelle carte sinon
         else {
-            self.carte = Carte(nom: "nouvelle_carte")
+
+            self.carte = Carte(nom: "nouvelle_carte", date: "", time: "")
         }
         
         //Initialise les labels et les text fields des propriétés
@@ -1628,6 +1629,17 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         ///Ajouter une table
         carte.arbre.ajouterTable(0, posY: 0)
+        
+        //ajouter l'heure et date
+        let nsDate = NSDate()
+        let timeFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
+        timeFormatter.dateFormat = " HH:mm:ss"
+        dateFormatter.dateFormat = "dd/MM/yyyy "
+        let time = timeFormatter.stringFromDate(nsDate)
+        let date = dateFormatter.stringFromDate(nsDate)
+        carte.time = time
+        carte.date = date
         
         ///enregistrer les objets de la scene
         for objet in nodesSurTable{

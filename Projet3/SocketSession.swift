@@ -146,6 +146,16 @@ class SocketSession : NSObject, SocketIODelegate{
             case "afficherStatistique":
                 let args  = dict!["args"]! as! [String]
                 statistiques = args[0]
+        
+            case "uploadMap":
+                let args  = dict!["args"]! as! [String]
+                SynchroniseurDeCarte.sharedInstace.actualiserCarteServeur(args[0])
+        
+            case "editMap":
+                let args  = dict!["args"]! as! [String]
+                let reponse = args[0].characters.split{$0 == "#"}.map(String.init)
+                
+                SynchroniseurDeCarte.sharedInstace.actualiserCarteLocale(reponse[0],carteXML: reponse[1])
             
             default:
                 if let args  = dict!["args"]! as? [String]{
@@ -217,6 +227,17 @@ class SocketSession : NSObject, SocketIODelegate{
     func chargerStatistiques(){
         self.socket.sendEvent("afficherStatistique",withData: self.utilisateur)
     }
+    
+    //envoy une carte au serveur
+    func envoyerCarte(nomCarte:String, carteXML:String){
+        self.socket.sendEvent("downloadMap", withData: "\(nomCarte)# \(carteXML)")
+    }
+    
+    ///Syncro
+    func upDateServeur(nomCarte: String, date :String, heure: String){
+        self.socket.sendEvent("upDateMap", withData: "\(nomCarte)#\(date)#\(heure)")
+    }
+    
     
     ///reset les configurations d'inscription
     func resetInscription(){

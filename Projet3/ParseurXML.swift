@@ -42,12 +42,9 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         
         ///Lister les fichiers existants
         fichiersSauvegardeURLs = getLocalSavedFiles()
-        
-        
     }
     
     
-    //TODO: Refactor this function, its more like a workbech whit a lot a experiments
     //Vas chercher le fichier xml au path specifie
     func parseXMLFile(nomFichier : String) {
 
@@ -127,7 +124,11 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         case "jeu":
             let nomFichier = URLActuel.lastPathComponent!
             let nomSansExetention = nomFichier as NSString
-            carteActuelle = Carte(nom: nomSansExetention.stringByDeletingPathExtension)
+            
+            let date = attributeDict["Date"] as String!
+            let time = attributeDict["Time"] as String!
+            
+            carteActuelle = Carte(nom: nomSansExetention.stringByDeletingPathExtension, date: date, time: time)
             
         case "arbre":
             carteActuelle.arbre = Arbre()
@@ -224,6 +225,19 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         print("Erreur dans le parseur XML")
     }
     
+    ///Verifie si la carte existe dans le fichier de sauvegarde
+    func recupererFichiers() -> [String]{
+        let fichiers = fileManager.enumeratorAtPath(sauvegardesUrl.path!)
+        var cartes = [String]()
+        
+        for fichier in fichiers!{
+            if (fichier as! String) != ".DS_Store"{
+                cartes.append(fichier as! String)
+            }
+        }
+        return cartes
+
+    }
 
     
 }
