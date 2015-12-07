@@ -1635,7 +1635,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         let timeFormatter = NSDateFormatter()
         let dateFormatter = NSDateFormatter()
         timeFormatter.dateFormat = " HH:mm:ss"
-        dateFormatter.dateFormat = "dd/MM/yyyy "
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         let time = timeFormatter.stringFromDate(nsDate)
         let date = dateFormatter.stringFromDate(nsDate)
         carte.time = time

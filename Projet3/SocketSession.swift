@@ -101,11 +101,12 @@ class SocketSession : NSObject, SocketIODelegate{
                 
                 switch (reponse[0]){
                     case "true":
-                        authenticate = true
+                        SocketSession.sharedInstance.authenticate = true
                         erreur = false
                         print("authenticate!!!!!!!!!!!!!!")
                     case "false":
                         erreur = true
+                        SocketSession.sharedInstance.authenticate  = false
                         typeErreur = reponse[1]
                     
                     default:
@@ -158,13 +159,13 @@ class SocketSession : NSObject, SocketIODelegate{
                 SynchroniseurDeCarte.sharedInstace.actualiserCarteLocale(reponse[0],carteXML: reponse[1])
             
             default:
-                if let args  = dict!["args"]! as? [String]{
-                    print("--Evenement inconu: \(event)")
-                     print("--Arguments: \(args)")
-                }
-                else{
+                //if let args  = dict!["args"]! as? [String]{
+                 //   print("--Evenement inconu: \(event)")
+                   //  print("--Arguments: \(args)")
+               // }
+              //  else{
                     print("--Evenement FUCKENT: \(event)")
-                }
+             //   }
                // print("--Evenement inconu: \(event)")
                // print("--Arguments: \(args)")
             
@@ -235,7 +236,10 @@ class SocketSession : NSObject, SocketIODelegate{
     
     ///Syncro
     func upDateServeur(nomCarte: String, date :String, heure: String){
-        self.socket.sendEvent("upDateMap", withData: "\(nomCarte)#\(date)#\(heure)")
+        
+        let data = "\(nomCarte)#\(date)#\(heure)"
+        self.socket.sendEvent("upDateMap", withData:data )
+
     }
     
     

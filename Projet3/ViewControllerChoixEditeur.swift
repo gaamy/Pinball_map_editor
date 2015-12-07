@@ -20,8 +20,9 @@ class ViewControllerChoixEditeur: UIViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
+        if SocketSession.sharedInstance.isAuthenticate(){
+            SynchroniseurDeCarte.sharedInstace.actualiserServeur()
+        }
         ///Remplis la liste d<items avec le nom des fichiers xml qui on ete parse
         for fichiers in parseur.fichiersSauvegardeURLs{
             items.append(fichiers.lastPathComponent!)

@@ -63,9 +63,7 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
     
     ///Sauvegarde une carte sous format string dans le dossier "sauvegardes" sous le nom de nomFichier
     func sauvegarderStringXML( stringData: NSString, nomFichier :String ) -> Bool{
-        
-        //TODO: gerer les cas de modification (a tester)
-        
+      
         ///Transforme le string XML en NSData
         let data = stringData.dataUsingEncoding(NSUTF8StringEncoding)
         
@@ -75,11 +73,15 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         ///sauvegarde le NSData
         if data!.writeToURL(fichierUrl, atomically: true) {
             print("fichier sauvegarde correctement")
+            if SocketSession.sharedInstance.isAuthenticate(){
+                SynchroniseurDeCarte.sharedInstace.actualiserServeur()
+            }
             return true
         }else{
             return false
             
         }
+       
     }
     
     

@@ -66,7 +66,7 @@ class SynchroniseurDeCarte{
         for carte in cartesLocales{
             parseur.parseXMLFile(carte)
             let carte = parseur.carteActuelle
-            SocketSession.sharedInstance.upDateServeur(carte.nomFichier, date: carte.date, heure: carte.time)
+            SocketSession.sharedInstance.upDateServeur("\(carte.nomFichier).xml", date: carte.date, heure: carte.time)
         }
     }
     
@@ -84,7 +84,8 @@ class SynchroniseurDeCarte{
     func actualiserCarteServeur(nomCarte: String){
         parseur.parseXMLFile(nomCarte)
         let carte = parseur.carteActuelle
-        SocketSession.sharedInstance.envoyerCarte(nomCarte,carteXML: carte.toXmlString() as String)
+        let carteString = carte.toXmlString() as String
+        SocketSession.sharedInstance.envoyerCarte(nomCarte,carteXML: carteString)
     }
     
     

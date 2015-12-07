@@ -22,7 +22,6 @@ class LoginViewController : UIViewController{
     
     @IBOutlet weak var loginButton: UIButton!
     
-    var socket = SocketSession.sharedInstance
     
     @IBAction func nouvelUtilisateur(sender: UIButton) {
         if host.text! != "" && port.text! != "" {
@@ -57,14 +56,13 @@ class LoginViewController : UIViewController{
             
             let portString = port.text!
             let hostString = host.text!
+
             
-            socket = SocketSession.sharedInstance
+            SocketSession.sharedInstance.initialiserConnection(hostString, port: Int(portString)!)
             
-            socket.initialiserConnection(hostString, port: Int(portString)!)
+            SocketSession.sharedInstance.debuterSession(nomUtilisateur.text!, motDePasse: motDePasse.text!)
             
-            socket.debuterSession(nomUtilisateur.text!, motDePasse: motDePasse.text!)
-            
-            if socket.isAuthenticate(){
+            if SocketSession.sharedInstance.isAuthenticate(){
                 activityIndicator.stopAnimating()
                 loginButton.enabled = true
                 performShowMenuSegue()
@@ -78,7 +76,7 @@ class LoginViewController : UIViewController{
                 dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                     self.activityIndicator.stopAnimating()
                     self.loginButton.enabled = true
-                    if self.socket.isAuthenticate(){
+                    if SocketSession.sharedInstance.isAuthenticate(){
                         self.performShowMenuSegue()
                     }
                     else{
@@ -111,10 +109,7 @@ class LoginViewController : UIViewController{
         
     
     }
-    
-    func getSocket() -> SocketSession{
-        return socket
-    }
+
 
     
     //go to the chat view
