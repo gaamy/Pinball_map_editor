@@ -39,7 +39,7 @@
 "save" = "Save" ;
 "echecTitre" = "Fail" ;
 "echecMessage" = "The name is not valid. Saving failed." ;
-"reussite" = "Failed" ;
+"reussite" = "Success" ;
 "reussiteMessage" = "The map was correctly saved." ;
 "attention" = "Warning!" ;
 "attentionMessage" = "The name you chose already exist. Do you want to overwrite the map?" ;
