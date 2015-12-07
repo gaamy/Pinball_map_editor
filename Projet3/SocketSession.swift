@@ -135,6 +135,8 @@ class SocketSession : NSObject, SocketIODelegate{
                 let args  = dict!["args"]! as! [String]
                 print("Message: \(args)")
             
+            case "User Disconected": break
+            
             
             case "reponse register":
                 let args  = dict!["args"]! as! [String]
