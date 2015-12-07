@@ -92,7 +92,7 @@ class Carte {
         let sauvegardeCarte = AEXMLDocument()
         
         //jeux
-        let attributsJeux = ["Date" : "\(self.date)", "Time" : "\(self.time)"]
+        let attributsJeux = ["Date" : "\(self.date)", "Heure" : "\(self.time)"]
         let jeuxXml = sauvegardeCarte.addChild(name: "jeu", attributes: attributsJeux)
         
         

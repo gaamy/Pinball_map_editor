@@ -128,7 +128,7 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
             let nomSansExetention = nomFichier as NSString
             
             let date = attributeDict["Date"] as String!
-            let time = attributeDict["Time"] as String!
+            let time = attributeDict["Heure"] as String!
             
             carteActuelle = Carte(nom: nomSansExetention.stringByDeletingPathExtension, date: date, time: time)
             
