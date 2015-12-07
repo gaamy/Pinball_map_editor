@@ -6,6 +6,41 @@
   Copyright © 2015 David Gourde. All rights reserved.
 */
 
-"scale" = "Scale";
-"bille" = "Free ball (points)";
-"diff" = "Level of difficulty";
+"carteInvalide" = "Warning! Invalid map." ;
+"carteInvalideMessage" = "Your map is incomplete. For a map to be complete, it needs to have at least a spring, a ball generator and a hole." ;
+"quitterTitre" = "Quit" ;
+"quitterMessage" = "Are you sure you want to quit? Be sure you saved your changes." ;
+"annuler" = "Cancel" ;
+"reinitTitre" = "Reinitialise the zone" ;
+"reinitMessage" = "Are you sure you want to reinitialise the zone?" ;
+"reinitChoix" = "Reinitialise" ;
+"tutoAnnulerTitre" = "Cancel the tutorial" ;
+"tutoAnnulerMessage" = "Are you sure you want to quit the tutorial?" ;
+"oui" = "Yes" ;
+"non" = "No" ;
+"tutoAjoutTitre" = "Adding objets" ;
+"tutoAjoutMessage" = "Click on an object button than click on the table to add the object.\n\nNOTE: Portals must be created in pairs by sliding the finger and the walls must be created by sliding the finder.\n\nNOTE2: Your can quit the tutorial anytime by touching the tutorial icon again." ;
+"bravo" = "Good job" ;
+"bravoObjet" = "You correctly added an object on the table." ;
+"selectionTitre" = "Selection" ;
+"selectionMessage" = "Select an object by touching it.\n\nNote: To see objects better, you can zoom by pinching two fingers when no objects are selected." ;
+"bravoSelect" = "You correctly selected an object." ;
+"propriete" = "Properties" ;
+"proprieteMessage" = "Change the scale property of the object form the menu.\n\nNOTE: You can only modify them when ONE object is selected." ;
+"bravoPropriete" = "You correctly changed a property." ;
+"outils" = "Tools" ;
+"outilsMessage" = "Use the Reinitialise tool to reinitialise the map.\n\nNOTE: You can see that there are a couple of nice tools here:\n1. The trash bin deletes selected objets.\n2. Dupplicate copy the selected objets.\n3. You can activate/deactivate the pan tool to move th camera.\n4. Save saves a selection.\n5. Load loads a selection.\n6. Identicals select all identical element to the one selected." ;
+"initMarche" = "You correctly reinitialised the map." ;
+"enregistrerTitre" = "Save" ;
+"enregistrerMessage" = "On the bottom right, you can check the tutorial again, save a map and quit to the menu";
+"finiTuto" = "You completed the tutorial." ;
+"saveMapTitre" = "Save map" ;
+"saveMapMessage" = "Choose a name for the map" ;
+"save" = "Save" ;
+"echecTitre" = "Fail" ;
+"echecMessage" = "The name is not valid. Saving failed." ;
+"reussite" = "Failed" ;
+"reussiteMessage" = "The map was correctly saved." ;
+"attention" = "Warning!" ;
+"attentionMessage" = "The name you chose already exist. Do you want to overwrite the map?" ;
+"ecraser" = "Overwrite" ;

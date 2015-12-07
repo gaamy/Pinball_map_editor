@@ -80,6 +80,7 @@
 		2D66939B1C13DF30005A8AB6 /* PopupsText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupsText.swift; sourceTree = "<group>"; };
 		2D66939D1C140316005A8AB6 /* resetMagic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = resetMagic.sks; sourceTree = "<group>"; };
 		2D66939F1C1406E4005A8AB6 /* disparaitParMagie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = disparaitParMagie.mp3; sourceTree = "<group>"; };
+		2D6693A11C14F8AF005A8AB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = en; path = en.lproj/GameScene.sks; sourceTree = "<group>"; };
 		2D6D37741BF7FF89004385FB /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2D6D37771BF82114004385FB /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		2D6D377A1BF82186004385FB /* deleteNodeEffect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = deleteNodeEffect.sks; sourceTree = "<group>"; };
@@ -491,6 +492,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				2D0F7CA51BF12E0200020C40 /* Base */,
+				2D6693A11C14F8AF005A8AB6 /* en */,
 			);
 			name = GameScene.sks;
 			sourceTree = "<group>";

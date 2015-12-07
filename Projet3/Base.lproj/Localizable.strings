@@ -6,6 +6,41 @@
   Copyright © 2015 David Gourde. All rights reserved.
 */
 
-"scale" = "Échelle";
-"bille" = "Bille gratuite (points)";
-"diff" = "Cote de difficulté";
+"carteInvalideTitre" = "Attention! Carte invalide." ;
+"carteInvalideMessage" = "Votre carte est actuellement incomplete. Pour qu'une carte sois complete celle-ci a besoin d'avoir au moin un ressort, un generateur de billes et un trou" ;
+"quitterTitre" = "Quitter" ;
+"quitterMessage" = "Êtes-vous certains de vouloir quitter? Assurez-vous d'avoir sauvegardé vos changements." ;
+"annuler" = "Annuler" ;
+"reinitTitre" = "Réinitialiser la zone" ;
+"reinitMessage" = "Êtes-vous certains de vouloir réinitialiser la zone de jeu?" ;
+"reinitChoix" = "Réinitialiser" ;
+"tutoAnnulerTitre" = "Annuler le tutoriel" ;
+"tutoAnnulerMessage" = "Êtes-vous certains de vouloir quitter le tutoriel?" ;
+"oui" = "Oui" ;
+"non" = "Non" ;
+"tutoAjoutTitre" = "Ajout d'objets" ;
+"tutoAjoutMessage" = "Cliquez sur un bouton d'objet puis cliquez sur la table pour créer un objet.\n\nNOTE: Les portails doivent être créés en paires en glissant le doigt et les murs doivent être créés en glissant le doigt.\n\nNOTE2: Vous pouvez quitter le tutoriel en tout temps en touchant à nouveau l'icone Tutoriel." ;
+"bravo" = "Bravo" ;
+"bravoObjet" = "Vous avez correctement ajouté un objet sur la table." ;
+"selectionTitre" = "Sélection" ;
+"selectionMessage" = "Sélectionnez un objet en le touchant.\n\nNote: Pour mieux voir les objets, vous pouvez effectuer un zoom vers l'avant en pinçant l'écran avec deux doigts." ;
+"bravoSelect" = "Vous avez correctement sélectionné un objet." ;
+"propriete" = "Propriétés" ;
+"proprieteMessage" = "Modifier la propriété d'échelle de l'objet directement par le menu.\n\nNOTE: Il n'est possible de les modifier que lorsqu'exactement UN objet est sélectionné." ;
+"bravoPropriete" = "Vous avez correctement modifié une propriété." ;
+"outils" = "Outils" ;
+"outilsMessage" = "Utitisez l'outil Réinitialisé pour réinitialiser la carte.\n\nNOTE: Vous pouvez remarquer dans cette section plusieurs outils très intéressants:\n1. La corbeille efface les objets sélectionnés\n2. La dupplication copie les objets en sélection.\n3. Le déplacement s'active/désactive pour bouger la vue.\n4. Sauvegarder sauvegarde la sélection en cours.\n5. Charger charge la sélection sauvegardé.\n6. Identiques sélectionne tous les objets identiques." ;
+"initMarche" = "Vous avez correctement réinitialisé la carte." ;
+"enregistrerTitre" = "Enregistrer" ;
+"enregistrerMessage" = "Vers le bas du menu droit, il est possible de revoir le tutoriel, d'enregistrer une zone de jeu et de quitter vers le menu." ;
+"finiTuto" = "Vous avez complété le tutoriel." ;
+"saveMapTitre" = "Sauvegarder Carte" ;
+"saveMapMessage" = "Choisissez un nom pour la zone de jeu" ;
+"save" = "Sauvegarder" ;
+"echecTitre" = "Échec" ;
+"echecMessage" = "Le nom n'est pas valide. Échec de la sauvegarde." ;
+"reussite" = "Réusite" ;
+"reussiteMessage" = "La zone de jeu a bien été sauvegardé." ;
+"attention" = "Attention!" ;
+"attentionMessage" = "Le nom que vous avez choisis pour votre carte existe deja. Voulez vous ecraser le fichier existant sur le disque? Sinon modifiez le nom de la carte" ;
+"ecraser" = "Écraser" ;
