@@ -417,8 +417,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                                 sauvegarderNouvelleCarte()
                             }else {
                                 Popups.SharedInstance.ShowAlert(self.viewController!,
-                                    title: "Attention! Carte invalide.",
-                                    message: "Votre carte est actuellement incomplete. Pour qu'une carte sois complete celle-ci a besoin d'avoir au moin un \"ressort\", un \"generateur de billes\" et un \"trou\"",
+                                    title: NSLocalizedString("carteInvalideTitre", comment: ""),
+                                    message: NSLocalizedString("carteInvalideMessage", comment: ""),
                                     buttons: ["Ok"]){ (buttonPressed) -> Void in
                                         if buttonPressed == "Annuler" {
                                             //On fait rien sinon
@@ -496,15 +496,15 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     func quitterModeEdition(){
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Quitter",
-            message: "Êtes-vous certains de vouloir quitter? Assurez-vous d'avoir sauvegardé vos changements.",
-            buttons: ["Quitter" , "Annuler"]) { (buttonPressed) -> Void in
-                if buttonPressed == "Quitter" {
+            title: NSLocalizedString("quitterTitre", comment: ""),
+            message: NSLocalizedString("quitterMessage", comment: ""),
+            buttons: [NSLocalizedString("quitterTitre", comment: "") , NSLocalizedString("annuler", comment: "")]) { (buttonPressed) -> Void in
+                if buttonPressed == NSLocalizedString("quitterTitre", comment: "") {
                     backgroundMusicPlayer.stop()
                     var vc: UIViewController = UIViewController()
                     vc = self.view!.window!.rootViewController!
                     self.viewController?.performSegueWithIdentifier("backToMenu", sender: vc)
-                } else if buttonPressed == "Annuler" {
+                } else if buttonPressed == NSLocalizedString("annuler", comment: "") {
                     //On fait rien sinon
                 }
         }
@@ -575,10 +575,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     func resetLaMap(){
         AudioServicesPlaySystemSound(sonSelectionOutil)
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Réinitialiser la zone",
-            message: "Êtes-vous certains de vouloir réinitialiser la zone de jeu?",
-            buttons: ["Réinitialiser" , "Annuler"]) { (buttonPressed) -> Void in
-                if buttonPressed == "Réinitialiser" {
+            title: NSLocalizedString("reinitTitre", comment: ""),
+            message: NSLocalizedString("reinitMessage", comment: ""),
+            buttons: [NSLocalizedString("reinitChoix", comment: "") , NSLocalizedString("annuler", comment: "")]) { (buttonPressed) -> Void in
+                if buttonPressed == NSLocalizedString("reinitChoix", comment: "") {
                     self.animationMagie()
                     AudioServicesPlaySystemSound(self.sonReset)
                     for objetCourant in self.nodesSurTable
@@ -597,7 +597,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                     if self.tutorielEnCours && self.etapeTutoriel == 4 {
                         self.tutoEtape5()
                     }
-                } else if buttonPressed == "Annuler" {
+                } else if buttonPressed == NSLocalizedString("annuler", comment: "") {
                     //On fait rien sinon
                 }
         }
@@ -624,10 +624,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         if tutorielEnCours {
             //Message pour ajouter objet
             Popups.SharedInstance.ShowAlert(self.viewController!,
-                title: "Annuler le tutoriel",
-                message: "Êtes-vous certains de vouloir quitter le tutoriel?",
-                buttons: ["Oui", "Non"]) { (buttonPressed) -> Void in
-                    if buttonPressed == "Oui" {
+                title: NSLocalizedString("tutoAnnulerTitre", comment: ""),
+                message: NSLocalizedString("tutoAnnulerMessage", comment: ""),
+                buttons: [NSLocalizedString("oui", comment: ""), NSLocalizedString("non", comment: "")]) { (buttonPressed) -> Void in
+                    if buttonPressed == NSLocalizedString("oui", comment: "") {
                         self.tutoFin()
                     }
             }
@@ -647,8 +647,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Message pour ajouter objet
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Ajout d'objets",
-            message: "Cliquez sur un bouton d'objet puis cliquez sur la table pour créer un objet.\n\nNOTE: Les portails doivent être créés en paires en glissant le doigt et les murs doivent être créés en glissant le doigt.\n\nNOTE2: Vous pouvez quitter le tutoriel en tout temps en touchant à nouveau l'icone Tutoriel.",
+            title: NSLocalizedString("tutoAjoutTitre", comment: ""),
+            message: NSLocalizedString("tutoAjoutMessage", comment: ""),
             buttons: ["Ok"]) { (buttonPressed) -> Void in
         }
         
@@ -664,8 +664,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Message de félicitation
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Bravo",
-            message: "Vous avez correctement ajouté un objet sur la table.",
+            title: NSLocalizedString("bravo", comment: ""),
+            message: NSLocalizedString("bravoObjet", comment: ""),
             buttons: ["Ok"]) { (buttonPressed) -> Void in
                 if buttonPressed == "Ok" {
                     //Flêche pointe l'objet sélectionné
@@ -673,8 +673,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                     
                     //Faire une sélection
                     Popups.SharedInstance.ShowAlert(self.viewController!,
-                        title: "Sélection",
-                        message: "Sélectionnez un objet en le touchant.\n\nNote: Pour mieux voir les objets, vous pouvez effectuer un zoom vers l'avant en pinçant l'écran avec deux doigts.",
+                        title: NSLocalizedString("selectionTitre", comment: ""),
+                        message: NSLocalizedString("selectionMessage", comment: ""),
                         buttons: ["Ok "]) { (buttonPressed) -> Void in
                     }
                 }
@@ -686,15 +686,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Message de félicitation
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Bravo",
-            message: "Vous avez correctement sélectionné un objet.",
+            title: NSLocalizedString("bravo", comment: ""),
+            message: NSLocalizedString("bravoSelect", comment: ""),
             buttons: ["Ok"]) { (buttonPressed) -> Void in
                 if buttonPressed == "Ok" {
                     
                     //Changer une propriété
                     Popups.SharedInstance.ShowAlert(self.viewController!,
-                        title: "Propriétés",
-                        message: "Modifier la propriété d'échelle de l'objet directement par le menu.\n\nNOTE: Il n'est possible de les modifier que lorsqu'exactement UN objet est sélectionné.",
+                        title: NSLocalizedString("propriete", comment: ""),
+                        message: NSLocalizedString("proprieteMessage", comment: ""),
                         buttons: ["Ok "]) { (buttonPressed) -> Void in
                             if buttonPressed == "Ok " {
                                 //Flêche pointe les propriétés de l'objet en sélection
@@ -711,8 +711,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Message de félicitation
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Bravo",
-            message: "Vous avez correctement modifié une propriété.",
+            title: NSLocalizedString("bravo", comment: ""),
+            message: NSLocalizedString("bravoPropriete", comment: ""),
             buttons: ["Ok"]) { (buttonPressed) -> Void in
                 if buttonPressed == "Ok" {
                     //Flêche pointe les outils
@@ -721,8 +721,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                     
                     //Réinitialiser la partie
                     Popups.SharedInstance.ShowAlert(self.viewController!,
-                        title: "Outils",
-                        message: "Utitisez l'outil Réinitialisé pour réinitialiser la carte.\n\nNOTE: Vous pouvez remarquer dans cette section plusieurs outils très intéressants:\n1. La corbeille efface les objets sélectionnés\n2. La dupplication copie les objets en sélection.\n3. Le déplacement s'active/désactive pour bouger la vue.\n4. Sauvegarder sauvegarde la sélection en cours.\n5. Charger charge la sélection sauvegardé.\n6. Identiques sélectionne tous les objets identiques.",
+                        title: NSLocalizedString("outils", comment: ""),
+                        message: NSLocalizedString("outilsMessage", comment: ""),
                         buttons: ["Ok "]) { (buttonPressed) -> Void in
                             if buttonPressed == "Ok " {
                                 
@@ -737,15 +737,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Message de félicitation
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Bravo",
-            message: "Vous avez correctement réinitialisé la carte.",
+            title: NSLocalizedString("bravo", comment: ""),
+            message: NSLocalizedString("initMarche", comment: ""),
             buttons: ["Ok"]) { (buttonPressed) -> Void in
                 if buttonPressed == "Ok" {
                     
                     //Réinitialiser la partie
                     Popups.SharedInstance.ShowAlert(self.viewController!,
-                        title: "Enregistrer",
-                        message: "Vers le bas du menu droit, il est possible de revoir le tutoriel, d'enregistrer une zone de jeu et de quitter vers le menu.",
+                        title: NSLocalizedString("enregistrerTitre", comment: ""),
+                        message: NSLocalizedString("enregistrerMessage", comment: ""),
                         buttons: ["Ok "]) { (buttonPressed) -> Void in
                             if buttonPressed == "Ok " {
                                 //Flêche pointe les outils
@@ -765,8 +765,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     func tutoFin(){
         //Message de félicitation
         Popups.SharedInstance.ShowAlert(self.viewController!,
-            title: "Bravo",
-            message: "Vous avez complété le tutoriel.",
+            title: NSLocalizedString("bravo", comment: ""),
+            message: NSLocalizedString("finiTuto", comment: ""),
             buttons: ["Ok"]) { (buttonPressed) -> Void in
         }
         
@@ -1543,14 +1543,14 @@ class GameScene: SKScene, UITextFieldDelegate {
     func sauvegarderNouvelleCarte(){
         
         PopupsText.SharedInstance.ShowAlert(self.viewController!,
-            title: "Sauvegarder Carte",
-            message: "Choisissez un nom pour la zone de jeu",
-            buttons: ["Sauvegarder" , "Annuler"], texteInitial: (self.carte.getNom() as NSString).stringByDeletingPathExtension) { (buttonPressed) -> Void in
-                if buttonPressed == "Sauvegarder" {
+            title: NSLocalizedString("saveMapTitre", comment: ""),
+            message: NSLocalizedString("saveMapMessage", comment: ""),
+            buttons: [NSLocalizedString("save", comment: "") , NSLocalizedString("annuler", comment: "")], texteInitial: (self.carte.getNom() as NSString).stringByDeletingPathExtension) { (buttonPressed) -> Void in
+                if buttonPressed == NSLocalizedString("save", comment: "") {
                     if PopupsText.SharedInstance.getTextField() == "" {
                         Popups.SharedInstance.ShowAlert(self.viewController!,
-                            title: "Échec",
-                            message: "Le nom n'est pas valide. Échec de la sauvegarde.",
+                            title: NSLocalizedString("echecTitre", comment: ""),
+                            message: NSLocalizedString("echecMessage", comment: ""),
                             buttons: ["Ok"]) { (buttonPressed) -> Void in
                                 
                         }
@@ -1571,8 +1571,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                         if let xmlString = self.carte.toXmlString(){
                             parseur.sauvegarderStringXML(xmlString, nomFichier: nomNouvelleSauvegarde)
                             Popups.SharedInstance.ShowAlert(self.viewController!,
-                                title: "Réusite",
-                                message: "La zone de jeu a bien été sauvegardé.",
+                                title:  NSLocalizedString("reussite", comment: ""),
+                                message: NSLocalizedString("reussiteMessage", comment: ""),
                                 buttons: ["Ok"]) { (buttonPressed) -> Void in
                                     
                             }
@@ -1581,12 +1581,12 @@ class GameScene: SKScene, UITextFieldDelegate {
                     //si le fichier existe deja, on avertis que celui-ci seras ecrasé
                     else{
                         Popups.SharedInstance.ShowAlert(self.viewController!,
-                            title: "Attention!",
-                            message: "Le nom \"\(nomNouvelleSauvegarde)\"que vous avez choisis pour votre carte existe deja. Voulez vous ecraser le fichier existant sur le disque? Sinon modifiez le nom de la carte",
-                            buttons: ["Écraser", "Annuler"]) { (buttonPressed) -> Void in
-                                if buttonPressed == "Annuler" {
+                            title: NSLocalizedString("attention", comment: ""),
+                            message: NSLocalizedString("attentionMessage", comment: ""),
+                            buttons: [NSLocalizedString("ecraser", comment: ""), NSLocalizedString("annuler", comment: "")]) { (buttonPressed) -> Void in
+                                if buttonPressed == NSLocalizedString("annuler", comment: "") {
                                     //On fait rien sinon
-                                } else if buttonPressed == "Écraser"{
+                                } else if buttonPressed == NSLocalizedString("ecraser", comment: ""){
                                     if let xmlString = self.carte.toXmlString(){
                                         parseur.sauvegarderStringXML(xmlString, nomFichier: nomNouvelleSauvegarde)
                                     }
@@ -1596,7 +1596,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                     }
                     
                     
-                } else if buttonPressed == "Annuler" {
+                } else if buttonPressed == NSLocalizedString("annuler", comment: "") {
                     //On fait rien sinon
                 }
         }
