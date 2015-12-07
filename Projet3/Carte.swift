@@ -21,7 +21,7 @@ class Carte {
     var arbre = Arbre()
     //Proprietes de la table de jeux
     var proprietes = Proprietes()
-    
+     
     
     //Dictionnaire utiliser pour traduire les noms du cote client leger
     //La clée correspond au nom de l'objet sur le xml/ client lourd, et la valeur au nom du cote client leger
