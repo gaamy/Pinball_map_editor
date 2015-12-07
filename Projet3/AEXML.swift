@@ -362,8 +362,9 @@ public class AEXMLDocument: AEXMLElement {
     // MARK: Override
     
     /// Override of `xmlString` property of `AEXMLElement` - it just inserts XML Document header at the beginning.
+    
     public override var xmlString: String {
-        var xml =  "<?xml version=\"\(version)\" encoding=\"\(encoding)\" standalone=\"\(standalone)\"?>\n"
+        var xml =  ""//<?xml version=\"\(version)\" encoding=\"\(encoding)\" standalone=\"\(standalone)\"?>\n"
         for child in children {
             xml += child.xmlString
         }

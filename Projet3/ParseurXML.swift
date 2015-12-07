@@ -217,7 +217,7 @@ class ParseurXML :NSObject, NSXMLParserDelegate, NSFileManagerDelegate{
         
         if elementName == "jeu"{
             //cartes.append(carteActuelle)
-            print(carteActuelle.toXmlString())
+        //    print(carteActuelle.toXmlString())
         }
         
     }
